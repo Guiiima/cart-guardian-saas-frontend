@@ -5,7 +5,11 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
-
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 html {
   @include mat.theme((
     color: (
@@ -30,8 +34,6 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
-  // Reset the user agent margin.
-  margin: 0;
 }
 /* You can add global styles to this file, and also import other style files */
 

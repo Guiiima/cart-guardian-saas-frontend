@@ -1,0 +1,23 @@
+.login-screen-container {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.fullscreen-img {
+  width: 70%;
+  height: 100%;
+  object-fit: cover; 
+  display: block;     
+}
+
+app-login {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
