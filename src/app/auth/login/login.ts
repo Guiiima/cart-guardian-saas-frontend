@@ -52,11 +52,12 @@ export class Login {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.authService
-        .login(this.loginForm.value)
-        .then(() => this.router.navigate(['/dashboard']))
-        .catch((err: any) => console.error('Falha no login', err));
-    }
+    // if (this.loginForm.valid) {
+    //   this.authService
+    //     .login(this.loginForm.value)
+    //     .then(() => this.router.navigate(['/dashboard']))
+    //     .catch((err: any) => console.error('Falha no login', err));
+    // }
+    this.router.navigate(['/dashboard']); 
   }
 }

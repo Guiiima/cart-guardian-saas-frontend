@@ -5,5 +5,6 @@ import { Setting } from './components/setting/setting';
 import { HomeScreen } from './features/home-screen/home-screen';
 
 export const routes: Routes = [
-   { path: '', component: HomeScreen, title: 'Login' },
+   { path: '', component: LoginScreen, title: 'Login' },
+   { path: 'dashboard', component: HomeScreen, title: 'DashBoard' },
 ];
