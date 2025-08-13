@@ -1,0 +1,12 @@
+<div class="grafico-container">
+  <canvas id="meuGrafico"></canvas>
+  <div class="container-types">
+
+    <ul class="grafico-tipos">
+      <li *ngFor="let tipo of ['bar', 'radar', 'pie', 'line', 'doughnut']"
+        [ngClass]="{'selected': selectedType === tipo}" (click)="mudarTipoGrafico(tipo)">
+        {{ tipo | titlecase }}
+      </li>
+    </ul>
+  </div>
+</div>

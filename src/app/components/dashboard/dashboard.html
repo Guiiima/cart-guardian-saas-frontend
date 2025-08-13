@@ -70,7 +70,9 @@
       <div class="card chart-container">
         <h2>Performance de Vendas (Últimos 30 dias)</h2>
         <div class="placeholder-chart">
-          Gráfico aqui
+          <app-chart-component [chartType]="'pie'" [chartTitle]="'Distribuição de Clientes por Região'"
+            [chartData]="dadosDeClientes" [valueSuffix]="' clientes'">
+          </app-chart-component>
         </div>
       </div>
       <div class="card activity-table">
