@@ -45,32 +45,33 @@
 
     <section class="dashboard-overview">
       <div class="card">
-        <h2>Vendas Hoje</h2>
-        <p class="metric">R$ 1.250,75</p>
-        <p class="detail">+5% vs. ontem</p>
+        <h2>Taxa de conversão por e-mail enviado</h2>
+        <p class="metric">12,4%</p>
+        <p class="detail">+1,8% vs. ontem</p>
       </div>
       <div class="card">
-        <h2>Novos Usuários</h2>
-        <p class="metric">32</p>
-        <p class="detail">+10% na última semana</p>
+        <h2>Ticket médio recuperado</h2>
+        <p class="metric">R$ 287,90</p>
+        <p class="detail">+6,5% na última semana</p>
       </div>
       <div class="card">
-        <h2>Pedidos Pendentes</h2>
-        <p class="metric">8</p>
-        <p class="detail">Atualizado há 5 minutos</p>
+        <h2>Total de carrinhos abandonados</h2>
+        <p class="metric">154</p>
+        <p class="detail">Atualizado há 10 minutos</p>
       </div>
       <div class="card">
-        <h2>Taxa de Satisfação</h2>
-        <p class="metric">95%</p>
-        <p class="detail">Baseado em 200 avaliações</p>
+        <h2>Receita perdida</h2>
+        <p class="metric">R$ 12.540,00</p>
+        <p class="detail">Estimativa para o mês</p>
       </div>
     </section>
 
+
     <section class="dashboard-details">
-        <div class="placeholder-chart">
-          <app-chart-component [chartType]="'bar'" [chartTitle]="'Distribuição de Clientes por Região'"
-            [chartData]="dadosDeClientes" [valueSuffix]="' clientes'">
-          </app-chart-component>
+      <div class="placeholder-chart">
+        <app-chart-component [chartType]="'bar'" [chartTitle]="'Distribuição de Clientes por Região'"
+          [chartData]="dadosDeClientes" [valueSuffix]="' clientes'">
+        </app-chart-component>
       </div>
       <div class="card activity-table">
         <h2>Atividade Recente</h2>
@@ -78,25 +79,35 @@
           <thead>
             <tr>
               <th>ID do Pedido</th>
-              <th>Cliente</th>
+              <th>Produto</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>#1102</td>
-              <td>Ana Silva</td>
-              <td>Enviado</td>
+              <td>#2025</td>
+              <td>Fone de Ouvido Bluetooth</td>
+              <td>Recuperado</td>
             </tr>
             <tr>
-              <td>#1101</td>
-              <td>Carlos Souza</td>
-              <td>Processando</td>
+              <td>#2024</td>
+              <td>Notebook Gamer 15"</td>
+              <td>Abandonado</td>
             </tr>
             <tr>
-              <td>#1100</td>
-              <td>Beatriz Lima</td>
-              <td>Entregue</td>
+              <td>#2023</td>
+              <td>Smartwatch Série 8</td>
+              <td>Recuperado</td>
+            </tr>
+            <tr>
+              <td>#2022</td>
+              <td>Mochila Antifurto</td>
+              <td>Em Recuperação</td>
+            </tr>
+            <tr>
+              <td>#2021</td>
+              <td>Teclado Mecânico RGB</td>
+              <td>Abandonado</td>
             </tr>
           </tbody>
         </table>

@@ -27,19 +27,20 @@ export class Dashboard {
       data: { mensagem: 'Olá do pai!' }
     });
   }
-    public dadosDeClientes: AppChartData = {
-    labels: ['Sudeste', 'Nordeste', 'Sul', 'Centro-Oeste', 'Norte'],
+  public dadosDeClientes: AppChartData = {
+    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
     datasets: [{
-      label: 'Clientes por Região',
-      data: [850, 620, 410, 310, 180],
-      // Cores diferentes para o gráfico de pizza
+      label: '% de Cliques no Link de Recuperação',
+      data: [32, 34, 37, 35, 39, 42, 44],
       backgroundColor: [
         'rgba(26, 188, 156, 0.8)',
         'rgba(230, 126, 34, 0.8)',
         'rgba(155, 89, 182, 0.8)',
         'rgba(241, 196, 15, 0.8)',
         'rgba(231, 76, 60, 0.8)'
-      ]
+      ],
+      borderColor: 'rgba(0, 0, 0, 1)',
+      borderWidth: 2
     }]
   };
   @HostListener('document:click', ['$event'])
