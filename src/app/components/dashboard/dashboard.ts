@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Setting } from '../setting/setting';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,16 +10,23 @@ import { Component, ElementRef, HostListener } from '@angular/core';
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
+  @Output()
+  congiguracao = new EventEmitter<boolean>();
   isDropdownOpen = false;
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef, private dialog: MatDialog) { }
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
-
-  // 3. (Opcional, mas recomendado) Função para fechar o menu ao clicar fora dele
+  openConfig(): void {
+    // this.congiguracao.emit(true);
+    // this.isDropdownOpen = false;
+    this.dialog.open(Setting, {
+      width: '400px',
+      data: { mensagem: 'Olá do pai!' }
+    });
+  }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    // Verifica se o clique foi fora do container do dropdown e se o menu está aberto
     if (!this.elementRef.nativeElement.contains(event.target) && this.isDropdownOpen) {
       this.isDropdownOpen = false;
     }

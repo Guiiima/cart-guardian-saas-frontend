@@ -16,30 +16,32 @@
   </aside> -->
 
   <main class="main-content">
-<header class="main-header">
-  <h1>Dashboard Principal</h1>
+    <header class="main-header">
+      <h1>Dashboard Principal</h1>
 
-  <div class="header-actions">
-    <div class="user-info">
-      <span>Bem-vindo, Usuário!</span>
-    </div>
-
-    <div class="dropdown-container">
-      <button class="dropdown-toggle" (click)="toggleDropdown()">
-        🏪 </button>
-
-      @if (isDropdownOpen) {
-        <div class="dropdown-menu">
-          <a href="#" class="dropdown-item">Minha Loja 1</a>
-          <a href="#" class="dropdown-item">Minha Loja 2</a>
-          <a href="#" class="dropdown-item">Outra Loja</a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">Adicionar Nova Loja</a>
+      <div class="header-actions">
+        <div class="user-info">
+          <span>Bem-vindo, Usuário!</span>
         </div>
-      }
-    </div>
-  </div>
-</header>
+
+        <div class="dropdown-container">
+          <button class="dropdown-toggle" (click)="toggleDropdown()">
+            🏪 </button>
+
+          @if (isDropdownOpen) {
+          <ul class="dropdown-menu">
+            <li class="dropdown-item" (click)="openConfig()">Configurações de Email</li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a href="#" class="dropdown-item">Logout</a></li>
+          </ul>
+
+
+          }
+        </div>
+      </div>
+    </header>
 
     <section class="dashboard-overview">
       <div class="card">
