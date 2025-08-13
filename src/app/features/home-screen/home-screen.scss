@@ -1,0 +1,12 @@
+.home-screen-container {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+app-setting{
+    flex: 1;
+    padding: 1rem;
+}
