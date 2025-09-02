@@ -1,0 +1,41 @@
+/* tabela-atividades-recentes.component.css */
+
+:host {
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+thead th {
+  font-weight: 600;
+  color: #555;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}

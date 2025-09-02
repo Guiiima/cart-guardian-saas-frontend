@@ -4,10 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Setting } from '../setting/setting';
 import { ChartData } from 'chart.js';
 import { AppChartData, ChartComponentComponent } from "../chart-component/chart-component";
+import { Table } from '../table/table';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, ChartComponentComponent],
+  imports: [CommonModule, ChartComponentComponent, Table],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })

@@ -100,23 +100,9 @@ app-chart-component{
   // border-radius: 5px;
   // color: #6c757d;
 }
-.activity-table{
+app-table{
   overflow: auto;
   height: 340px;
-}
-.activity-table table {
-  border-collapse: collapse;
-}
-
-.activity-table th, .activity-table td {
-  text-align: left;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.activity-table th {
-  font-weight: bold;
-  color: #555;
 }
 
 .header-actions {
