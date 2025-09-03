@@ -58,7 +58,7 @@ export class Dashboard {
   }
 metricas: Metrica[] = [
     {
-      titulo: 'Taxa de conversão por e-mail enviado',
+      titulo: 'Taxa de conversão por e-mail',
       metrica: '12,4%',
       detalhe: '+1,8% vs. ontem'
     },

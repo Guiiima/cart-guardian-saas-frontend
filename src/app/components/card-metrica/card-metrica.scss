@@ -1,40 +1,59 @@
+/* Estilo do componente em si (host) */
 :host {
   display: block;
 }
 
+/* O CARD - nosso container principal */
 .card {
   background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  /* Removemos a borda para um look mais clean */
+  border: none; 
+  border-radius: 12px; /* Um pouco mais arredondado */
+  padding: 24px;
+  /* Sombra mais suave e difundida para um efeito "flutuante" */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Transição suave para o efeito de hover */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+/* Efeito de hover para dar feedback ao usuário */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* TÍTULO - "Taxa de conversão por e-mail" */
 h2 {
-  margin: 0 0 10px 0;
-  font-size: 1rem;
-  color: #555;
+  margin: 0 0 8px 0;
+  font-size: 0.9rem; /* Tamanho fixo para consistência */
+  color: #6c757d; /* Cinza mais suave para não competir com a métrica */
   font-weight: 500;
+  letter-spacing: 0.5px; /* Leve espaçamento para mais elegância */
 }
 
+/* MÉTRICA PRINCIPAL - O número grande */
 .metric {
-  margin: 0 0 5px 0;
-  font-size: 2rem;
+  margin: 0 0 4px 0;
+  font-size: 1.75rem; /* Maior e mais impactante */
   font-weight: 600;
-  color: #111;
+  color: #1e293b; /* Um preto azulado, mais moderno que o preto puro */
 }
 
+/* DETALHE - A informação secundária */
 .detail {
   margin: 0;
-  font-size: 0.9rem;
-  color: #777;
+  font-size: 0.85rem;
+  font-weight: 500; /* Um pouco mais de peso para legibilidade */
+  margin-top: auto; /* Empurra para o final do card */
 }
 
 .detail.positive {
-  color: #28a745; /* Verde */
+  color: #10b981; /* Verde mais vibrante e moderno */
 }
 
 .detail.negative {
-  color: #dc3545; /* Vermelho */
+  color: #ef4444; /* Vermelho correspondente */
 }

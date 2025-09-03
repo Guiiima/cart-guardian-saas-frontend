@@ -26,10 +26,13 @@
       }
     </section>
     <section class="dashboard-details">
-      <div class="placeholder-chart">
-        <app-chart-component [chartType]="'bar'" [chartTitle]="'Distribuição de Clientes por Região'"
-          [chartData]="dadosDeClientes" [valueSuffix]="'clientes'">
-        </app-chart-component>
+      <div class="placeholder-container">
+
+        <div class="placeholder-chart">
+          <app-chart-component [chartType]="'bar'" [chartTitle]="'Distribuição de Clientes por Região'"
+            [chartData]="dadosDeClientes" [valueSuffix]="'clientes'">
+          </app-chart-component>
+        </div>
       </div>
       <app-table></app-table>
     </section>

@@ -2,11 +2,6 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 :host {
   --sidebar-bg: #1e3d32;         /* Verde escuro elegante */
@@ -43,31 +38,6 @@
   font-size: 2rem;
 }
 
-.card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  color: var(--text-dark);
-}
-
-.card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.metric {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-.detail {
-  font-size: 0.9rem;
-  color: #777;
-  margin-top: 0.5rem;
-}
 
 .dashboard-overview {
   display: grid;
@@ -87,19 +57,6 @@
     grid-template-columns: 1fr;
   }
 }
-app-chart-component{
-  width: 100%;
-  height: 30px !important;
-}
-.placeholder-chart {
-  // height: 250px;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-  // background-color: #e9ecef;
-  // border-radius: 5px;
-  // color: #6c757d;
-}
 app-table{
   overflow: auto;
   height: 340px;
@@ -114,7 +71,14 @@ app-table{
 .dropdown-container {
   position: relative;
 }
-
+.placeholder-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.placeholder-chart{
+  width: 80%;
+}
 .dropdown-toggle {
   background: none;
   border: none;
