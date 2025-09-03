@@ -80,15 +80,32 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
     }
     const processedData = this.processChartData(this.chartData);
     const chartConfig = this.getChartConfig(processedData);
-    this.chart = new Chart('meuGrafico', chartConfig);
+    // Usamos um ID único para o canvas para evitar conflitos se o componente for reutilizado
+    const canvasId = `chart-${Math.random().toString(36).substring(2)}`;
+    const canvas = document.getElementById('meuGrafico') as HTMLCanvasElement;
+    if (canvas) {
+        canvas.id = canvasId;
+        this.chart = new Chart(canvasId, chartConfig);
+    }
   }
 
   private processChartData(data: AppChartData): AppChartData {
-    const genericColors = this.getGenericColors(data.labels.length);
+    const modernColors = this.getModernColors(data.labels.length);
     data.datasets.forEach(dataset => {
-      dataset.backgroundColor = dataset.backgroundColor || genericColors;
-      dataset.borderColor = dataset.borderColor || '#333';
-      dataset.borderWidth = dataset.borderWidth ?? 1.5;
+        // Lógica de cores específica para cada tipo de gráfico
+        if (this.chartType === 'line') {
+            dataset.backgroundColor = 'rgba(43, 191, 130, 0.2)'; // Fundo suave para a área da linha
+            dataset.borderColor = '#2bbf82'; // Cor primária para a linha
+            dataset.pointBackgroundColor = '#2bbf82';
+            dataset.pointBorderColor = '#fff';
+            dataset.pointHoverBackgroundColor = '#fff';
+            dataset.pointHoverBorderColor = '#2bbf82';
+            dataset.tension = 0.4; // Linhas mais suaves
+        } else {
+             dataset.backgroundColor = dataset.backgroundColor || modernColors;
+             dataset.borderColor = '#ffffff'; // Bordas brancas para separar as fatias/barras
+        }
+        dataset.borderWidth = dataset.borderWidth ?? 2;
     });
     return data;
   }
@@ -101,15 +118,27 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
         title: {
           display: true,
           text: this.chartTitle,
-          font: { size: 18, weight: 'bold' },
-          padding: { top: 10, bottom: 20 }
+          font: { size: 16, weight: '500', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          color: '#6c757d', // Cinza suave para o título
+          padding: { top: 10, bottom: 25 }
         },
-        legend: { display: true, position: 'top' as const },
+        legend: {
+            // A legenda é desnecessária para gráficos com apenas um conjunto de dados
+            display: data.datasets.length > 1,
+            labels: {
+                font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
+            }
+        },
         tooltip: {
+          backgroundColor: '#1e293b', // Fundo escuro
+          titleFont: { size: 14, weight: 'bold', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          bodyFont: { size: 12, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          padding: 12,
+          cornerRadius: 8,
           callbacks: {
             label: (context: any) => {
               const value = context.raw.toLocaleString('pt-BR');
-              return `${this.valuePrefix}${value}${this.valueSuffix}`;
+              return ` ${this.valuePrefix}${value}${this.valueSuffix}`;
             }
           }
         }
@@ -125,13 +154,27 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
       }
     };
 
+    const axisOptions = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: '#e9ecef', drawBorder: false }, // Linhas de grade mais suaves
+                ticks: { color: '#6c757d' } // Cor dos números do eixo
+            },
+            x: {
+                grid: { display: false }, // Remove linhas de grade verticais
+                ticks: { color: '#6c757d' }
+            }
+        }
+    };
+
     switch (this.chartType) {
       case 'bar':
       case 'line':
-        return { type: this.chartType, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
+        return { type: this.chartType, data, options: { ...commonOptions, ...axisOptions } };
       case 'pie':
       case 'doughnut':
-        return { type: this.chartType, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
+        return { type: this.chartType, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const, display: true } } } };
       case 'radar':
         return { type: 'radar', data, options: commonOptions };
       default:
@@ -139,12 +182,16 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  private getGenericColors(count: number): string[] {
+  // NOVA FUNÇÃO DE CORES
+  private getModernColors(count: number): string[] {
     const colors = [
-      'rgba(52, 152, 219, 0.7)', 'rgba(46, 204, 113, 0.7)',
-      'rgba(231, 76, 60, 0.7)', 'rgba(241, 196, 15, 0.7)',
-      'rgba(155, 89, 182, 0.7)', 'rgba(26, 188, 156, 0.7)',
-      'rgba(230, 126, 34, 0.7)', 'rgba(52, 73, 94, 0.7)',
+      '#2bbf82', // Verde Primário
+      '#34d399', // Tom mais claro
+      '#229968', // Tom mais escuro
+      '#6ee7b7', // Tom bem claro
+      '#1a734e', // Tom bem escuro
+      '#a7f3d0', // Verde-pastel
+      '#059669'
     ];
     return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
   }

@@ -71,13 +71,35 @@ app-table{
 .dropdown-container {
   position: relative;
 }
-.placeholder-container{
+.placeholder-container {
+  /* Estilos que já estavam */
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* Novos estilos para o visual de card */
+  background-color: var(--card-bg); /* Usa a variável de cor do card */
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-.placeholder-chart{
-  width: 80%;
+
+.placeholder-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste para o componente do gráfico preencher o novo container */
+.placeholder-chart {
+  width: 100%; /* Faz o gráfico ocupar todo o espaço do container */
+}
+
+/* Se o componente app-chart-component tiver um fundo próprio, 
+   adicione isso para garantir que ele seja transparente */
+app-chart-component {
+  display: block;
+  width: 100%;
 }
 .dropdown-toggle {
   background: none;

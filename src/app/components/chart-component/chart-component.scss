@@ -1,40 +1,43 @@
-#meuGrafico {
+.chart-container {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+}
+
+canvas {
     display: flex;
-    max-width: 100%;
+    width: 100%;
     max-height: 281px;
 }
 
-.container-types {
+.chart-controls {
     display: flex;
-    width: 100%;
-}
-
-.grafico-tipos {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    padding-top: 15px;
-    list-style: none;
-    margin: 0;
     justify-content: center;
+    gap: 8px;
+    padding-top: 16px;
+    flex-wrap: wrap;
 }
 
-.grafico-tipos li {
+.chart-controls button {
+    background-color: #f6f9f7;
+    color: #6c757d;
+    border: 1px solid #d9e6df;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
     cursor: pointer;
-    background-color: #2c3e50;
-    border-radius: 5px;
-    color: #ffffff;
-    padding: 10px;
-    transition: background-color 0.3s;
-    flex-grow: 1;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-.grafico-tipos li:hover,
-.grafico-tipos li.selected {
-    background-color: #3498db; 
-    color: #fff;
+.chart-controls button:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.chart-controls button.active {
+    background-color: #2bbf82;
+    color: #ffffff;
+    border-color: #2bbf82;
+    font-weight: 600;
 }
