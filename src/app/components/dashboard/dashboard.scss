@@ -2,22 +2,20 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-
 :host {
-  --sidebar-bg: #1e3d32;         /* Verde escuro elegante */
-  --main-bg: #f6f9f7;            /* Cinza-esverdeado bem claro */
-  --card-bg: #ffffff;            /* Branco puro para contraste */
-  --text-dark: #2a2a2a;          /* Cinza bem escuro */
-  --text-light: #ecfdf5;         /* Verde-claro quase branco */
-  --primary-color: #2bbf82;      /* Verde-menta vibrante */
-  --border-color: #d9e6df; 
+  --sidebar-bg: #1e3d32;
+  --main-bg: #f6f9f7;
+  --card-bg: #ffffff;
+  --text-dark: #2a2a2a;
+  --text-light: #ecfdf5;
+  --primary-color: #2bbf82;
+  --border-color: #d9e6df;
 }
 
 .dashboard-container {
   display: flex;
   overflow: hidden;
 }
-
 
 .main-content {
   flex: 1;
@@ -38,6 +36,73 @@
   font-size: 2rem;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.dropdown-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f5f5f5;
+}
+
+.dropdown-divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 6px 0;
+}
+
+.dropdown-item:last-child {
+  color: #e57373;
+  font-weight: 500;
+}
+
+.dropdown-item:last-child:hover {
+  background: #fdecea;
+  color: #d32f2f;
+}
 
 .dashboard-overview {
   display: grid;
@@ -49,36 +114,15 @@
 .dashboard-details {
   display: grid;
   grid-template-columns: 2fr 1fr;
+  align-items: start;
   gap: 1.5rem;
 }
 
-@media (max-width: 992px) {
-  .dashboard-details {
-    grid-template-columns: 1fr;
-  }
-}
-app-table{
-  overflow: auto;
-  height: 340px;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.dropdown-container {
-  position: relative;
-}
 .placeholder-container {
-  /* Estilos que já estavam */
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* Novos estilos para o visual de card */
-  background-color: var(--card-bg); /* Usa a variável de cor do card */
+  background-color: var(--card-bg);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -90,63 +134,18 @@ app-table{
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Ajuste para o componente do gráfico preencher o novo container */
 .placeholder-chart {
-  width: 100%; /* Faz o gráfico ocupar todo o espaço do container */
+  width: 100%;
 }
 
-/* Se o componente app-chart-component tiver um fundo próprio, 
-   adicione isso para garantir que ele seja transparente */
 app-chart-component {
   display: block;
   width: 100%;
 }
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.8rem;
-  padding: 5px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
 
-.dropdown-toggle:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
-  z-index: 1000;
-  padding: 8px 0;
-  animation: fadeIn 0.2s ease-out;
-}
-
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  color: #333;
-  text-decoration: none;
-  transition: background-color 0.2s;
-}
-
-.dropdown-item:hover {
-  background-color: #f4f6f9;
-}
-
-.dropdown-divider {
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 8px 0;
+app-table {
+  overflow: auto;
+  height: 340px;
 }
 
 @keyframes fadeIn {
@@ -157,5 +156,11 @@ app-chart-component {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-details {
+    grid-template-columns: 1fr;
   }
 }
