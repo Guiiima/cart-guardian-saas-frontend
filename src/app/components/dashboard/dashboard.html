@@ -17,16 +17,16 @@
 
   <main class="main-content">
     <header class="main-header">
-      <h1>Dashboard Principal</h1>
-
       <div class="header-actions">
         <div class="user-info">
-          <span>Bem-vindo, Usuário!</span>
+          <!-- <span>Bem-vindo, Usuário!</span> -->
         </div>
 
         <div class="dropdown-container">
           <button class="dropdown-toggle" (click)="toggleDropdown()">
-            🏪 </button>
+            <span class="material-icons">settings</span>
+          </button>
+
 
           @if (isDropdownOpen) {
           <ul class="dropdown-menu">
