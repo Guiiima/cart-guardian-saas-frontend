@@ -5,10 +5,15 @@ import { Setting } from '../setting/setting';
 import { ChartData } from 'chart.js';
 import { AppChartData, ChartComponentComponent } from "../chart-component/chart-component";
 import { Table } from '../table/table';
-
+import { CardMetrica } from '../card-metrica/card-metrica';
+export interface Metrica {
+  titulo: string;
+  metrica: string;
+  detalhe: string;
+}
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, ChartComponentComponent, Table],
+  imports: [CommonModule, ChartComponentComponent, Table, CardMetrica],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -28,6 +33,7 @@ export class Dashboard {
       data: { mensagem: 'Olá do pai!' }
     });
   }
+  
   public dadosDeClientes: AppChartData = {
     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
     datasets: [{
@@ -50,5 +56,26 @@ export class Dashboard {
       this.isDropdownOpen = false;
     }
   }
-
+metricas: Metrica[] = [
+    {
+      titulo: 'Taxa de conversão por e-mail enviado',
+      metrica: '12,4%',
+      detalhe: '+1,8% vs. ontem'
+    },
+    {
+      titulo: 'Ticket médio recuperado',
+      metrica: 'R$ 287,90',
+      detalhe: '+6,5% na última semana'
+    },
+    {
+      titulo: 'Total de carrinhos abandonados',
+      metrica: '154',
+      detalhe: 'Atualizado há 10 minutos'
+    },
+    {
+      titulo: 'Receita perdida',
+      metrica: 'R$ 12.540,00',
+      detalhe: 'Estimativa para o mês'
+    }
+  ];
 }

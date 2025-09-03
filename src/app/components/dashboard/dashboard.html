@@ -44,26 +44,10 @@
     </header>
 
     <section class="dashboard-overview">
-      <div class="card">
-        <h2>Taxa de conversão por e-mail enviado</h2>
-        <p class="metric">12,4%</p>
-        <p class="detail">+1,8% vs. ontem</p>
-      </div>
-      <div class="card">
-        <h2>Ticket médio recuperado</h2>
-        <p class="metric">R$ 287,90</p>
-        <p class="detail">+6,5% na última semana</p>
-      </div>
-      <div class="card">
-        <h2>Total de carrinhos abandonados</h2>
-        <p class="metric">154</p>
-        <p class="detail">Atualizado há 10 minutos</p>
-      </div>
-      <div class="card">
-        <h2>Receita perdida</h2>
-        <p class="metric">R$ 12.540,00</p>
-        <p class="detail">Estimativa para o mês</p>
-      </div>
+      @for (metrica of metricas; track metrica.titulo) {
+      <app-card-metrica [titulo]="metrica.titulo" [metrica]="metrica.metrica" [detalhe]="metrica.detalhe">
+      </app-card-metrica>
+      }
     </section>
 
 

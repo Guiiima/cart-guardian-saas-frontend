@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  height: 100%;
+}
+
+h2 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.metric {
+  margin: 0 0 5px 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.detail {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.detail.positive {
+  color: #28a745; /* Verde */
+}
+
+.detail.negative {
+  color: #dc3545; /* Vermelho */
+}
