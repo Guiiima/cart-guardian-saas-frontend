@@ -1,18 +1,18 @@
-<!-- <div class="grafico-container">
-  <canvas id="meuGrafico"></canvas>
-  <div class="container-types">
-
-    <ul class="grafico-tipos">
-      <li *ngFor="let tipo of ['bar', 'radar', 'pie', 'line', 'doughnut']"
-        [ngClass]="{'selected': selectedType === tipo}" (click)="mudarTipoGrafico(tipo)">
-        {{ tipo | titlecase }}
-      </li>
-    </ul>
+<div class="main">
+  <div class="chart-container">
+    <canvas #chartCanvas id="meuGrafico">Seu navegador não suporta o elemento canvas.</canvas>
   </div>
-</div> -->
-<!-- Este container é a chave para a responsividade correta -->
+  <div class="chart-controls">
+    <button (click)="mudarTipoGrafico('bar')" [class.active]="selectedType === 'bar'">Bar</button>
+    <button (click)="mudarTipoGrafico('line')" [class.active]="selectedType === 'line'">Line</button>
+    <button (click)="mudarTipoGrafico('pie')" [class.active]="selectedType === 'pie'">Pie</button>
+    <button (click)="mudarTipoGrafico('doughnut')" [class.active]="selectedType === 'doughnut'">Doughnut</button>
+    <button (click)="mudarTipoGrafico('radar')" [class.active]="selectedType === 'radar'">Radar</button>
+  </div>
+</div>
+
+<!-- 
 <div class="chart-container">
-  <!-- A referência #chartCanvas conecta este elemento ao @ViewChild no TypeScript -->
   <canvas #chartCanvas id="meuGrafico">Seu navegador não suporta o elemento canvas.</canvas>
 </div>
 <div class="chart-controls">
@@ -23,4 +23,4 @@
   <button (click)="mudarTipoGrafico('radar')" [class.active]="selectedType === 'radar'">Radar</button>
 </div>
 
-<!-- Controles para mudar o tipo de gráfico (Exemplo) -->
+Controles para mudar o tipo de gráfico (Exemplo) -->
