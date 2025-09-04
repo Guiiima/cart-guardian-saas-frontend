@@ -1,23 +1,31 @@
 <header class="main-header">
-  <div class="header-title">
-    <h2>Olá, Usuário! 👋</h2>
-  </div>
-
-  <div class="header-actions">
-    <div class="dropdown-container">
-      <button class="dropdown-toggle" (click)="toggleDropdown()">
-        <span class="material-icons">settings</span>
-      </button>
-
-      @if (isDropdownOpen) {
-        <ul class="dropdown-menu">
-          <li class="dropdown-item" (click)="openConfig()">Configurações de Email</li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a href="#" class="dropdown-item">Logout</a></li>
-        </ul>
-      }
+    <div class="header-title">
+        <h2>Dashboard</h2>
     </div>
-  </div>
+
+    <div class="header-actions">
+        <div class="dropdown-container">
+
+            <button class="user-profile-button" (click)="toggleDropdown()" aria-label="Abrir menu do usuário"
+                title="Abrir menu do usuário" aria-haspopup="true" aria-controls="user-menu"
+                [attr.aria-expanded]="isDropdownOpen">
+
+                <img class="avatar" src="https://tse3.mm.bing.net/th/id/OIP.kYYbdJhBIh1SEi8MKTPYpgHaHa?r=0&cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Avatar do usuário">
+
+                <span class="user-name">Olá, Usuário!</span>
+
+                <span class="material-icons chevron-icon">expand_more</span>
+            </button>
+
+            @if (isDropdownOpen) {
+            <ul class="dropdown-menu" id="user-menu">
+                <li class="dropdown-item" (click)="openConfig()">Configurações</li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a href="#" class="dropdown-item">Logout</a></li>
+            </ul>
+            }
+        </div>
+    </div>
 </header>
