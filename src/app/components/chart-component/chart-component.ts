@@ -104,7 +104,7 @@
               dataset.pointHoverBorderColor = '#2bbf82';
               dataset.tension = 0.4; // Linhas mais suaves
           } else {
-              dataset.backgroundColor = dataset.backgroundColor || modernColors;
+              dataset.backgroundColor =  modernColors;
               dataset.borderColor = '#ffffff'; // Bordas brancas para separar as fatias/barras
           }
           dataset.borderWidth = dataset.borderWidth ?? 2;

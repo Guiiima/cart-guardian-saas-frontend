@@ -15,8 +15,6 @@
   <!-- A referência #chartCanvas conecta este elemento ao @ViewChild no TypeScript -->
   <canvas #chartCanvas id="meuGrafico">Seu navegador não suporta o elemento canvas.</canvas>
 </div>
-
-<!-- Controles para mudar o tipo de gráfico (Exemplo) -->
 <div class="chart-controls">
   <button (click)="mudarTipoGrafico('bar')" [class.active]="selectedType === 'bar'">Bar</button>
   <button (click)="mudarTipoGrafico('line')" [class.active]="selectedType === 'line'">Line</button>
@@ -24,3 +22,5 @@
   <button (click)="mudarTipoGrafico('doughnut')" [class.active]="selectedType === 'doughnut'">Doughnut</button>
   <button (click)="mudarTipoGrafico('radar')" [class.active]="selectedType === 'radar'">Radar</button>
 </div>
+
+<!-- Controles para mudar o tipo de gráfico (Exemplo) -->
