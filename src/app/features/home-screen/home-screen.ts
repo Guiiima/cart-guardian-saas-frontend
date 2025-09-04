@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Setting } from "../../components/setting/setting";
-import { Dashboard } from "../../components/dashboard/dashboard";
+import { Dashboard, Metrica } from "../../components/dashboard/dashboard";
 import { AppChartData, ChartComponentComponent } from 'app/components/chart-component/chart-component';
 import { Table } from 'app/components/table/table';
 import { Header } from "app/components/header/header";
+import { CardMetrica } from "app/components/card-metrica/card-metrica";
 
 @Component({
   selector: 'app-home-screen',
-  imports: [Header],
+  imports: [Header, CardMetrica, ChartComponentComponent, Table],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })
@@ -28,4 +29,26 @@ export class HomeScreen {
       borderWidth: 2
     }]
   };
+  metricas: Metrica[] = [
+      {
+        titulo: 'Taxa de conversão por e-mail',
+        metrica: '12,4%',
+        detalhe: '+1,8% vs. ontem'
+      },
+      {
+        titulo: 'Ticket médio recuperado',
+        metrica: 'R$ 287,90',
+        detalhe: '+6,5% na última semana'
+      },
+      {
+        titulo: 'Total de carrinhos abandonados',
+        metrica: '154',
+        detalhe: 'Atualizado há 10 minutos'
+      },
+      {
+        titulo: 'Receita perdida',
+        metrica: 'R$ 12.540,00',
+        detalhe: 'Estimativa para o mês'
+      }
+    ];
 }
