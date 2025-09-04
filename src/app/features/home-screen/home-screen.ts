@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { Setting } from "../../components/setting/setting";
 import { Dashboard } from "../../components/dashboard/dashboard";
 import { AppChartData, ChartComponentComponent } from 'app/components/chart-component/chart-component';
+import { Table } from 'app/components/table/table';
+import { Header } from "app/components/header/header";
 
 @Component({
   selector: 'app-home-screen',
-  imports: [ChartComponentComponent],
+  imports: [Header],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })

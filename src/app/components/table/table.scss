@@ -29,6 +29,10 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+   position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
 }
 
 .activity-table tbody td {
@@ -75,10 +79,18 @@
 }
 
 .status-abandonado {
+  background-color: #e46b6b63;
+  color: #c91919;
+}
+
+.status-abandonado::before {
+  background-color: #c91919;
+}
+.status-recuperacao {
   background-color: #f1f5f9;
   color: #64748b;
 }
 
-.status-abandonado::before {
+.status-recuperacao::before {
   background-color: #94a3b8;
 }

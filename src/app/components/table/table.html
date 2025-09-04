@@ -16,6 +16,7 @@
         <td>
           <span class="status-badge" [ngClass]="{
           'status-recuperado': atividade.status === 'Recuperado', 
+          'status-recuperacao': atividade.status === 'Em Recuperação', 
           'status-abandonado': atividade.status === 'Abandonado'
         }">
             {{ atividade.status }}

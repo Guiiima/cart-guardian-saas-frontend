@@ -1,0 +1,23 @@
+<header class="main-header">
+  <div class="header-title">
+    <h2>Olá, Usuário! 👋</h2>
+  </div>
+
+  <div class="header-actions">
+    <div class="dropdown-container">
+      <button class="dropdown-toggle" (click)="toggleDropdown()">
+        <span class="material-icons">settings</span>
+      </button>
+
+      @if (isDropdownOpen) {
+        <ul class="dropdown-menu">
+          <li class="dropdown-item" (click)="openConfig()">Configurações de Email</li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a href="#" class="dropdown-item">Logout</a></li>
+        </ul>
+      }
+    </div>
+  </div>
+</header>
