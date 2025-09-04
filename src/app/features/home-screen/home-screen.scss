@@ -22,14 +22,14 @@
   gap: 1.5rem;
 }
 
-.dashboard-details {
-  display: grid;
-  flex: 1;
-  grid-template-columns: 2fr 1fr;
-  align-items: start;
-  gap: 24px;
-  padding: 24px; 
-}
+// .dashboard-details {
+//   display: grid;
+//   flex: 1;
+//   grid-template-columns: 2fr 1fr;
+//   align-items: start;
+//   gap: 24px;
+//   padding: 24px;
+// }
 
 
 .placeholder-container {
@@ -69,29 +69,45 @@ app-chart-component {
     transform: translateY(0);
   }
 }
-  .dashboard-details > .placeholder-container,
-    .dashboard-details > app-table {
-      flex: 1; /* Faz com que cada elemento ocupe o mesmo espaço disponível */
-      overflow: auto;
-      ;
-    }
+
 @media (max-width: 992px) {
   .dashboard-details {
     grid-template-columns: 1fr;
   }
 }
-    // /* O contêiner principal que usará Flexbox */
-    // .dashboard-details {
-    //   display: flex; /* Ativa o layout flexível */
-    //   gap: 24px; /* Adiciona um espaço entre os dois elementos */
-    //   padding: 24px; /* Adiciona um espaçamento interno */
-    //   box-sizing: border-box; /* Garante que o padding não afete o tamanho total */
-    //   height: 100vh; /* Ocupa 100% da altura da tela */
-    // }
 
-    // /* Estilo para os filhos diretos da section */
-    // .dashboard-details > .placeholder-container,
-    // .dashboard-details > app-table {
-    //   flex: 1; /* Faz com que cada elemento ocupe o mesmo espaço disponível */
-    // }
+.dashboard-details {
+  display: flex;
+  gap: 10px;           /* espaço entre as divs */
+  width: 100%;
+  height: 100vh;       /* altura total da tela */
+  padding: 10px;
+  box-sizing: border-box;
+}
 
+.dashboard-box {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Larguras específicas */
+.dashboard-box-30 {
+  flex: 0 0 40%;       /* não cresce, ocupa 30% */
+}
+
+.dashboard-box-70 {
+  flex: 0 0 60%;       /* não cresce, ocupa 70% */
+}
+
+/* Scroll apenas para a segunda div */
+.dashboard-box-scroll {
+  overflow-y: auto;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
