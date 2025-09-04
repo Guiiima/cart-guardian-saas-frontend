@@ -1,7 +1,3 @@
-// :host {
-//   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-// }
-
 :host {
   --sidebar-bg: #1e3d32;
   --main-bg: #f6f9f7;
@@ -12,10 +8,6 @@
   --border-color: #d9e6df;
 }
 
-.dashboard-container {
-  display: flex;
-  overflow: hidden;
-}
 
 .main-content {
   flex: 1;
@@ -27,7 +19,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   padding: 1rem;
-  gap: 1.5rem;  
+  gap: 1.5rem;
 }
 
 .dashboard-details {
@@ -35,8 +27,8 @@
   flex: 1;
   grid-template-columns: 2fr 1fr;
   align-items: start;
-  //gap: 1.5rem;
-  /* Define altura das linhas proporcional à largura */
+  gap: 24px;
+  padding: 24px; 
 }
 
 
@@ -56,13 +48,13 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-  .placeholder-chart {
-    width: 100%;
-  }
+.placeholder-chart {
+  width: 100%;
+}
 
 app-chart-component {
-  display: block;
-  width: 80%;
+  display: flex;
+  width: 100%;
   height: 100%;
 }
 
@@ -71,14 +63,35 @@ app-chart-component {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
+  .dashboard-details > .placeholder-container,
+    .dashboard-details > app-table {
+      flex: 1; /* Faz com que cada elemento ocupe o mesmo espaço disponível */
+      overflow: auto;
+      ;
+    }
 @media (max-width: 992px) {
   .dashboard-details {
     grid-template-columns: 1fr;
   }
 }
+    // /* O contêiner principal que usará Flexbox */
+    // .dashboard-details {
+    //   display: flex; /* Ativa o layout flexível */
+    //   gap: 24px; /* Adiciona um espaço entre os dois elementos */
+    //   padding: 24px; /* Adiciona um espaçamento interno */
+    //   box-sizing: border-box; /* Garante que o padding não afete o tamanho total */
+    //   height: 100vh; /* Ocupa 100% da altura da tela */
+    // }
+
+    // /* Estilo para os filhos diretos da section */
+    // .dashboard-details > .placeholder-container,
+    // .dashboard-details > app-table {
+    //   flex: 1; /* Faz com que cada elemento ocupe o mesmo espaço disponível */
+    // }
+

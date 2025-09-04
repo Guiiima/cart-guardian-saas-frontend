@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-
+export interface Metrica {
+  titulo: string;
+  metrica: string;
+  detalhe: string;
+}
 @Component({
   selector: 'app-card-metrica',
   imports: [CommonModule],
