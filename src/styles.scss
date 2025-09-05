@@ -1,4 +1,3 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -6,20 +5,20 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @import "tailwindcss";
-*{
+
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$rose-palette,
-      tertiary: mat.$red-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme((color: (primary: mat.$rose-palette,
+        tertiary: mat.$red-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
 }
 
 body {
@@ -36,7 +35,13 @@ body {
   font: var(--mat-sys-body-medium);
 
 }
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; background-color: #f8f9fa;}
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f8f9fa;
+}

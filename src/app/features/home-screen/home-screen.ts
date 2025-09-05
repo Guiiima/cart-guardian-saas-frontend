@@ -4,10 +4,11 @@ import { AppChartData, ChartComponentComponent } from 'app/components/chart-comp
 import { Table } from 'app/components/table/table';
 import { Header } from "app/components/header/header";
 import { CardMetrica, Metrica } from "app/components/card-metrica/card-metrica";
+import { Footer } from "app/components/footer/footer";
 
 @Component({
   selector: 'app-home-screen',
-  imports: [Header, CardMetrica, ChartComponentComponent, Table],
+  imports: [Header, CardMetrica, ChartComponentComponent, Table, Footer],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })

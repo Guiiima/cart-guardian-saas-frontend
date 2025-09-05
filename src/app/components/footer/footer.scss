@@ -1,0 +1,110 @@
+// /* Opção 2: Footer "Modern & Classy" (Tema Escuro) */
+
+// footer {
+//   width: 100%;
+//   background-color: #111827; /* Fundo cinza-escuro, quase preto */
+//   color: #9ca3af; /* Texto cinza claro para não cansar a vista */
+//   font-size: 0.875rem;
+//   font-weight: 400;
+  
+//   /* Não precisa de borda ou sombra, o contraste de cor é suficiente */
+  
+//   /* Garante que ele fique na base da página */
+//   margin-top: auto;
+// }
+
+// .footer-content {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   flex-wrap: wrap;
+//   gap: 1.5rem;
+  
+//   padding: 1.25rem 2.5rem;
+//   max-width: 1400px;
+//   margin: 0 auto;
+// }
+
+// .footer-content strong {
+//   color: #f9fafb; /* Cor branca/quase branca para o texto em negrito */
+//   font-weight: 600;
+// }
+
+// /* Links em um footer escuro precisam de destaque */
+// .footer-content a {
+//   color: #60a5fa; /* Um azul mais brilhante para se destacar no fundo escuro */
+//   text-decoration: none;
+//   font-weight: 500;
+//   transition: color 0.2s ease-in-out;
+// }
+
+// .footer-content a:hover {
+//   color: #93c5fd; /* Azul ainda mais claro ao passar o mouse */
+//   text-decoration: underline;
+// }
+
+/* Opção 1: Footer "Clean & Professional" (Tema Claro) */
+
+footer {
+  width: 100%;
+  background-color: #ffffff; 
+  border-top: 1px solid #e5e7eb; 
+  color: #6b7280;
+  font-size: 0.875rem; 
+  font-weight: 400;
+  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.03);
+  margin-top: auto; 
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.25rem 2.5rem; 
+  max-width: 1400px; 
+  margin: 0 auto; 
+}
+
+.footer-content strong {
+  color: #374151; 
+  font-weight: 600;
+}
+
+.footer-content a {
+  color: #3b82f6; 
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-content a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+.developers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.developers ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem; 
+}
+
+.developers li:not(:last-child)::after {
+  content: "•";
+  color: #d1d5db; 
+  margin-left: 0.5rem;
+  position: relative;
+  top: -1px;
+}
