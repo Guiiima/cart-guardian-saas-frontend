@@ -44,7 +44,7 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
   @Output() periodoChange = new EventEmitter<PeriodoGrafico>();
 
   public selectedType: string;
-  periodoAtivo: PeriodoGrafico = 'MENSAL';
+  periodoAtivo: PeriodoGrafico = 'SEMANAL';
 
   private chart!: Chart;
 
@@ -59,9 +59,13 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     if (typeof window !== 'undefined') {
-      this.createChart();
+      setTimeout(() => {
+        this.periodoChange.emit(this.periodoAtivo);
+        this.createChart();
+      });
     }
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chart && (changes['chartData'] || changes['chartType'])) {
@@ -104,6 +108,9 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
   }
 
   private processChartData(data: AppChartData): AppChartData {
+    if (!data) {
+      return data;
+    }
     const modernColors = this.getModernColors(data.labels.length);
     data.datasets.forEach(dataset => {
       if (this.chartType === 'line') {
@@ -125,64 +132,64 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
 
   private getChartConfig(data: AppChartData): any {
     const commonOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: this.chartTitle,
-                font: { size: 16, weight: '500', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
-                color: '#6c757d',
-                padding: { top: 10, bottom: 25 }
-            },
-            legend: {
-                display: data.datasets.length > 1,
-                labels: {
-                    font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
-                }
-            },
-            tooltip: {
-                backgroundColor: '#1e293b',
-                titleFont: { size: 14, weight: 'bold', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
-                bodyFont: { size: 12, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
-                padding: 12,
-                cornerRadius: 8,
-                callbacks: {
-                    label: (context: any) => {
-                        const value = context.raw.toLocaleString('pt-BR');
-                        return ` ${this.valuePrefix}${value}${this.valueSuffix}`;
-                    }
-                }
-            }
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: this.chartTitle,
+          font: { size: 16, weight: '500', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          color: '#6c757d',
+          padding: { top: 10, bottom: 25 }
         },
-        onClick: (event: any, elements: any[]) => {
-            if (elements.length > 0) {
-                const element = elements[0];
-                const index = element.index;
-                const label = data.labels[index];
-                const value = data.datasets[element.datasetIndex].data[index];
-                this.onChartClick.emit({ label, value, index });
+        legend: {
+          display: data.datasets.length > 1,
+          labels: {
+            font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
+          }
+        },
+        tooltip: {
+          backgroundColor: '#1e293b',
+          titleFont: { size: 14, weight: 'bold', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          bodyFont: { size: 12, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            label: (context: any) => {
+              const value = context.raw.toLocaleString('pt-BR');
+              return ` ${this.valuePrefix}${value}${this.valueSuffix}`;
             }
+          }
         }
+      },
+      onClick: (event: any, elements: any[]) => {
+        if (elements.length > 0) {
+          const element = elements[0];
+          const index = element.index;
+          const label = data.labels[index];
+          const value = data.datasets[element.datasetIndex].data[index];
+          this.onChartClick.emit({ label, value, index });
+        }
+      }
     };
     switch (this.chartType) {
-        case 'bar':
-        case 'line':
-            return { type: this.chartType, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
-        case 'pie':
-        case 'doughnut':
-            return { type: this.chartType, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
-        case 'radar':
-            return { type: 'radar', data, options: commonOptions };
-        default:
-            throw new Error(`Tipo de gráfico não suportado: ${this.chartType}`);
+      case 'bar':
+      case 'line':
+        return { type: this.chartType, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
+      case 'pie':
+      case 'doughnut':
+        return { type: this.chartType, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
+      case 'radar':
+        return { type: 'radar', data, options: commonOptions };
+      default:
+        throw new Error(`Tipo de gráfico não suportado: ${this.chartType}`);
     }
   }
-  
+
   private getModernColors(count: number): string[] {
     const colors = [
-        '#2bbf82', '#34d399', '#229968', '#6ee7b7',
-        '#1a734e', '#a7f3d0', '#059669'
+      '#2bbf82', '#34d399', '#229968', '#6ee7b7',
+      '#1a734e', '#a7f3d0', '#059669'
     ];
     return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
   }
