@@ -30,8 +30,6 @@ export class Auth {
   }
 
   isAuthenticated(): boolean {
-    // Aqui você poderia verificar um token no localStorage, por exemplo
-    // Simulação: usuário está autenticado se houver um valor fictício
     return !!localStorage.getItem('auth_token');
   }
 

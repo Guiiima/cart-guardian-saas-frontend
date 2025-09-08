@@ -1,47 +1,84 @@
-.main { /* Certifique-se de usar .main para a classe */
-    padding: 1rem;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center; /* Alinha na vertical */
-    align-items: center;      /* Alinha na horizontal */
+.chart-wrapper {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #1e293b;
+  }
+}
+
+.period-filters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.main {
+  padding: 1rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
 }
 
 .chart-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
 }
+
 .chart-controls {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    padding-top: 16px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 16px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
+.period-filters button,
 .chart-controls button {
-    background-color: #f6f9f7;
-    color: #6c757d;
-    border: 1px solid #d9e6df;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  background-color: #f6f9f7;
+  color: #6c757d;
+  border: 1px solid #d9e6df;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.period-filters button:hover,
 .chart-controls button:hover {
-    background-color: #e9ecef;
-    border-color: #ced4da;
+  background-color: #e9ecef;
+  border-color: #ced4da;
 }
 
+.period-filters button.active,
 .chart-controls button.active {
-    background-color: #2bbf82;
-    color: #ffffff;
-    border-color: #2bbf82;
-    font-weight: 600;
+  background-color: #2bbf82;
+  color: #ffffff;
+  border-color: #2bbf82;
+  font-weight: 600;
 }

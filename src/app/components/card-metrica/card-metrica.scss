@@ -1,59 +1,54 @@
-/* Estilo do componente em si (host) */
-:host {
-  display: block;
-}
-
-/* O CARD - nosso container principal */
 .card {
   background-color: #fff;
-  /* Removemos a borda para um look mais clean */
-  border: none; 
-  border-radius: 12px; /* Um pouco mais arredondado */
-  padding: 24px;
-  /* Sombra mais suave e difundida para um efeito "flutuante" */
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* Transição suave para o efeito de hover */
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, outline 0.2s ease-in-out;
+  outline: 2px solid transparent; 
 }
 
-/* Efeito de hover para dar feedback ao usuário */
 .card:hover {
   transform: translateY(-4px);
+  cursor: pointer;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* TÍTULO - "Taxa de conversão por e-mail" */
+.card.selecionado {
+  transform: translateY(-4px); 
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2); 
+  outline-color: #007bff; 
+}
+
 h2 {
   margin: 0 0 8px 0;
-  font-size: 0.9rem; /* Tamanho fixo para consistência */
-  color: #6c757d; /* Cinza mais suave para não competir com a métrica */
+  font-size: 0.9rem;
+  color: #6c757d;
   font-weight: 500;
-  letter-spacing: 0.5px; /* Leve espaçamento para mais elegância */
+  letter-spacing: 0.5px;
 }
 
-/* MÉTRICA PRINCIPAL - O número grande */
 .metric {
   margin: 0 0 4px 0;
-  font-size: 1.75rem; /* Maior e mais impactante */
+  font-size: 1.65rem;
   font-weight: 600;
-  color: #1e293b; /* Um preto azulado, mais moderno que o preto puro */
+  color: #1e293b;
 }
 
-/* DETALHE - A informação secundária */
 .detail {
   margin: 0;
   font-size: 0.85rem;
-  font-weight: 500; /* Um pouco mais de peso para legibilidade */
-  margin-top: auto; /* Empurra para o final do card */
+  font-weight: 500;
+  margin-top: auto; 
 }
 
 .detail.positive {
-  color: #10b981; /* Verde mais vibrante e moderno */
+  color: #10b981; 
 }
 
 .detail.negative {
-  color: #ef4444; /* Vermelho correspondente */
+  color: #ef4444; 
 }

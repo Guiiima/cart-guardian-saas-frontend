@@ -1,4 +1,23 @@
 <div class="main">
+  <div class="chart-header">
+    <div class="period-filters">
+      <button 
+        (click)="selecionarPeriodo('SEMANAL')" 
+        [class.active]="periodoAtivo === 'SEMANAL'">
+        Semana
+      </button>
+      <button 
+        (click)="selecionarPeriodo('MENSAL')" 
+        [class.active]="periodoAtivo === 'MENSAL'">
+        Mês
+      </button>
+      <button 
+        (click)="selecionarPeriodo('ANUAL')" 
+        [class.active]="periodoAtivo === 'ANUAL'">
+        Ano
+      </button>
+    </div>
+  </div>
   <div class="chart-container">
     <canvas #chartCanvas id="meuGrafico">Seu navegador não suporta o elemento canvas.</canvas>
   </div>
