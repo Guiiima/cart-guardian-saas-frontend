@@ -185,6 +185,16 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
         throw new Error(`Tipo de gráfico não suportado: ${this.chartType}`);
     }
   }
+  tipoGraficoTraduzido(tipo: string): string {
+  const mapa: { [key: string]: string } = {
+    bar: 'Barras',
+    line: 'Linha',
+    pie: 'Pizza',
+    doughnut: 'Rosca',
+    radar: 'Radar'
+  };
+  return mapa[tipo] || tipo;
+}
 
   private getModernColors(count: number): string[] {
     const colors = [

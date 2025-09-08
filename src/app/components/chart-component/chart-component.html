@@ -21,11 +21,22 @@
   <div class="chart-container">
     <canvas #chartCanvas id="meuGrafico">Seu navegador não suporta o elemento canvas.</canvas>
   </div>
-  <div class="chart-controls">
-    <button (click)="mudarTipoGrafico('bar')" [class.active]="selectedType === 'bar'">Bar</button>
-    <button (click)="mudarTipoGrafico('line')" [class.active]="selectedType === 'line'">Line</button>
-    <button (click)="mudarTipoGrafico('pie')" [class.active]="selectedType === 'pie'">Pie</button>
-    <button (click)="mudarTipoGrafico('doughnut')" [class.active]="selectedType === 'doughnut'">Doughnut</button>
-    <button (click)="mudarTipoGrafico('radar')" [class.active]="selectedType === 'radar'">Radar</button>
-  </div>
+<div class="chart-controls">
+  <button (click)="mudarTipoGrafico('bar')" [class.active]="selectedType === 'bar'">
+    {{ tipoGraficoTraduzido('bar') }}
+  </button>
+  <button (click)="mudarTipoGrafico('line')" [class.active]="selectedType === 'line'">
+    {{ tipoGraficoTraduzido('line') }}
+  </button>
+  <button (click)="mudarTipoGrafico('pie')" [class.active]="selectedType === 'pie'">
+    {{ tipoGraficoTraduzido('pie') }}
+  </button>
+  <button (click)="mudarTipoGrafico('doughnut')" [class.active]="selectedType === 'doughnut'">
+    {{ tipoGraficoTraduzido('doughnut') }}
+  </button>
+  <button (click)="mudarTipoGrafico('radar')" [class.active]="selectedType === 'radar'">
+    {{ tipoGraficoTraduzido('radar') }}
+  </button>
+</div>
+
 </div>
