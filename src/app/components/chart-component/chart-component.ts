@@ -95,6 +95,9 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
       this.chart.destroy();
     }
 
+    if(!this.chartData || !this.chartData.labels || this.chartData.labels.length === 0) {
+      return;
+    }
     const processedData = this.processChartData(this.chartData);
     const chartConfig = this.getChartConfig(processedData);
 

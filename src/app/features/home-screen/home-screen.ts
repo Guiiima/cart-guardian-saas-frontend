@@ -5,7 +5,6 @@ import { ChartComponentComponent, AppChartData } from 'app/components/chart-comp
 import { Table } from 'app/components/table/table';
 import { Footer } from "app/components/footer/footer";
 import { ShopifyAuthService } from '@core/services/shopifyAuth';
-import { CommonModule } from '@angular/common';
 
 interface DashboardMetrics {
   receitaRecuperada: number;
@@ -13,100 +12,106 @@ interface DashboardMetrics {
   emailsEnviados: number;
   ticketMedioRecuperado: number;
 }
-
-interface CombinedDashboardMetrics {
-  metricasDiarias: DashboardMetrics;
-  metricasDoPeriodo: DashboardMetrics;
+interface DashboardMetricForPeriod {
+  label: string[];
+  receitaRecuperada: number[];
 }
-
-type Periodo = 'DIARIO' | 'SEMANAL' | 'MENSAL' | 'ANUAL';
-
+interface CombinedDashboardMetricsDTO {
+  metricasDiarias: DashboardMetrics;
+  metricasDoPeriodo: DashboardMetrics
+}
+export enum Periodo {
+  DIARIO = 'DIARIO',
+  SEMANAL = 'SEMANAL',
+  MENSAL = 'MENSAL',
+  ANUAL = 'ANUAL',
+}
 @Component({
   selector: 'app-home-screen',
   standalone: true,
-  imports: [CommonModule, Header, CardMetrica, ChartComponentComponent, Table],
+  imports: [Header, CardMetrica, ChartComponentComponent, Table, Footer],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })
 export class HomeScreen implements OnInit {
-  
-  metricas: Metrica[] = [];
-  
-  cardSelecionadoId: string = 'receita';
-  dadosDoGrafico!: AppChartData 
 
-  constructor(private shopifyAuthService: ShopifyAuthService) {}
+  metricas: Metrica[] = [];
+  cardSelecionadoId: string = 'receita';
+  public periodoSelecionado: Periodo = Periodo.DIARIO;
+  public dadosDeClientes: AppChartData = {
+    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+    datasets: [{
+      label: '% de Cliques no Link de Recuperação',
+      data: [32, 34, 37, 35, 39, 42, 44],
+    }]
+  };
+  public dadosDoGrafico: any | null = null;
+  constructor(private shopifyAuthService: ShopifyAuthService) { }
 
   ngOnInit(): void {
-    this.carregarMetricasDosCards();
-    this.carregarDadosDoGrafico('MENSAL');
+    this.carregarMetricas();
   }
 
-  onPeriodoGraficoChange(periodo: any): void {
-    this.carregarDadosDoGrafico(periodo);
-  }
-
-  async carregarMetricasDosCards(): Promise<void> {
+  async carregarMetricas(): Promise<void> {
     try {
-      const dados: CombinedDashboardMetrics = await this.shopifyAuthService.get('/api/dashboard/metrics?periodo=MENSAL');
-
-      const metricasDoPeriodo = dados.metricasDoPeriodo;
-      const metricasDiarias = dados.metricasDiarias;
+      const dados: CombinedDashboardMetricsDTO = await this.shopifyAuthService.get('/api/dashboard/metrics');
 
       this.metricas = [
         {
           id: 'receita',
           titulo: 'Receita Recuperada',
-          metrica: this.formatarMoeda(metricasDoPeriodo.receitaRecuperada),
-          detalhe: `Hoje: ${this.formatarMoeda(metricasDiarias.receitaRecuperada)}`,
+          metrica: this.formatarMoeda(dados.metricasDiarias.receitaRecuperada),
         },
         {
           id: 'conversao',
           titulo: 'Taxa de conversão por e-mail',
-          metrica: `${metricasDoPeriodo.taxaDeConversao.toFixed(1)}%`,
-          detalhe: `Hoje: ${metricasDiarias.taxaDeConversao.toFixed(1)}%`,
+          metrica: `${dados.metricasDiarias.taxaDeConversao.toFixed(1)}%`,
         },
         {
           id: 'emails',
           titulo: 'E-mails de Recuperação Enviados',
-          metrica: metricasDoPeriodo.emailsEnviados.toString(),
-          detalhe: `Hoje: ${metricasDiarias.emailsEnviados}`,
+          metrica: dados.metricasDiarias.emailsEnviados.toString(),
         },
         {
           id: 'ticket',
           titulo: 'Ticket médio recuperado',
-          metrica: this.formatarMoeda(metricasDoPeriodo.ticketMedioRecuperado),
-          detalhe: `Hoje: ${this.formatarMoeda(metricasDiarias.ticketMedioRecuperado)}`,
+          metrica: this.formatarMoeda(dados.metricasDiarias.ticketMedioRecuperado),
         }
       ];
+
     } catch (error) {
-      console.error("Erro ao carregar métricas dos cards:", error);
+      console.error("Erro ao carregar métricas do dashboard:", error);
     }
   }
+  onPeriodoGraficoChange(periodo: any): void {
+    if (periodo === this.periodoSelecionado && this.dadosDoGrafico) {
+      return;
+    }
 
+    this.periodoSelecionado = periodo;
+
+    this.carregarDadosDoGrafico(periodo);
+  }
   async carregarDadosDoGrafico(periodo: Periodo): Promise<void> {
     try {
-      this.dadosDoGrafico = undefined as any; 
+      this.dadosDoGrafico = undefined as any;
       const url = `/api/dashboard/metrics?periodo=${periodo}`;
-      const dados: CombinedDashboardMetrics = await this.shopifyAuthService.get(url);
+      const dados = await this.shopifyAuthService.get(url);
 
-      const dadosDoPeriodo = dados.metricasDoPeriodo;
+      const dadosDoPeriodo: DashboardMetricForPeriod[] = dados.metricasDoPeriodo;
 
-      this.dadosDoGrafico = {
-        labels: ['Receita', 'E-mails Enviados', 'Taxa de Conversão', 'Ticket Médio'],
+      this.dadosDeClientes = {
+        labels: dadosDoPeriodo.flatMap(d => d.label),
         datasets: [{
-          label: `Dados de ${periodo.charAt(0) + periodo.slice(1).toLowerCase()}`,
-          data: [
-            dadosDoPeriodo.receitaRecuperada,
-            dadosDoPeriodo.emailsEnviados,
-            dadosDoPeriodo.taxaDeConversao,
-            dadosDoPeriodo.ticketMedioRecuperado
-          ],
+          label:  'receitaRecuperada',
+          data: dadosDoPeriodo.map(d => d.receitaRecuperada),
         }]
       };
+      this.dadosDeClientes
+      this.dadosDoGrafico
     } catch (error) {
       console.error(`Erro ao carregar dados do gráfico para o período ${periodo}:`, error);
-      this.dadosDoGrafico = undefined as any; 
+      this.dadosDoGrafico = undefined as any;
     }
   }
 
@@ -119,5 +124,6 @@ export class HomeScreen implements OnInit {
 
   selecionarCard(id: string): void {
     this.cardSelecionadoId = id;
+    console.log(`Card selecionado: ${id}.`);
   }
 }

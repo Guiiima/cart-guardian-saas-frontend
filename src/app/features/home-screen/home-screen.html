@@ -17,7 +17,7 @@
       <app-chart-component 
         [chartType]="'bar'" 
         [chartTitle]="'Detalhes de ' + cardSelecionadoId"
-        [chartData]="dadosDoGrafico" 
+        [chartData]="dadosDeClientes" 
         (periodoChange)="onPeriodoGraficoChange($event)"
         [valueSuffix]="' clientes'">
       </app-chart-component>
