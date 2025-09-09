@@ -1,25 +1,20 @@
 <main class="main-content">
   <app-header></app-header>
-  
+
   <section class="dashboard-overview">
-    @for (metrica of metricas; track metrica.id) {
-      <app-card-metrica
-        [dados]="metrica"
-        [selecionado]="metrica.id === cardSelecionadoId"
-        (aoSelecionar)="selecionarCard(metrica.titulo, metrica.id)"
-      ></app-card-metrica>
-    }
+    <app-card-metrica *ngFor="let metrica of metricasDosCards"
+      [dados]="metrica"
+      [selecionado]="metrica.id === metricaSelecionada"
+      (click)="onCardSelect(metrica.id)">
+    </app-card-metrica>
   </section>
-  
+
   <section class="dashboard-details">
     <div class="dashboard-box dashboard-box-70">
 
       <app-chart-component 
-        [chartType]="'bar'" 
-        [chartTitle]="cardSelecionadoTitulo"
-        [chartData]="dadosDeClientes" 
-        (periodoChange)="onPeriodoGraficoChange($event)"
-        [valueSuffix]="' clientes'">
+        [chartData]="dadosDoGrafico" 
+        (periodoChange)="onPeriodoChange($event)">
       </app-chart-component>
       
     </div>
