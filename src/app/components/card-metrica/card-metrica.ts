@@ -5,7 +5,7 @@ export interface Metrica {
   id: string;
   titulo: string;
   metrica: string;
-  //detalhe: string;
+  detalhe: string;
 }
 
 @Component({
@@ -20,13 +20,13 @@ export class CardMetrica {
   @Input() selecionado: boolean = false;
   @Output() aoSelecionar = new EventEmitter<void>();
 
-  // get isPositive(): boolean {
-  //   return this.dados && this.dados.detalhe.startsWith('+');
-  // }
+  get isPositive(): boolean {
+    return this.dados && this.dados.detalhe.startsWith('+');
+  }
 
-  // get isNegative(): boolean {
-  //   return this.dados && this.dados.detalhe.startsWith('-');
-  // }
+  get isNegative(): boolean {
+    return this.dados && this.dados.detalhe.startsWith('-');
+  }
 
   onCardClick(): void {
     this.aoSelecionar.emit();

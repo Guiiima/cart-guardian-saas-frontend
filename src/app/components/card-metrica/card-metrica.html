@@ -6,9 +6,9 @@
     <h2>{{ dados.titulo }}</h2>
     <p class="metric">{{ dados.metrica }}</p>
     
-    <!-- <p class="detail" [ngClass]="{ 'positive': isPositive, 'negative': isNegative }">
+    <p class="detail" [ngClass]="{ 'positive': isPositive, 'negative': isNegative }">
       {{ dados.detalhe }}
-    </p> -->
+    </p>
   } @else {
     <p class="loading-placeholder">Carregando métrica...</p>
   }

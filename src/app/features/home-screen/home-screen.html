@@ -6,7 +6,7 @@
       <app-card-metrica
         [dados]="metrica"
         [selecionado]="metrica.id === cardSelecionadoId"
-        (aoSelecionar)="selecionarCard(metrica.id)"
+        (aoSelecionar)="selecionarCard(metrica.titulo, metrica.id)"
       ></app-card-metrica>
     }
   </section>
@@ -16,7 +16,7 @@
 
       <app-chart-component 
         [chartType]="'bar'" 
-        [chartTitle]="'Detalhes de ' + cardSelecionadoId"
+        [chartTitle]="cardSelecionadoTitulo"
         [chartData]="dadosDeClientes" 
         (periodoChange)="onPeriodoGraficoChange($event)"
         [valueSuffix]="' clientes'">

@@ -37,6 +37,7 @@ export class HomeScreen implements OnInit {
 
   metricas: Metrica[] = [];
   cardSelecionadoId: string = 'receita';
+  cardSelecionadoTitulo: string = 'Receita Recuperada';
   public periodoSelecionado: Periodo = Periodo.DIARIO;
   public dadosDeClientes: AppChartData = {
     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
@@ -61,21 +62,25 @@ export class HomeScreen implements OnInit {
           id: 'receita',
           titulo: 'Receita Recuperada',
           metrica: this.formatarMoeda(dados.metricasDiarias.receitaRecuperada),
+          detalhe: '+4.5% que ontem'
         },
         {
           id: 'conversao',
           titulo: 'Taxa de conversão por e-mail',
           metrica: `${dados.metricasDiarias.taxaDeConversao.toFixed(1)}%`,
+          detalhe: '-0.8% que ontem'
         },
         {
           id: 'emails',
           titulo: 'E-mails de Recuperação Enviados',
           metrica: dados.metricasDiarias.emailsEnviados.toString(),
+          detalhe: '+8.9% que ontem'
         },
         {
           id: 'ticket',
           titulo: 'Ticket médio recuperado',
           metrica: this.formatarMoeda(dados.metricasDiarias.ticketMedioRecuperado),
+          detalhe: '+2.4% que ontem'
         }
       ];
 
@@ -103,7 +108,7 @@ export class HomeScreen implements OnInit {
       this.dadosDeClientes = {
         labels: dadosDoPeriodo.flatMap(d => d.label),
         datasets: [{
-          label:  'receitaRecuperada',
+          label:  `${this.cardSelecionadoTitulo} no Período`,
           data: dadosDoPeriodo.map(d => d.receitaRecuperada),
         }]
       };
@@ -122,8 +127,10 @@ export class HomeScreen implements OnInit {
     }).format(valor);
   }
 
-  selecionarCard(id: string): void {
+  selecionarCard(titulo: string, id: string, ): void {
     this.cardSelecionadoId = id;
+    this.cardSelecionadoTitulo = titulo;
+    this.carregarDadosDoGrafico(this.periodoSelecionado);
     console.log(`Card selecionado: ${id}.`);
   }
 }
