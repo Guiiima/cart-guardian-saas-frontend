@@ -1,3 +1,4 @@
+
 :host {
   --primary-text-color: #2a2a2a;
   --secondary-text-color: #333;
@@ -9,27 +10,25 @@
   --danger-color-strong: #e57373;
   --shadow-color: rgba(0, 0, 0, 0.08);
   --border-color: #e0e0e0;
-  --focus-outline-color: #007bff;
 }
+
 
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.5rem; 
+  padding: 1rem 1.5rem; 
   background-color: var(--background-color);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
-  container-type: inline-size;
-  container-name: header-container;
+  border-bottom: 1px solid var(--border-color); 
+  box-shadow: 0 2px 4px var(--shadow-color); 
 }
 
 .main-header h2 {
-  color: #1D1D1D;
+  color: #1D1D1D; 
   font-family: 'Special Elite', monospace;
+  //font-family: 'Courier Prime', monospace;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  font-size: 1.1rem;
-  margin: 0;
+  font-size: 1.2rem;
 }
 
 .header-actions {
@@ -42,22 +41,20 @@
   display: inline-block;
 }
 
-button {
-  user-select: none;
-}
-
 .user-profile-button {
   display: flex;
   align-items: center;
   gap: 10px;
   background-color: transparent;
   border: none;
-  border-radius: 30px;
-  padding: 4px 12px 4px 4px;
+  border-radius: 30px; 
+  padding: 4px 12px 4px 4px; 
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
+button {
+    user-select: none;
+}
 .user-profile-button:hover {
   background-color: var(--background-hover);
 }
@@ -66,8 +63,8 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--divider-color);
+  object-fit: cover; 
+  border: 2px solid var(--divider-color); 
 }
 
 .user-name {
@@ -85,9 +82,10 @@ button {
   transform: rotate(180deg);
 }
 
+
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 120%;
   right: 0;
   min-width: 200px;
   background: var(--background-color);
@@ -97,16 +95,6 @@ button {
   padding: 8px 0;
   margin: 0;
   z-index: 1000;
-  opacity: 0;
-  transform: translateY(-10px);
-  visibility: hidden;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-}
-
-.dropdown-menu.open {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
 }
 
 .dropdown-item {
@@ -138,14 +126,6 @@ a.dropdown-item:last-child:hover {
   background: var(--danger-color-light);
   color: var(--danger-color);
 }
-
-.user-profile-button:focus-visible,
-.dropdown-item:focus-visible {
-  outline: 2px solid var(--focus-outline-color);
-  outline-offset: 2px;
-}
-
-
 @container header-container (max-width: 600px) {
   .main-header {
   

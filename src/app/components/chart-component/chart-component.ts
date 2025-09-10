@@ -111,12 +111,19 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
   }
 
   private getChartConfig(data: AppChartData): any {
+    data.datasets[0].label
     const commonOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         title: {
-          display: false
+          display: true,
+          text: data.datasets[0].label,
+          font: {
+            size: 16,
+            weight: 'bold'
+          },
+          color: '#1e293b'
         },
         legend: {
           display: data.datasets.length > 1,
