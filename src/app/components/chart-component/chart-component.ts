@@ -1,23 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  Chart,
-  LinearScale,
-  BarElement,
-  CategoryScale,
-  Title,
-  Tooltip,
-  Legend,
-  BarController,
-  PointElement,
-  LineElement,
-  LineController,
-  ArcElement,
-  RadialLinearScale,
-  PieController,
-  DoughnutController,
-  RadarController
-} from 'chart.js';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Chart, registerables, ChartType as ChartJsType } from 'chart.js';
 
 export interface AppChartData {
   labels: string[];
@@ -32,7 +15,7 @@ export type PeriodoGrafico = 'SEMANAL' | 'MENSAL' | 'ANUAL';
   templateUrl: './chart-component.html',
   styleUrls: ['./chart-component.scss']
 })
-export class ChartComponentComponent implements AfterViewInit, OnChanges {
+export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   @Input() chartType: 'bar' | 'radar' | 'pie' | 'line' | 'doughnut' = 'bar';
   @Input() chartData: AppChartData = { labels: [], datasets: [] };
@@ -43,80 +26,74 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
   @Output() onChartClick = new EventEmitter<{ label: string; value: number; index: number }>();
   @Output() periodoChange = new EventEmitter<PeriodoGrafico>();
 
-  public selectedType: string;
-  periodoAtivo: PeriodoGrafico = 'SEMANAL';
+  public selectedType: 'bar' | 'radar' | 'pie' | 'line' | 'doughnut';
+  public periodoAtivo: PeriodoGrafico = 'SEMANAL';
 
-  private chart!: Chart;
+  @ViewChild('chartCanvas') private chartCanvas!: ElementRef<HTMLCanvasElement>;
+  private chart?: Chart;
 
   constructor() {
     this.selectedType = this.chartType;
-    Chart.register(
-      LinearScale, BarElement, CategoryScale, Title, Tooltip, Legend, BarController,
-      PointElement, LineElement, LineController, ArcElement, RadialLinearScale,
-      PieController, DoughnutController, RadarController
-    );
+    Chart.register(...registerables);
   }
 
-  ngAfterViewInit() {
-    if (typeof window !== 'undefined') {
-      setTimeout(() => {
-        this.periodoChange.emit(this.periodoAtivo);
-        this.createChart();
-      });
-    }
+  ngAfterViewInit(): void {
+    this.periodoChange.emit(this.periodoAtivo);
   }
-
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.chart && (changes['chartData'] || changes['chartType'])) {
-      this.selectedType = this.chartType;
+    this.selectedType = this.chartType;
+    if (this.chartCanvas && changes['chartData'] && this.chartData?.labels?.length > 0) {
       this.createChart();
     }
   }
 
+  ngOnDestroy(): void {
+    this.chart?.destroy();
+  }
+
   selecionarPeriodo(periodo: PeriodoGrafico): void {
-    if (periodo === this.periodoAtivo) {
-      return;
-    }
+    if (periodo === this.periodoAtivo) return;
     this.periodoAtivo = periodo;
     this.periodoChange.emit(periodo);
   }
 
-  mudarTipoGrafico(type: string) {
-    if (type && ['bar', 'radar', 'pie', 'line', 'doughnut'].includes(type)) {
-      this.chartType = type as 'bar' | 'radar' | 'pie' | 'line' | 'doughnut';
-      this.selectedType = type;
-      this.createChart();
-    }
+  mudarTipoGrafico(type: 'bar' | 'radar' | 'pie' | 'line' | 'doughnut'): void {
+    if (type === this.selectedType) return;
+    this.selectedType = type;
+    this.createChart();
   }
 
-  createChart() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+  tipoGraficoTraduzido(tipo: string): string {
+    const mapa: { [key: string]: string } = {
+      bar: 'Barras',
+      line: 'Linha',
+      pie: 'Pizza',
+      doughnut: 'Rosca',
+      radar: 'Radar'
+    };
+    return mapa[tipo] || tipo;
+  }
 
-    if(!this.chartData || !this.chartData.labels || this.chartData.labels.length === 0) {
+  private createChart(): void {
+    if (!this.chartCanvas) return;
+    this.chart?.destroy();
+    if (!this.chartData || !this.chartData.labels || this.chartData.labels.length === 0) {
       return;
     }
     const processedData = this.processChartData(this.chartData);
     const chartConfig = this.getChartConfig(processedData);
-
-    const canvas = document.getElementById('meuGrafico') as HTMLCanvasElement;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        this.chart = new Chart(ctx, chartConfig);
-      }
+    const ctx = this.chartCanvas.nativeElement.getContext('2d');
+    if (ctx) {
+      this.chart = new Chart(ctx, chartConfig);
     }
   }
 
   private processChartData(data: AppChartData): AppChartData {
-    if (!data) {
-      return data;
-    }
+    if (!data) return data;
     const modernColors = this.getModernColors(data.labels.length);
     data.datasets.forEach(dataset => {
-      if (this.chartType === 'line') {
+      if (this.selectedType === 'line') {
         dataset.backgroundColor = 'rgba(43, 191, 130, 0.2)';
         dataset.borderColor = '#2bbf82';
         dataset.pointBackgroundColor = '#2bbf82';
@@ -139,11 +116,7 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
       maintainAspectRatio: false,
       plugins: {
         title: {
-          display: true,
-          text: this.chartTitle,
-          font: { size: 16, weight: '500', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
-          color: '#6c757d',
-          padding: { top: 10, bottom: 25 }
+          display: false
         },
         legend: {
           display: data.datasets.length > 1,
@@ -175,29 +148,22 @@ export class ChartComponentComponent implements AfterViewInit, OnChanges {
         }
       }
     };
-    switch (this.chartType) {
+
+    const type = this.selectedType as ChartJsType;
+
+    switch (this.selectedType) {
       case 'bar':
       case 'line':
-        return { type: this.chartType, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
+        return { type, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
       case 'pie':
       case 'doughnut':
-        return { type: this.chartType, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
+        return { type, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
       case 'radar':
         return { type: 'radar', data, options: commonOptions };
       default:
-        throw new Error(`Tipo de gráfico não suportado: ${this.chartType}`);
+        throw new Error(`Tipo de gráfico não suportado: ${this.selectedType}`);
     }
   }
-  tipoGraficoTraduzido(tipo: string): string {
-  const mapa: { [key: string]: string } = {
-    bar: 'Barras',
-    line: 'Linha',
-    pie: 'Pizza',
-    doughnut: 'Rosca',
-    radar: 'Radar'
-  };
-  return mapa[tipo] || tipo;
-}
 
   private getModernColors(count: number): string[] {
     const colors = [
