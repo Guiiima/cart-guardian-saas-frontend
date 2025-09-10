@@ -1,3 +1,4 @@
+
 .card {
   background-color: #fff;
   border: none;
@@ -8,7 +9,9 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, outline 0.2s ease-in-out;
-  outline: 2px solid transparent; 
+  outline: 2px solid transparent;
+  container-type: inline-size;
+  container-name: metric-card-container;
 }
 
 .card:hover {
@@ -18,9 +21,9 @@
 }
 
 .card.selecionado {
-  transform: translateY(-4px); 
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2); 
-  outline-color: #007bff; 
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+  outline-color: #007bff;
 }
 
 h2 {
@@ -42,13 +45,25 @@ h2 {
   margin: 0;
   font-size: 0.85rem;
   font-weight: 500;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
 .detail.positive {
-  color: #10b981; 
+  color: #10b981;
 }
 
 .detail.negative {
-  color: #ef4444; 
+  color: #ef4444;
+}
+
+@container metric-card-container (max-width: 200px) {
+  .metric {
+    font-size: 1.4rem;
+  }
+  h2 {
+    font-size: 0.85rem;
+  }
+  .detail {
+    font-size: 0.8rem;
+  }
 }

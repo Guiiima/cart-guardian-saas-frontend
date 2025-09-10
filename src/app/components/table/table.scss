@@ -1,9 +1,11 @@
+
 .card.activity-table {
   background-color: #fff;
-  //border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
+  container-type: inline-size;
+  container-name: activity-table-container;
 }
 
 .activity-table h2 {
@@ -13,7 +15,6 @@
   text-align: center;
   color: #1e293b;
 }
-
 
 .activity-table table {
   width: 100%;
@@ -29,7 +30,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-   position: sticky;
+  position: sticky;
   top: 0;
   z-index: 1;
   background-color: white;
@@ -40,17 +41,20 @@
   border-bottom: 1px solid #f1f5f9;
   color: #334155;
   font-size: 0.9rem;
-  white-space: nowrap;
+  white-space: nowrap; 
 }
 
 .activity-table tbody tr:hover {
-  background-color: #ced4da;
+  background-color: #f8f9fa;
 }
+
 .activity-table table th:nth-child(3),
 .activity-table table td:nth-child(3) {
   text-align: center;
   vertical-align: middle;
 }
+
+
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -79,13 +83,14 @@
 }
 
 .status-abandonado {
-  background-color: #e46b6b63;
-  color: #c91919;
+  background-color: #fef2f2;
+  color: #dc2626;
 }
 
 .status-abandonado::before {
-  background-color: #c91919;
+  background-color: #ef4444;
 }
+
 .status-recuperacao {
   background-color: #f1f5f9;
   color: #64748b;
@@ -93,4 +98,32 @@
 
 .status-recuperacao::before {
   background-color: #94a3b8;
+}
+
+
+@container activity-table-container (max-width: 700px) {
+  .card.activity-table {
+    overflow-x: auto;
+    padding: 16px;
+  }
+
+  .activity-table h2 {
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .activity-table thead th {
+    padding: 10px 12px;
+    font-size: 0.75rem;
+  }
+
+  .activity-table tbody td {
+    padding: 12px 12px;
+    font-size: 0.85rem;
+  }
+
+  .status-badge {
+    padding: 3px 8px;
+    font-size: 0.7rem;
+  }
 }
