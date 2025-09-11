@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart, registerables, ChartType as ChartJsType, ScriptableContext } from 'chart.js';
+import { Chart, registerables, ChartType as ChartJsType } from 'chart.js';
 
 export interface AppChartData {
   labels: string[];
   datasets: any[];
 }
 export type PeriodoGrafico = 'SEMANAL' | 'MENSAL' | 'ANUAL';
-export type ChartTheme = 'professional' | 'energetic' | 'dark'; // Tipos de temas
+export type ChartTheme = 'professional' | 'energetic' | 'dark';
 
-// Definição das paletas de cores para cada tema
 const THEME_PALETTES = {
   professional: {
     primary: '#3498DB',
@@ -48,7 +47,7 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
   @Input() chartTitle: string = 'Meu Gráfico';
   @Input() valuePrefix: string = '';
   @Input() valueSuffix: string = '';
-  @Input() theme: ChartTheme = 'professional'; // <-- NOVO INPUT PARA O TEMA
+  @Input() theme: ChartTheme = 'professional';
 
   @Output() onChartClick = new EventEmitter<{ label: string; value: number; index: number }>();
   @Output() periodoChange = new EventEmitter<PeriodoGrafico>();
@@ -112,37 +111,52 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
   private processChartData(data: AppChartData): AppChartData {
     if (!data) return data;
     const palette = THEME_PALETTES[this.theme];
+    const harmonicas = this.generateHarmoniousColors(palette.primary, data.labels.length);
 
     data.datasets.forEach(dataset => {
-      // Lógica para cor única e consistente
-      dataset.backgroundColor = palette.primary;
-      dataset.borderColor = palette.primary;
-
-      // Lógica específica para cada tipo de gráfico
       if (this.selectedType === 'line') {
-        dataset.backgroundColor = this.hexToRgba(palette.primary, 0.2); // Área sob a linha
+        dataset.backgroundColor = this.hexToRgba(palette.primary, 0.2);
+        dataset.borderColor = palette.primary;
         dataset.tension = 0.4;
       } else if (this.selectedType === 'bar') {
-        // Lógica para destacar a última barra em vermelho (como na sua imagem)
-        // Para uma lógica mais robusta (ex: valores negativos), você passaria essa informação nos dados.
-        const barColors = data.labels.map((_, index) =>
-          index === data.labels.length - 1 ? palette.danger : palette.primary
-        );
-        dataset.backgroundColor = barColors;
-        dataset.borderColor = '#ffffff'; // Borda branca entre as barras
+        dataset.backgroundColor = harmonicas;
+        dataset.borderColor = '#ffffff';
         dataset.borderWidth = 2;
+      } else {
+        dataset.backgroundColor = harmonicas;
+        dataset.borderColor = harmonicas;
       }
     });
+
     return data;
   }
-  
-  private hexToRgba(hex: string, alpha: number): string {
+
+  private generateHarmoniousColors(hex: string, count: number): string[] {
+    const colors: string[] = [];
+    const base = this.hexToRgb(hex);
+
+    for (let i = 0; i < count; i++) {
+      const factor = 0.6 + (0.4 * i) / (count - 1);
+      const r = Math.min(255, Math.round(base.r * factor));
+      const g = Math.min(255, Math.round(base.g * factor));
+      const b = Math.min(255, Math.round(base.b * factor));
+      colors.push(`rgb(${r}, ${g}, ${b})`);
+    }
+
+    return colors;
+  }
+
+  private hexToRgb(hex: string): { r: number, g: number, b: number } {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    return { r, g, b };
   }
 
+  private hexToRgba(hex: string, alpha: number): string {
+    const { r, g, b } = this.hexToRgb(hex);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
 
   private getChartConfig(data: AppChartData): any {
     const palette = THEME_PALETTES[this.theme];
@@ -150,16 +164,14 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        title: {
-          display: false, // O título já está no componente pai
-        },
+        title: { display: false },
         legend: {
           display: data.datasets.length > 1,
           labels: { color: palette.text }
         },
         tooltip: {
           backgroundColor: palette.tooltipBg,
-          titleColor: palette.text === '#f9fafb' ? '#f9fafb' : '#ffffff', // Garante contraste
+          titleColor: palette.text === '#f9fafb' ? '#f9fafb' : '#ffffff',
           bodyColor: palette.text === '#f9fafb' ? '#f9fafb' : '#ffffff',
           padding: 12,
           cornerRadius: 8,
@@ -174,20 +186,12 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
       scales: {
         y: {
           beginAtZero: true,
-          grid: {
-            color: palette.grid // Cor da grade suavizada
-          },
-          ticks: {
-            color: palette.text // Cor dos números do eixo
-          }
+          grid: { color: palette.grid },
+          ticks: { color: palette.text }
         },
         x: {
-          grid: {
-            display: false // Remove a grade vertical para um visual mais limpo
-          },
-          ticks: {
-            color: palette.text
-          }
+          grid: { display: false },
+          ticks: { color: palette.text }
         }
       },
       onClick: (event: any, elements: any[]) => {
