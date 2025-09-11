@@ -1,3 +1,4 @@
+/* --- TEMA PROFISSIONAL (AZUL) PARA A TABELA --- */
 
 .card.activity-table {
   background-color: #fff;
@@ -8,12 +9,12 @@
   container-name: activity-table-container;
 }
 
-.activity-table h2 {
+.titulo {
+  text-align: center;
   margin: 0 0 16px 0;
   font-size: 1.1rem;
   font-weight: 600;
-  text-align: center;
-  color: #1e293b;
+  color: #34495E; /* Cor grafite */
 }
 
 .activity-table table {
@@ -41,8 +42,10 @@
   border-bottom: 1px solid #f1f5f9;
   color: #334155;
   font-size: 0.9rem;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
+
+
 
 .activity-table tbody tr:hover {
   background-color: #f8f9fa;
@@ -53,7 +56,6 @@
   text-align: center;
   vertical-align: middle;
 }
-
 
 .status-badge {
   display: inline-flex;
@@ -74,54 +76,45 @@
 }
 
 .status-recuperado {
-  background-color: #ecfdf5;
-  color: #059669;
+  background-color: #e8f8f5;
+  color: #16a085;
 }
-
 .status-recuperado::before {
-  background-color: #10b981;
+  background-color: #1ABC9C;
 }
 
 .status-abandonado {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: #fdeeee;
+  color: #c0392b;
 }
-
 .status-abandonado::before {
-  background-color: #ef4444;
+  background-color: #E74C3C;
 }
 
 .status-recuperacao {
-  background-color: #f1f5f9;
-  color: #64748b;
+  background-color: #fef5e7;
+  color: #d35400;
 }
-
 .status-recuperacao::before {
-  background-color: #94a3b8;
+  background-color: #f39c12;
 }
-
-
 @container activity-table-container (max-width: 700px) {
   .card.activity-table {
     overflow-x: auto;
     padding: 16px;
   }
-
   .activity-table h2 {
     font-size: 1rem;
-    text-align: left;
+    text-align: left; 
   }
-  
   .activity-table thead th {
     padding: 10px 12px;
     font-size: 0.75rem;
   }
-
   .activity-table tbody td {
     padding: 12px 12px;
     font-size: 0.85rem;
   }
-
   .status-badge {
     padding: 3px 8px;
     font-size: 0.7rem;

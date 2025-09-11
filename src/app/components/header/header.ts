@@ -35,9 +35,9 @@ export class Header implements AfterViewInit, OnDestroy {
   private isDeleting = false;
   private timeoutId: any;
 
-  private readonly typingSpeed = 100;
+  private readonly typingSpeed = 50;
   private readonly deletingSpeed = 50;
-  private readonly delayBetweenPhrases = 2000;
+  private readonly delayBetweenPhrases = 4000;
 
 
   ngOnDestroy(): void {

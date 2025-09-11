@@ -1,12 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart, registerables, ChartType as ChartJsType } from 'chart.js';
+import { Chart, registerables, ChartType as ChartJsType, ScriptableContext } from 'chart.js';
 
 export interface AppChartData {
   labels: string[];
   datasets: any[];
 }
 export type PeriodoGrafico = 'SEMANAL' | 'MENSAL' | 'ANUAL';
+export type ChartTheme = 'professional' | 'energetic' | 'dark'; // Tipos de temas
+
+// Definição das paletas de cores para cada tema
+const THEME_PALETTES = {
+  professional: {
+    primary: '#3498DB',
+    danger: '#E74C3C',
+    grid: 'rgba(0, 0, 0, 0.08)',
+    text: '#1e293b',
+    tooltipBg: '#1e293b',
+  },
+  energetic: {
+    primary: '#1ABC9C',
+    danger: '#E74C3C',
+    grid: 'rgba(0, 0, 0, 0.08)',
+    text: '#34495E',
+    tooltipBg: '#34495E',
+  },
+  dark: {
+    primary: '#5DADE2',
+    danger: '#EF5350',
+    grid: 'rgba(255, 255, 255, 0.1)',
+    text: '#f9fafb',
+    tooltipBg: '#111827',
+  }
+};
 
 @Component({
   selector: 'app-chart-component',
@@ -22,6 +48,7 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
   @Input() chartTitle: string = 'Meu Gráfico';
   @Input() valuePrefix: string = '';
   @Input() valueSuffix: string = '';
+  @Input() theme: ChartTheme = 'professional'; // <-- NOVO INPUT PARA O TEMA
 
   @Output() onChartClick = new EventEmitter<{ label: string; value: number; index: number }>();
   @Output() periodoChange = new EventEmitter<PeriodoGrafico>();
@@ -43,7 +70,7 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedType = this.chartType;
-    if (this.chartCanvas && changes['chartData'] && this.chartData?.labels?.length > 0) {
+    if (this.chartCanvas && (changes['chartData'] || changes['theme']) && this.chartData?.labels?.length > 0) {
       this.createChart();
     }
   }
@@ -65,22 +92,15 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
   }
 
   tipoGraficoTraduzido(tipo: string): string {
-    const mapa: { [key: string]: string } = {
-      bar: 'Barras',
-      line: 'Linha',
-      pie: 'Pizza',
-      doughnut: 'Rosca',
-      radar: 'Radar'
-    };
+    const mapa: { [key: string]: string } = { bar: 'Barras', line: 'Linha', pie: 'Pizza', doughnut: 'Rosca', radar: 'Radar' };
     return mapa[tipo] || tipo;
   }
 
   private createChart(): void {
     if (!this.chartCanvas) return;
     this.chart?.destroy();
-    if (!this.chartData || !this.chartData.labels || this.chartData.labels.length === 0) {
-      return;
-    }
+    if (!this.chartData || !this.chartData.labels || this.chartData.labels.length === 0) return;
+
     const processedData = this.processChartData(this.chartData);
     const chartConfig = this.getChartConfig(processedData);
     const ctx = this.chartCanvas.nativeElement.getContext('2d');
@@ -91,50 +111,56 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
 
   private processChartData(data: AppChartData): AppChartData {
     if (!data) return data;
-    const modernColors = this.getModernColors(data.labels.length);
+    const palette = THEME_PALETTES[this.theme];
+
     data.datasets.forEach(dataset => {
+      // Lógica para cor única e consistente
+      dataset.backgroundColor = palette.primary;
+      dataset.borderColor = palette.primary;
+
+      // Lógica específica para cada tipo de gráfico
       if (this.selectedType === 'line') {
-        dataset.backgroundColor = 'rgba(43, 191, 130, 0.2)';
-        dataset.borderColor = '#2bbf82';
-        dataset.pointBackgroundColor = '#2bbf82';
-        dataset.pointBorderColor = '#fff';
-        dataset.pointHoverBackgroundColor = '#fff';
-        dataset.pointHoverBorderColor = '#2bbf82';
+        dataset.backgroundColor = this.hexToRgba(palette.primary, 0.2); // Área sob a linha
         dataset.tension = 0.4;
-      } else {
-        dataset.backgroundColor = modernColors;
-        dataset.borderColor = '#ffffff';
+      } else if (this.selectedType === 'bar') {
+        // Lógica para destacar a última barra em vermelho (como na sua imagem)
+        // Para uma lógica mais robusta (ex: valores negativos), você passaria essa informação nos dados.
+        const barColors = data.labels.map((_, index) =>
+          index === data.labels.length - 1 ? palette.danger : palette.primary
+        );
+        dataset.backgroundColor = barColors;
+        dataset.borderColor = '#ffffff'; // Borda branca entre as barras
+        dataset.borderWidth = 2;
       }
-      dataset.borderWidth = dataset.borderWidth ?? 2;
     });
     return data;
   }
+  
+  private hexToRgba(hex: string, alpha: number): string {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
 
   private getChartConfig(data: AppChartData): any {
-    data.datasets[0].label
+    const palette = THEME_PALETTES[this.theme];
     const commonOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         title: {
-          display: true,
-          text: data.datasets[0].label,
-          font: {
-            size: 16,
-            weight: 'bold'
-          },
-          color: '#1e293b'
+          display: false, // O título já está no componente pai
         },
         legend: {
           display: data.datasets.length > 1,
-          labels: {
-            font: { family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' }
-          }
+          labels: { color: palette.text }
         },
         tooltip: {
-          backgroundColor: '#1e293b',
-          titleFont: { size: 14, weight: 'bold', family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
-          bodyFont: { size: 12, family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto' },
+          backgroundColor: palette.tooltipBg,
+          titleColor: palette.text === '#f9fafb' ? '#f9fafb' : '#ffffff', // Garante contraste
+          bodyColor: palette.text === '#f9fafb' ? '#f9fafb' : '#ffffff',
           padding: 12,
           cornerRadius: 8,
           callbacks: {
@@ -142,6 +168,25 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
               const value = context.raw.toLocaleString('pt-BR');
               return ` ${this.valuePrefix}${value}${this.valueSuffix}`;
             }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: palette.grid // Cor da grade suavizada
+          },
+          ticks: {
+            color: palette.text // Cor dos números do eixo
+          }
+        },
+        x: {
+          grid: {
+            display: false // Remove a grade vertical para um visual mais limpo
+          },
+          ticks: {
+            color: palette.text
           }
         }
       },
@@ -157,26 +202,6 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
     };
 
     const type = this.selectedType as ChartJsType;
-
-    switch (this.selectedType) {
-      case 'bar':
-      case 'line':
-        return { type, data, options: { ...commonOptions, scales: { y: { beginAtZero: true } } } };
-      case 'pie':
-      case 'doughnut':
-        return { type, data, options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { position: 'right' as const } } } };
-      case 'radar':
-        return { type: 'radar', data, options: commonOptions };
-      default:
-        throw new Error(`Tipo de gráfico não suportado: ${this.selectedType}`);
-    }
-  }
-
-  private getModernColors(count: number): string[] {
-    const colors = [
-      '#2bbf82', '#34d399', '#229968', '#6ee7b7',
-      '#1a734e', '#a7f3d0', '#059669'
-    ];
-    return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
+    return { type, data, options: commonOptions };
   }
 }

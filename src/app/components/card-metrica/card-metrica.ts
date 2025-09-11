@@ -5,6 +5,7 @@ export interface Metrica {
   id: string;
   titulo: string;
   metrica: string;
+  icone: string;
   detalhe: string;
 }
 

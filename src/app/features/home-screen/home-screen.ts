@@ -37,7 +37,7 @@ type MetricaId = 'receita' | 'conversao' | 'emails' | 'ticket';
 })
 export class HomeScreen implements OnInit {
 
-  public periodoSelecionado: Periodo = 'MENSAL';
+  public periodoSelecionado: Periodo = 'SEMANAL';
   public metricaSelecionada: MetricaId = 'receita';
   public metricasDosCards: Metrica[] = [];
   public dadosDoGrafico: AppChartData = { labels: [], datasets: [] };
@@ -52,10 +52,34 @@ export class HomeScreen implements OnInit {
     try {
       if (!environment.production) {
         this.metricasDosCards = [
-          { id: 'receita', titulo: 'Receita Recuperada (Hoje)', metrica: this.formatarMoeda(3108.92), detalhe: 'teste' },
-          { id: 'conversao', titulo: 'Taxa de Conversão (Hoje)', metrica: `25.0%`, detalhe: 'teste' },
-          { id: 'emails', titulo: 'E-mails Enviados (Hoje)', metrica: '12', detalhe: 'teste' },
-          { id: 'ticket', titulo: 'Ticket Médio (Hoje)', metrica: this.formatarMoeda(259.07), detalhe: 'teste' }
+          {
+            id: 'receita',
+            titulo: 'Receita Recuperada (Hoje)',
+            icone: 'monetization_on',
+            metrica: this.formatarMoeda(3108.92),
+            detalhe: '-10 do que ontem'
+          },
+          {
+            id: 'conversao',
+            titulo: 'Taxa de Conversão (Hoje)',
+            icone: 'trending_up',
+            metrica: `25.0%`,
+            detalhe: '+42 do que ontem'
+          },
+          {
+            id: 'abandonados',
+            titulo: 'Carrinhos Abandonados',
+            icone: 'remove_shopping_cart',
+            metrica: '84',
+            detalhe: '+12 nas últimas 24h'
+          },
+          {
+            id: 'ticket',
+            titulo: 'Ticket Médio (Hoje)',
+            icone: 'receipt_long',
+            metrica: this.formatarMoeda(259.07),
+            detalhe: '+87 do que ontem'
+          }
         ];
 
         setTimeout(() => {
@@ -72,7 +96,7 @@ export class HomeScreen implements OnInit {
           };
         }, 0);
 
-        console.log(" Dados fake carregados para DEV:", this.dadosDoGrafico);
+        console.log("Dados fake carregados para DEV:", this.dadosDoGrafico);
         return;
       }
 
@@ -81,10 +105,34 @@ export class HomeScreen implements OnInit {
 
       const kpis = response.kpisDiarios;
       this.metricasDosCards = [
-        { id: 'receita', titulo: 'Receita Recuperada (Hoje)', metrica: this.formatarMoeda(kpis.receitaRecuperada ?? 0), detalhe: '' },
-        { id: 'conversao', titulo: 'Taxa de Conversão (Hoje)', metrica: `${(kpis.taxaDeConversao ?? 0).toFixed(1)}%`, detalhe: '' },
-        { id: 'emails', titulo: 'E-mails Enviados (Hoje)', metrica: (kpis.emailsEnviados ?? 0).toString(), detalhe: '' },
-        { id: 'ticket', titulo: 'Ticket Médio (Hoje)', metrica: this.formatarMoeda(kpis.ticketMedioRecuperado ?? 0), detalhe: '' }
+        {
+          id: 'receita',
+          titulo: 'Receita Recuperada (Hoje)',
+          icone: 'monetization_on',
+          metrica: this.formatarMoeda(3108.92),
+          detalhe: '-10 do que ontem'
+        },
+        {
+          id: 'conversao',
+          titulo: 'Taxa de Conversão (Hoje)',
+          icone: 'trending_up',
+          metrica: `25.0%`,
+          detalhe: '+42 do que ontem'
+        },
+        {
+          id: 'abandonados',
+          titulo: 'Carrinhos Abandonados',
+          icone: 'remove_shopping_cart',
+          metrica: '84',
+          detalhe: '+12 nas últimas 24h'
+        },
+        {
+          id: 'ticket',
+          titulo: 'Ticket Médio (Hoje)',
+          icone: 'receipt_long',
+          metrica: this.formatarMoeda(259.07),
+          detalhe: '+87 do que ontem'
+        }
       ];
 
       const chartData = response.dadosDoGrafico;
