@@ -5,6 +5,10 @@
   font-size: 1.1rem;
   font-weight: 600;
   color: #1e293b;">Atividade Recente</h2>
+  <div class="tabs">
+    <button [class.active]="currentType === 'abandonados'" (click)="setTableType('abandonados')">Mais Abandonados</button>
+    <button [class.active]="currentType === 'ranking'" (click)="setTableType('ranking')">Ranking</button>
+  </div>
 
   <table>
     <thead>

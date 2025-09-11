@@ -37,4 +37,17 @@ export class Table {
     { id: '#2012', produto: 'Drone 4K', status: 'Em Recuperação' },
     { id: '#2011', produto: 'Impressora Multifuncional', status: 'Abandonado' }
   ];
+  currentType: 'abandonados' | 'ranking' = 'abandonados';
+
+ 
+  setTableType(type: 'abandonados' | 'ranking'): void {
+    this.currentType = type;
+    
+    // if (type === 'abandonados') {
+    //   this.carregarDadosAbandonados();
+    // } else {
+    //   this.carregarDadosRanking();
+    // }
+  }
+
 }
