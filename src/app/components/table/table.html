@@ -1,15 +1,21 @@
 <div class="card activity-table">
-  <h2 style=" 
+  <!-- <h2 style=" 
   text-align: center;
   margin: 0 0 16px 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1e293b;">Atividade Recente</h2>
-  <div class="tabs">
+  color: #1e293b;">Atividade Recente</h2> -->
+  <!-- <div class="tabs">
     <button [class.active]="currentType === 'abandonados'" (click)="setTableType('abandonados')">Mais Abandonados</button>
     <button [class.active]="currentType === 'ranking'" (click)="setTableType('ranking')">Ranking</button>
+  </div> -->
+  <div class="tabs">
+    @for (atividade of tabs; track atividade.id) {
+      <button [class.active]="currentType === atividade.id" (click)="setTableTabs(atividade.id)">{{ atividade.titulo }}</button>
+    } @empty {
+      <p>Nenhuma atividade recente encontrada.</p>
+    }
   </div>
-
   <table>
     <thead>
       <tr>

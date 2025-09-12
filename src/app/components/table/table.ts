@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input, Output, EventEmitter} from '@angular/core';
 
 export interface Atividade {
   id: string;
   produto: string;
   status: 'Recuperado' | 'Abandonado' | 'Em Recuperação';
+}
+export interface Tabs {
+  id: string;
+  titulo: string;
 }
 
 @Component({
@@ -14,6 +18,18 @@ export interface Atividade {
   styleUrl: './table.scss'
 })
 export class Table {
+  // @Input()
+  // tabs: Tabs[] = [];
+  @Input()
+  tabs: Tabs[] = [
+    { id: 'abandonados', titulo: 'Abandonados' },
+    { id: 'ranking', titulo: 'Ranking' }
+  ];
+  @Output()
+  idTap = new EventEmitter<void>()
+  
+
+
 
   atividades: Atividade[] = [
     { id: '#2030', produto: 'Fone de Ouvido Bluetooth', status: 'Recuperado' },
@@ -39,10 +55,10 @@ export class Table {
   ];
   currentType: 'abandonados' | 'ranking' = 'abandonados';
 
- 
-  setTableType(type: 'abandonados' | 'ranking'): void {
-    this.currentType = type;
-    
+
+  setTableTabs(tap: any): void {
+    this.currentType = tap;
+    this.idTap.emit();
     // if (type === 'abandonados') {
     //   this.carregarDadosAbandonados();
     // } else {
