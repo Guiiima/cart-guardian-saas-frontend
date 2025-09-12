@@ -5,10 +5,7 @@ export interface Coluna<T extends object> {
   key: keyof T;
   label: string;
 }
-interface ItemComStatus {
-  status: 'Recuperado' | 'Abandonado' | 'Recuperação';
-  [key: string]: any;
-}
+
 export interface Tabs {
   id: string;
   titulo: string;
