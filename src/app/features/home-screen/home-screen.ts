@@ -11,7 +11,7 @@ import { environment } from 'environments/environment';
 interface DashboardMetrics {
   receitaRecuperada: number;
   taxaDeConversao: number;
-  emailsEnviados: number;
+  carrinhosAbandonados: number;
   ticketMedioRecuperado: number;
 }
 
@@ -19,6 +19,7 @@ interface ChartData {
   labels: string[];
   data: number[];
 }
+
 interface Recuperacao {
   id: string;
   cliente: string;
@@ -26,13 +27,14 @@ interface Recuperacao {
   status: 'Recuperado' | 'Pendente' | 'Falhou';
   data: string;
 }
+
 interface CombinedDashboardData {
   kpisDiarios: DashboardMetrics;
   dadosDoGrafico: ChartData;
 }
 
 type Periodo = 'SEMANAL' | 'MENSAL' | 'ANUAL';
-type MetricaId = 'receita' | 'conversao' | 'emails' | 'ticket';
+type MetricaId = 'receita' | 'conversao' | 'abandonados' | 'ticket';
 
 @Component({
   selector: 'app-home-screen',
@@ -45,143 +47,24 @@ export class HomeScreen implements OnInit {
 
   public periodoSelecionado: Periodo = 'SEMANAL';
   public metricaSelecionada: MetricaId = 'receita';
+
   public metricasDosCards: Metrica[] = [];
   public dadosDoGrafico: AppChartData = { labels: [], datasets: [] };
   public colunasDaTabela: Coluna<Recuperacao>[] = [];
-
   public tabsDaTabela: Tabs[] = [];
+
   private listaCompletaRecuperacoes: Recuperacao[] = [];
   public listaFiltradaRecuperacoes: Recuperacao[] = [];
 
   constructor(private shopifyAuthService: ShopifyAuthService) { }
 
   ngOnInit(): void {
+    this.configurarComponentesVisuais();
     this.carregarDadosDoDashboard();
     this.carregarDadosDaTabela();
   }
 
-  async carregarDadosDoDashboard(): Promise<void> {
-    try {
-      if (!environment.production) {
-        this.metricasDosCards = [
-          {
-            id: 'receita',
-            titulo: 'Receita Recuperada (Hoje)',
-            icone: 'monetization_on',
-            metrica: this.formatarMoeda(3108.92),
-            detalhe: '-10 do que ontem'
-          },
-          {
-            id: 'conversao',
-            titulo: 'Taxa de Conversão (Hoje)',
-            icone: 'trending_up',
-            metrica: `25.0%`,
-            detalhe: '+42 do que ontem'
-          },
-          {
-            id: 'abandonados',
-            titulo: 'Carrinhos Abandonados',
-            icone: 'remove_shopping_cart',
-            metrica: '84',
-            detalhe: '+12 nas últimas 24h'
-          },
-          {
-            id: 'ticket',
-            titulo: 'Ticket Médio (Hoje)',
-            icone: 'receipt_long',
-            metrica: this.formatarMoeda(259.07),
-            detalhe: '+87 do que ontem'
-          }
-        ];
-
-        setTimeout(() => {
-          this.dadosDoGrafico = {
-            labels: ['seg.', 'ter.', 'qua.', 'qui.', 'sex.'],
-            datasets: [
-              {
-                label: 'Receita Recuperada',
-                data: [455.43, 3108.92, 1200.50, 800.75, 2500.00],
-                backgroundColor: 'rgba(26, 188, 156, 0.8)',
-                borderColor: 'rgba(22, 160, 133, 1)'
-              }
-            ]
-          };
-        }, 0);
-
-        console.log("Dados fake carregados para DEV:", this.dadosDoGrafico);
-        return;
-      }
-
-      const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
-      const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
-
-      const kpis = response.kpisDiarios;
-      this.metricasDosCards = [
-        {
-          id: 'receita',
-          titulo: 'Receita Recuperada (Hoje)',
-          icone: 'monetization_on',
-          metrica: this.formatarMoeda(3108.92),
-          detalhe: '-10 do que ontem'
-        },
-        {
-          id: 'conversao',
-          titulo: 'Taxa de Conversão (Hoje)',
-          icone: 'trending_up',
-          metrica: `25.0%`,
-          detalhe: '+42 do que ontem'
-        },
-        {
-          id: 'abandonados',
-          titulo: 'Carrinhos Abandonados',
-          icone: 'remove_shopping_cart',
-          metrica: '84',
-          detalhe: '+12 nas últimas 24h'
-        },
-        {
-          id: 'ticket',
-          titulo: 'Ticket Médio (Hoje)',
-          icone: 'receipt_long',
-          metrica: this.formatarMoeda(259.07),
-          detalhe: '+87 do que ontem'
-        }
-      ];
-
-      const chartData = response.dadosDoGrafico;
-      const metricaInfo = this.metricasDosCards.find(m => m.id === this.metricaSelecionada);
-      const chartLabel = metricaInfo ? metricaInfo.titulo.replace(' (Hoje)', '') : 'Dados';
-
-      this.dadosDoGrafico = {
-        labels: chartData.labels,
-        datasets: [{
-          label: chartLabel,
-          data: chartData.data,
-          backgroundColor: 'rgba(26, 188, 156, 0.8)',
-          borderColor: 'rgba(22, 160, 133, 1)'
-        }]
-      };
-      console.log("Dados do gráfico atualizados:", this.dadosDoGrafico);
-
-    } catch (error) {
-      console.error("Erro ao carregar dados do dashboard:", error);
-    }
-  }
-
-  onPeriodoChange(novoPeriodo: Periodo): void {
-    this.periodoSelecionado = novoPeriodo;
-    this.carregarDadosDoDashboard();
-  }
-
-  onCardSelect(metricaId: any): void {
-    this.metricaSelecionada = metricaId;
-    this.carregarDadosDoDashboard();
-  }
-
-  private formatarMoeda(valor: number): string {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
-  }
-  private carregarDadosDaTabela(): void {
-    // Definindo as colunas
+  private configurarComponentesVisuais(): void {
     this.colunasDaTabela = [
       { key: 'data', label: 'Data' },
       { key: 'cliente', label: 'Cliente' },
@@ -189,27 +72,107 @@ export class HomeScreen implements OnInit {
       { key: 'valor', label: 'Valor Recuperado' }
     ];
 
-    // Definindo as abas de filtro
     this.tabsDaTabela = [
       { id: 'todos', titulo: 'Todos' },
       { id: 'Recuperado', titulo: 'Recuperados' },
       { id: 'Pendente', titulo: 'Pendentes' },
       { id: 'Falhou', titulo: 'Falhas' }
     ];
-
-    // Criando os dados falsos
-    this.listaCompletaRecuperacoes = [
-      { id: 'R001', cliente: 'Mariana Costa', valor: 259.90, status: 'Recuperado', data: '12/09/2025' },
-      { id: 'R002', cliente: 'João Pedro Alves', valor: 110.50, status: 'Pendente', data: '12/09/2025' },
-      { id: 'R003', cliente: 'Beatriz Lima', valor: 45.00, status: 'Falhou', data: '11/09/2025' },
-      { id: 'R004', cliente: 'Lucas Martins', valor: 320.00, status: 'Recuperado', data: '11/09/2025' },
-      { id: 'R005', cliente: 'Gabriela Souza', valor: 89.99, status: 'Recuperado', data: '10/09/2025' },
-      { id: 'R006', cliente: 'Rafael Oliveira', valor: 150.75, status: 'Pendente', data: '10/09/2025' },
-    ];
-
-    // Inicializa a lista filtrada com todos os dados
-    this.listaFiltradaRecuperacoes = [...this.listaCompletaRecuperacoes];
   }
+
+  async carregarDadosDoDashboard(): Promise<void> {
+    try {
+      const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
+      const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
+      const responseMetrics: CombinedDashboardData = await this.shopifyAuthService.getMetrics();
+
+
+
+      this.atualizarCards(responseMetrics, undefined);
+      this.atualizarGrafico(response.dadosDoGrafico);
+
+    } catch (error) {
+      console.error("Erro ao carregar dados do dashboard:", error);
+    }
+  }
+
+  async carregarDadosDaTabela(): Promise<void> {
+    try {
+      const endpoint = '/api/dashboard/recoveries';
+      const recuperacoes: Recuperacao[] = await this.shopifyAuthService.get(endpoint);
+
+      this.listaCompletaRecuperacoes = recuperacoes;
+      this.filtrarTabela('todos');
+
+    } catch (error) {
+      console.error("Erro ao carregar dados da tabela:", error);
+      this.listaCompletaRecuperacoes = [];
+      this.listaFiltradaRecuperacoes = [];
+    }
+  }
+
+  private atualizarCards(kpisTeste: any, kpis?: DashboardMetrics): void {
+    if (!kpis) {
+      this.metricasDosCards = kpisTeste;
+      return
+    }
+    this.metricasDosCards = [
+      {
+        id: 'receita',
+        titulo: 'Receita Recuperada (Hoje)',
+        icone: 'monetization_on',
+        metrica: this.formatarMoeda(kpis.receitaRecuperada),
+        detalhe: `${kpis.taxaDeConversao.toFixed(2)}% de conversão`
+      },
+      {
+        id: 'conversao',
+        titulo: 'Taxa de Conversão (Hoje)',
+        icone: 'trending_up',
+        metrica: `${kpis.taxaDeConversao.toFixed(2)}%`,
+        detalhe: `${kpis.taxaDeConversao.toFixed(2)}% de conversão`
+      },
+      {
+        id: 'abandonados',
+        titulo: 'Carrinhos Abandonados',
+        icone: 'remove_shopping_cart',
+        metrica: `${kpis.carrinhosAbandonados}`,
+        detalhe: `${kpis.taxaDeConversao.toFixed(2)}% de conversão`
+      },
+      {
+        id: 'ticket',
+        titulo: 'Ticket Médio (Hoje)',
+        icone: 'receipt_long',
+        metrica: this.formatarMoeda(kpis.ticketMedioRecuperado),
+        detalhe: `${kpis.taxaDeConversao.toFixed(2)}% de conversão`
+      }
+    ];
+  }
+
+  private atualizarGrafico(chartData: ChartData): void {
+    const metricaInfo = this.metricasDosCards.find(m => m.id === this.metricaSelecionada);
+    const chartLabel = metricaInfo ? metricaInfo.titulo.replace(' (Hoje)', '') : 'Dados';
+
+    this.dadosDoGrafico = {
+      labels: chartData.labels,
+      datasets: [{
+        label: chartLabel,
+        data: chartData.data,
+        backgroundColor: 'rgba(26, 188, 156, 0.8)',
+        borderColor: 'rgba(22, 160, 133, 1)'
+      }]
+    };
+  }
+
+  public onPeriodoChange(novoPeriodo: any): void {
+    this.periodoSelecionado = novoPeriodo;
+    this.carregarDadosDoDashboard();
+  }
+
+  public onCardSelect(metricaId: any): void {
+    this.metricaSelecionada = metricaId;
+    this.carregarDadosDoDashboard();
+  }
+
   public filtrarTabela(status: string): void {
     if (status === 'todos') {
       this.listaFiltradaRecuperacoes = [...this.listaCompletaRecuperacoes];
@@ -218,5 +181,9 @@ export class HomeScreen implements OnInit {
         item => item.status === status
       );
     }
+  }
+
+  private formatarMoeda(valor: number): string {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
   }
 }

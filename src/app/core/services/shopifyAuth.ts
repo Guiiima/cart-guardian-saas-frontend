@@ -5,10 +5,8 @@ import { lastValueFrom } from 'rxjs';
 import createApp, { ClientApplication } from '@shopify/app-bridge';
 import { getSessionToken } from '@shopify/app-bridge-utils';
 import { AppBridgeState } from '@shopify/app-bridge';
-
+import { MOCK_METRICAS } from '@core/mocks/dashboard';
 import { environment } from '../../../environments/environment';
-
-type Periodo = 'DIARIO' | 'SEMANAL' | 'MENSAL' | 'ANUAL';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +27,6 @@ export class ShopifyAuthService {
 
   private async initializeAppBridge(): Promise<void> {
     if (!environment.production) {
-      console.warn("MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.");
       return;
     }
 
@@ -42,7 +39,6 @@ export class ShopifyAuthService {
       }
 
       const config = await lastValueFrom(this.httpClient.get<any>(`/api/config?host=${host}`));
-      console.log('Configurações recebidas pelo serviço:', config);
 
       if (config && config.apiKey) {
         this.app = createApp({
@@ -63,7 +59,7 @@ export class ShopifyAuthService {
     await this.ensureInitialized();
 
     if (!this.app) {
-      throw new Error('Shopify App Bridge não está disponível. Verifique se está no ambiente Shopify.');
+      throw new Error('Shopify App Bridge não está disponível.');
     }
     const token = await getSessionToken(this.app);
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -71,7 +67,6 @@ export class ShopifyAuthService {
 
   public async post(endpoint: string, data: any): Promise<any> {
     if (!environment.production) {
-      console.warn(`MODO DESENVOLVIMENTO: Simulação de POST para ${endpoint}`, data);
       return Promise.resolve({ success: true, message: "Resposta mockada" });
     }
     const headers = await this.getAuthHeaders();
@@ -80,8 +75,20 @@ export class ShopifyAuthService {
   }
 
   public async get(endpoint: string): Promise<any> {
+    if (!environment.production) {
+      await new Promise(resolve => setTimeout(resolve, 400));
+
+      if (endpoint.includes('/api/dashboard/metrics')) {
+        return MOCK_METRICAS;
+      }
+      return Promise.resolve({});
+    }
+
     const headers = await this.getAuthHeaders();
     const request$ = this.httpClient.get(endpoint, { headers });
     return await lastValueFrom(request$);
+  }
+  public async getMetrics(): Promise<any> {
+    return MOCK_METRICAS;
   }
 }
