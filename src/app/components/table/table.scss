@@ -1,18 +1,56 @@
-.card.activity-table {
-  background-color: #fff;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  container-type: inline-size;
-  container-name: activity-table-container;
+:host {
+  --cor-primaria: #1abc9c;
+  --cor-primaria-hover: #16a085;
+  --cor-texto-branco: #ffffff;
+  --cor-fundo-card: #ffffff;
+  --cor-fundo-pagina: #f8f9fa;
+  --cor-texto-titulo: #2c3e50;
+  --cor-texto-corpo: #34495e;
+  --cor-texto-mutado: #95a5a6;
+  --cor-borda-suave: #e9ecef;
+  --sombra-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --cor-status-recuperado: #27ae60;
+  --cor-status-pendente: #f39c12;
+  --cor-status-falhou: #e74c3c;
 }
 
-.titulo {
-  text-align: center;
-  margin: 0 0 16px 0;
-  font-size: 1.1rem;
+.card.activity-table {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--cor-fundo-card);
+  border-radius: 12px;
+  box-shadow: var(--sombra-card);
+  overflow: hidden;
+  border: 1px solid var(--cor-borda-suave);
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  padding: 16px; 
+  border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border: 1px solid var(--cor-borda-suave);
+  background-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: 600;
-  color: #34495E;
+  color: var(--cor-texto-mutado);
+  transition: all 0.2s ease-in-out;
+}
+
+.tabs button:not(.active):hover {
+  background-color: var(--cor-borda-suave);
+  color: var(--cor-texto-titulo);
+}
+
+.tabs button.active {
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-branco);
+  border-color: var(--cor-primaria);
 }
 
 .activity-table table {
@@ -20,136 +58,69 @@
   border-collapse: collapse;
 }
 
-.activity-table thead th {
-  text-align: left;
+.activity-table th {
   padding: 12px 16px;
-  border-bottom: 2px solid #e9ecef;
-  color: #6c757d;
-  font-size: 0.8rem;
-  font-weight: 600;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cor-texto-mutado);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: white;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--cor-borda-suave);
 }
 
-.activity-table tbody td {
+.activity-table td {
   padding: 14px 16px;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
-  font-size: 0.9rem;
-  white-space: nowrap;
+  font-size: 14px;
+  color: var(--cor-texto-corpo);
+  border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.activity-table td:last-child,
+.activity-table th:last-child {
+  text-align: right;
+}
+
+.activity-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.activity-table .empty-row td {
+  text-align: center;
+  padding: 32px;
+  color: var(--cor-texto-mutado);
+  font-style: italic;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.recuperado {
+  color: var(--cor-status-recuperado);
+}
+
+.status.pendente {
+  color: var(--cor-status-pendente);
+}
+
+.status.falhou {
+  color: var(--cor-status-falhou);
+}
+
+.activity-table tbody tr {
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
 }
 
 .activity-table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: var(--cor-primaria-hover);
 }
 
-.activity-table table th:nth-child(3),
-.activity-table table td:nth-child(3) {
-  text-align: center;
-  vertical-align: middle;
-}
-.tabs {
-  display: flex;
-  gap: 16px;
-  border-bottom: 1px solid #e9ecef;
-  margin-bottom: 24px;
+.activity-table tbody tr:hover td {
+  color: var(--cor-texto-branco);
 }
 
-.tabs button {
-  padding: 10px 4px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #6c757d;
-  background-color: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  margin-bottom: -1px;
+.activity-table tbody tr:hover td .status {
+  color: var(--cor-texto-branco);
 }
-
-.tabs button:not(.active):hover {
-  color: #34495E;
-}
-
-.tabs button.active {
-  color: #0d6efd;
-  border-bottom-color: #0d6efd;
-}
-
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 12px;
-  line-height: 1;
-}
-
-.status-badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.status-recuperado {
-  background-color: #e8f8f5;
-  color: #16a085;
-}
-
-.status-recuperado::before {
-  background-color: #1ABC9C;
-}
-
-.status-abandonado {
-  background-color: #fdeeee;
-  color: #c0392b;
-}
-
-.status-abandonado::before {
-  background-color: #E74C3C;
-}
-
-.status-recuperacao {
-  background-color: #fef5e7;
-  color: #d35400;
-}
-
-.status-recuperacao::before {
-  background-color: #f39c12;
-}
-
-@container activity-table-container (max-width: 700px) {
-  .card.activity-table {
-    overflow-x: auto;
-    padding: 16px;
-  }
-
-  .activity-table h2 {
-    font-size: 1rem;
-    text-align: left;
-  }
-
-  .activity-table thead th {
-    padding: 10px 12px;
-    font-size: 0.75rem;
-  }
-
-  .activity-table tbody td {
-    padding: 12px 12px;
-    font-size: 0.85rem;
-  }
-
-  .status-badge {
-    padding: 3px 8px;
-    font-size: 0.7rem;
-  }
-}
-

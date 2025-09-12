@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Header } from "app/components/header/header";
 import { CardMetrica, Metrica } from "app/components/card-metrica/card-metrica";
 import { ChartComponentComponent, AppChartData } from 'app/components/chart-component/chart-component';
-import { Table } from 'app/components/table/table';
+import { Coluna, Table, Tabs } from 'app/components/table/table';
 import { Footer } from "app/components/footer/footer";
 import { ShopifyAuthService } from '@core/services/shopifyAuth';
 import { environment } from 'environments/environment';
@@ -19,7 +19,13 @@ interface ChartData {
   labels: string[];
   data: number[];
 }
-
+interface Recuperacao {
+  id: string;
+  cliente: string;
+  valor: number;
+  status: 'Recuperado' | 'Pendente' | 'Falhou';
+  data: string;
+}
 interface CombinedDashboardData {
   kpisDiarios: DashboardMetrics;
   dadosDoGrafico: ChartData;
@@ -41,11 +47,17 @@ export class HomeScreen implements OnInit {
   public metricaSelecionada: MetricaId = 'receita';
   public metricasDosCards: Metrica[] = [];
   public dadosDoGrafico: AppChartData = { labels: [], datasets: [] };
+  public colunasDaTabela: Coluna<Recuperacao>[] = [];
+
+  public tabsDaTabela: Tabs[] = [];
+  private listaCompletaRecuperacoes: Recuperacao[] = [];
+  public listaFiltradaRecuperacoes: Recuperacao[] = [];
 
   constructor(private shopifyAuthService: ShopifyAuthService) { }
 
   ngOnInit(): void {
     this.carregarDadosDoDashboard();
+    this.carregarDadosDaTabela();
   }
 
   async carregarDadosDoDashboard(): Promise<void> {
@@ -167,5 +179,44 @@ export class HomeScreen implements OnInit {
 
   private formatarMoeda(valor: number): string {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+  }
+  private carregarDadosDaTabela(): void {
+    // Definindo as colunas
+    this.colunasDaTabela = [
+      { key: 'data', label: 'Data' },
+      { key: 'cliente', label: 'Cliente' },
+      { key: 'status', label: 'Status' },
+      { key: 'valor', label: 'Valor Recuperado' }
+    ];
+
+    // Definindo as abas de filtro
+    this.tabsDaTabela = [
+      { id: 'todos', titulo: 'Todos' },
+      { id: 'Recuperado', titulo: 'Recuperados' },
+      { id: 'Pendente', titulo: 'Pendentes' },
+      { id: 'Falhou', titulo: 'Falhas' }
+    ];
+
+    // Criando os dados falsos
+    this.listaCompletaRecuperacoes = [
+      { id: 'R001', cliente: 'Mariana Costa', valor: 259.90, status: 'Recuperado', data: '12/09/2025' },
+      { id: 'R002', cliente: 'João Pedro Alves', valor: 110.50, status: 'Pendente', data: '12/09/2025' },
+      { id: 'R003', cliente: 'Beatriz Lima', valor: 45.00, status: 'Falhou', data: '11/09/2025' },
+      { id: 'R004', cliente: 'Lucas Martins', valor: 320.00, status: 'Recuperado', data: '11/09/2025' },
+      { id: 'R005', cliente: 'Gabriela Souza', valor: 89.99, status: 'Recuperado', data: '10/09/2025' },
+      { id: 'R006', cliente: 'Rafael Oliveira', valor: 150.75, status: 'Pendente', data: '10/09/2025' },
+    ];
+
+    // Inicializa a lista filtrada com todos os dados
+    this.listaFiltradaRecuperacoes = [...this.listaCompletaRecuperacoes];
+  }
+  public filtrarTabela(status: string): void {
+    if (status === 'todos') {
+      this.listaFiltradaRecuperacoes = [...this.listaCompletaRecuperacoes];
+    } else {
+      this.listaFiltradaRecuperacoes = this.listaCompletaRecuperacoes.filter(
+        item => item.status === status
+      );
+    }
   }
 }
