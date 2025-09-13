@@ -7,6 +7,8 @@ import { Coluna, Table, Tabs } from 'app/components/table/table';
 import { Footer } from "app/components/footer/footer";
 import { ShopifyAuthService } from '@core/services/shopifyAuth';
 import { environment } from 'environments/environment';
+import { MOCK_GRAFICO_POR_PERIODO } from '@core/mocks/dashboard';
+import { ChartData } from 'chart.js';
 
 interface DashboardMetrics {
   receitaRecuperada: number;
@@ -15,7 +17,7 @@ interface DashboardMetrics {
   ticketMedioRecuperado: number;
 }
 
-interface ChartData {
+interface AppChartDataset {
   labels: string[];
   data: number[];
 }
@@ -30,7 +32,7 @@ interface Recuperacao {
 
 interface CombinedDashboardData {
   kpisDiarios: DashboardMetrics;
-  dadosDoGrafico: ChartData;
+  dadosDoGrafico: AppChartDataset;
 }
 
 type Periodo = 'SEMANAL' | 'MENSAL' | 'ANUAL';
@@ -82,14 +84,15 @@ export class HomeScreen implements OnInit {
 
   async carregarDadosDoDashboard(): Promise<void> {
     try {
-      const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
-      const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
+      //const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
+      //const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
+      const dadosDoGraficoMock: ChartData = MOCK_GRAFICO_POR_PERIODO[this.periodoSelecionado];
       const responseMetrics: CombinedDashboardData = await this.shopifyAuthService.getMetrics();
 
 
 
       this.atualizarCards(responseMetrics, undefined);
-      this.atualizarGrafico(response.dadosDoGrafico);
+      this.atualizarGrafico(dadosDoGraficoMock);
 
     } catch (error) {
       console.error("Erro ao carregar dados do dashboard:", error);
@@ -151,16 +154,28 @@ export class HomeScreen implements OnInit {
   private atualizarGrafico(chartData: ChartData): void {
     const metricaInfo = this.metricasDosCards.find(m => m.id === this.metricaSelecionada);
     const chartLabel = metricaInfo ? metricaInfo.titulo.replace(' (Hoje)', '') : 'Dados';
-
-    this.dadosDoGrafico = {
-      labels: chartData.labels,
-      datasets: [{
-        label: chartLabel,
-        data: chartData.data,
-        backgroundColor: 'rgba(26, 188, 156, 0.8)',
-        borderColor: 'rgba(22, 160, 133, 1)'
-      }]
-    };
+    if (environment.production === false) {
+      this.dadosDoGrafico = {
+        labels: chartData.labels as string[],
+        datasets: [{
+          label: chartLabel,
+          data: chartData.datasets && chartData.datasets[0] ? (chartData.datasets[0] as any).data : [],
+          backgroundColor: 'rgba(26, 188, 156, 0.8)',
+          borderColor: 'rgba(22, 160, 133, 1)'
+        }]
+      };
+    }
+    // else {
+    //   this.dadosDoGrafico = {
+    //     labels: chartData.labels,
+    //     datasets: [{
+    //       label: chartLabel,
+    //       data: chartData.data,
+    //       backgroundColor: 'rgba(26, 188, 156, 0.8)',
+    //       borderColor: 'rgba(22, 160, 133, 1)'
+    //     }]
+    //   };
+    // }
   }
 
   public onPeriodoChange(novoPeriodo: any): void {
