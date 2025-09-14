@@ -10,14 +10,14 @@ import { environment } from 'environments/environment';
 import { MOCK_GRAFICO_POR_PERIODO } from '@core/mocks/dashboard';
 import { ChartData } from 'chart.js';
 
-interface DashboardMetrics {
+export interface DashboardMetrics {
   receitaRecuperada: number;
   taxaDeConversao: number;
   carrinhosAbandonados: number;
   ticketMedioRecuperado: number;
 }
 
-interface AppChartDataset {
+export interface AppChartDataset {
   labels: string[];
   data: number[];
 }
@@ -25,12 +25,15 @@ interface AppChartDataset {
 interface Recuperacao {
   id: string;
   cliente: string;
+  produto?: string;
+  quantidade?: number;
+  posicao?: number;
   valor: number;
   status: 'Recuperado' | 'Pendente' | 'Falhou';
   data: string;
 }
 
-interface CombinedDashboardData {
+export interface CombinedDashboardData {
   kpisDiarios: DashboardMetrics;
   dadosDoGrafico: AppChartDataset;
 }
@@ -41,7 +44,7 @@ type MetricaId = 'receita' | 'conversao' | 'abandonados' | 'ticket';
 @Component({
   selector: 'app-home-screen',
   standalone: true,
-  imports: [CommonModule, Header, CardMetrica, ChartComponentComponent, Table, Footer],
+  imports: [CommonModule, Header, CardMetrica, ChartComponentComponent, Table],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })
@@ -60,39 +63,45 @@ export class HomeScreen implements OnInit {
 
   constructor(private shopifyAuthService: ShopifyAuthService) { }
 
-  ngOnInit(): void {
-    this.configurarComponentesVisuais();
+  async ngOnInit(): Promise<void> {
     this.carregarDadosDoDashboard();
-    this.carregarDadosDaTabela();
+    await this.carregarDadosDaTabela();
+    this.configurarComponentesVisuaisTable();
   }
 
-  private configurarComponentesVisuais(): void {
-    this.colunasDaTabela = [
-      { key: 'data', label: 'Data' },
-      { key: 'cliente', label: 'Cliente' },
-      { key: 'status', label: 'Status' },
-      { key: 'valor', label: 'Valor Recuperado' }
-    ];
-
+  public configurarComponentesVisuaisTable(type?: string): void {
+    switch (type) {
+      case 'ranking':
+        this.colunasDaTabela = [
+          { key: 'id', label: 'Id' },
+          { key: 'posicao', label: 'Posição' },
+          { key: 'valor', label: 'Valor Do produto' },
+          { key: 'quantidade', label: 'Quantidade Abandonada' }
+        ];
+        break;
+      case 'recuperacoes':
+        this.colunasDaTabela = [
+          { key: 'data', label: 'Data' },
+          { key: 'cliente', label: 'Cliente' },
+          { key: 'status', label: 'Status' },
+          { key: 'valor', label: 'Valor Recuperado' }
+        ];
+        break;
+      default:
+        break;
+    }
     this.tabsDaTabela = [
-      { id: 'todos', titulo: 'Todos' },
-      { id: 'Recuperado', titulo: 'Recuperados' },
-      { id: 'Pendente', titulo: 'Pendentes' },
-      { id: 'Falhou', titulo: 'Falhas' }
+      { id: 'ranking', titulo: 'Ranking Produtos Abandonados' },
+      { id: 'recuperacoes', titulo: 'Produtos Recuperads' },
     ];
   }
 
   async carregarDadosDoDashboard(): Promise<void> {
     try {
-      //const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
-      //const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
-      const dadosDoGraficoMock: ChartData = MOCK_GRAFICO_POR_PERIODO[this.periodoSelecionado];
-      const responseMetrics: CombinedDashboardData = await this.shopifyAuthService.getMetrics();
-
-
-
-      this.atualizarCards(responseMetrics, undefined);
-      this.atualizarGrafico(dadosDoGraficoMock);
+      const endpoint = `/api/dashboard/metrics?metric=${this.metricaSelecionada}&periodo=${this.periodoSelecionado}`;
+      const response: CombinedDashboardData = await this.shopifyAuthService.get(endpoint);
+      this.atualizarCards(response.kpisDiarios);
+      this.atualizarGrafico(response.dadosDoGrafico);
 
     } catch (error) {
       console.error("Erro ao carregar dados do dashboard:", error);
@@ -114,11 +123,7 @@ export class HomeScreen implements OnInit {
     }
   }
 
-  private atualizarCards(kpisTeste: any, kpis?: DashboardMetrics): void {
-    if (!kpis) {
-      this.metricasDosCards = kpisTeste;
-      return
-    }
+  private atualizarCards(kpis: DashboardMetrics): void {
     this.metricasDosCards = [
       {
         id: 'receita',
@@ -151,31 +156,18 @@ export class HomeScreen implements OnInit {
     ];
   }
 
-  private atualizarGrafico(chartData: ChartData): void {
+  private atualizarGrafico(charData: AppChartDataset): void {
     const metricaInfo = this.metricasDosCards.find(m => m.id === this.metricaSelecionada);
     const chartLabel = metricaInfo ? metricaInfo.titulo.replace(' (Hoje)', '') : 'Dados';
-    if (environment.production === false) {
-      this.dadosDoGrafico = {
-        labels: chartData.labels as string[],
-        datasets: [{
-          label: chartLabel,
-          data: chartData.datasets && chartData.datasets[0] ? (chartData.datasets[0] as any).data : [],
-          backgroundColor: 'rgba(26, 188, 156, 0.8)',
-          borderColor: 'rgba(22, 160, 133, 1)'
-        }]
-      };
-    }
-    // else {
-    //   this.dadosDoGrafico = {
-    //     labels: chartData.labels,
-    //     datasets: [{
-    //       label: chartLabel,
-    //       data: chartData.data,
-    //       backgroundColor: 'rgba(26, 188, 156, 0.8)',
-    //       borderColor: 'rgba(22, 160, 133, 1)'
-    //     }]
-    //   };
-    // }
+    this.dadosDoGrafico = {
+      labels: charData.labels,
+      datasets: [{
+        label: chartLabel,
+        data: charData.data,
+        backgroundColor: 'rgba(26, 188, 156, 0.8)',
+        borderColor: 'rgba(22, 160, 133, 1)'
+      }]
+    };
   }
 
   public onPeriodoChange(novoPeriodo: any): void {

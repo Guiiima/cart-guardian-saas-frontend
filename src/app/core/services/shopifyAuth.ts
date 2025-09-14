@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import createApp, { ClientApplication } from '@shopify/app-bridge';
 import { getSessionToken } from '@shopify/app-bridge-utils';
 import { AppBridgeState } from '@shopify/app-bridge';
-import { MOCK_METRICAS } from '@core/mocks/dashboard';
+import { COMBINET_DASHBOARD_DATA, MOCK_METRICAS } from '@core/mocks/dashboard';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -75,20 +75,15 @@ export class ShopifyAuthService {
   }
 
   public async get(endpoint: string): Promise<any> {
-    if (!environment.production) {
-      await new Promise(resolve => setTimeout(resolve, 400));
-
-      if (endpoint.includes('/api/dashboard/metrics')) {
-        return MOCK_METRICAS;
+    if( !environment.production) {
+      if(endpoint.includes('metrics')) {
+        return COMBINET_DASHBOARD_DATA;
       }
-      return Promise.resolve({});
     }
 
     const headers = await this.getAuthHeaders();
     const request$ = this.httpClient.get(endpoint, { headers });
     return await lastValueFrom(request$);
   }
-  public async getMetrics(): Promise<any> {
-    return MOCK_METRICAS;
-  }
+
 }

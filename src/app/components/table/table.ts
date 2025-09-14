@@ -27,6 +27,12 @@ export class Table<T extends object> {
 
   currentType: string = '';
 
+  ngOnInit(): void {
+    if (this.tabs.length > 0) {
+      this.currentType = this.tabs[0].id;
+      this.setTableTabs(this.currentType);
+    }
+  }
   setTableTabs(tap: string): void {
     this.currentType = tap;
     this.idTap.emit(tap);

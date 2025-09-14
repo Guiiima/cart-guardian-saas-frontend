@@ -164,7 +164,19 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        title: { display: false },
+        title: {
+          display: true,
+          text: 'Meu Título do Gráfico',
+          color: palette.text,
+          font: {
+            size: 18,
+            weight: 'bold'
+          },
+          padding: {
+            top: 10,
+            bottom: 20
+          }
+        },
         legend: {
           display: data.datasets.length > 1,
           labels: { color: palette.text }
