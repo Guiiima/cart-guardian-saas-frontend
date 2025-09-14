@@ -65,11 +65,16 @@ export class HomeScreen implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.carregarDadosDoDashboard();
-    await this.carregarDadosDaTabela();
     this.configurarComponentesVisuaisTable();
+    this.carregarDadosDaTabela();
   }
-
   public configurarComponentesVisuaisTable(type?: string): void {
+    this.tabsDaTabela = [
+      { id: 'ranking', titulo: 'Ranking Produtos Abandonados' },
+      { id: 'recuperacoes', titulo: 'Produtos Recuperads' },
+    ];
+  }
+  public configurarComponentesVisuaisTds(type?: string): void {
     switch (type) {
       case 'ranking':
         this.colunasDaTabela = [
@@ -81,19 +86,14 @@ export class HomeScreen implements OnInit {
         break;
       case 'recuperacoes':
         this.colunasDaTabela = [
-          { key: 'data', label: 'Data' },
-          { key: 'cliente', label: 'Cliente' },
+          { key: 'id', label: 'ID' },
+          { key: 'produto', label: 'Produto' },
           { key: 'status', label: 'Status' },
-          { key: 'valor', label: 'Valor Recuperado' }
         ];
         break;
       default:
         break;
     }
-    this.tabsDaTabela = [
-      { id: 'ranking', titulo: 'Ranking Produtos Abandonados' },
-      { id: 'recuperacoes', titulo: 'Produtos Recuperads' },
-    ];
   }
 
   async carregarDadosDoDashboard(): Promise<void> {

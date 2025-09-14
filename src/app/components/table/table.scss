@@ -13,7 +13,9 @@
   --cor-status-pendente: #f39c12;
   --cor-status-falhou: #e74c3c;
 }
+.activity-table{
 
+}
 .card.activity-table {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--cor-fundo-card);
@@ -22,10 +24,20 @@
   border: 1px solid var(--cor-borda-suave);
 }
 
+.table-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--cor-primaria);
+  padding: 20px 16px 0 16px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
 .tabs {
   display: flex;
   gap: 10px;
-  padding: 16px; 
+  padding: 16px;
   border-bottom: 1px solid var(--cor-borda-suave);
 }
 
@@ -62,17 +74,22 @@
   text-align: left;
   font-size: 11px;
   font-weight: 700;
-  color: var(--cor-texto-mutado);
+  color: var(--cor-texto-corpo);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: 1px solid var(--cor-borda-suave);
+  background-color: var(--cor-fundo-pagina);
 }
 
 .activity-table td {
   padding: 14px 16px;
   font-size: 14px;
   color: var(--cor-texto-corpo);
-  border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.activity-table th.coluna-numerica,
+.activity-table td.coluna-numerica {
+  text-align: right;
 }
 
 .activity-table td:last-child,
@@ -80,8 +97,29 @@
   text-align: right;
 }
 
-.activity-table tbody tr:last-child td {
+.activity-table tbody tr {
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+  border-bottom: 1px solid var(--cor-borda-suave);
+}
+
+.activity-table tbody tr:nth-child(even) {
+  background-color: var(--cor-fundo-pagina);
+}
+
+.activity-table tbody tr:last-child {
   border-bottom: none;
+}
+
+.activity-table tbody tr:hover {
+  background-color: var(--cor-primaria-hover);
+  color: var(--cor-texto-branco);
+}
+
+.activity-table tbody tr:hover td,
+.activity-table tbody tr:hover td .status {
+  color: var(--cor-texto-branco);
+  background-color: var(--cor-primaria-hover);
 }
 
 .activity-table .empty-row td {
@@ -89,6 +127,7 @@
   padding: 32px;
   color: var(--cor-texto-mutado);
   font-style: italic;
+  background-color: var(--cor-fundo-card);
 }
 
 .status {
@@ -107,19 +146,52 @@
   color: var(--cor-status-falhou);
 }
 
-.activity-table tbody tr {
-  transition: background-color 0.2s, color 0.2s;
-  cursor: pointer;
-}
+@container (max-width: 550px) {
+  .tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-.activity-table tbody tr:hover {
-  background-color: var(--cor-primaria-hover);
-}
+  .activity-table thead {
+    display: none;
+  }
 
-.activity-table tbody tr:hover td {
-  color: var(--cor-texto-branco);
-}
+  .activity-table tbody,
+  .activity-table tr,
+  .activity-table td {
+    display: block;
+    width: 100%;
+  }
 
-.activity-table tbody tr:hover td .status {
-  color: var(--cor-texto-branco);
+  .activity-table tr {
+    margin-bottom: 16px;
+    border: 1px solid var(--cor-borda-suave);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .activity-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .activity-table td {
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+    border-bottom: 1px solid var(--cor-borda-suave);
+  }
+
+  .activity-table td:last-child {
+    border-bottom: none;
+  }
+
+  .activity-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 16px;
+    width: calc(50% - 24px);
+    text-align: left;
+    font-weight: 600;
+    color: var(--cor-texto-titulo);
+  }
 }
