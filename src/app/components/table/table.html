@@ -1,47 +1,46 @@
-<div class="activity-table">
-  <div class="card activity-table">
-    <h2 class="table-title">Atividades Recentes</h2>
-    @if (tabs.length > 0) {
-    <div class="tabs">
-      @for (tab of tabs; track tab.id) {
-      <button (click)="setTableTabs(tab.id)" [class.active]="currentType === tab.id || (!currentType && $index === 0)">
-        {{ tab.titulo }}
-      </button>
-      }
-    </div>
+<div>
+<div class="card activity-table">
+  <h2 class="table-title">Atividades Recentes</h2>
+  @if (tabs.length > 0) {
+  <div class="tabs">
+    @for (tab of tabs; track tab.id) {
+    <button (click)="setTableTabs(tab.id)" [class.active]="currentType === tab.id || (!currentType && $index === 0)">
+      {{ tab.titulo }}
+    </button>
     }
-    <table>
-      <thead>
-        <tr>
-          @for (coluna of ths; track coluna.key) {
-          <th>{{ coluna.label }}</th>
-          }
-        </tr>
-      </thead>
-
-      <tbody>
-        @for (item of lista; track $index) {
-        <tr>
-          @for (coluna of ths; track coluna.key) {
-          @if (coluna.key === 'status') {
-          <td>
-            <span class="status" [ngClass]="getStatusClass(item)">
-              {{ getValor(item, coluna.key) }}
-            </span>
-          </td>
-          } @else {
-          <td>
-            {{ getValor(item, coluna.key) }}
-          </td>
-          }
-          }
-        </tr>
-        } @empty {
-        <tr class="empty-row">
-          <td [attr.colspan]="ths.length || 1">Nenhum dado encontrado.</td>
-        </tr>
-        }
-      </tbody>
-    </table>
   </div>
+  }
+  <table>
+    <thead>
+      <tr>
+        @for (coluna of ths; track coluna.key) {
+        <th>{{ coluna.label }}</th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (item of lista; track $index) {
+      <tr>
+        @for (coluna of ths; track coluna.key) {
+        @if (coluna.key === 'status') {
+        <td>
+          <span class="status" [ngClass]="getStatusClass(item)">
+            {{ getValor(item, coluna.key) }}
+          </span>
+        </td>
+        } @else {
+        <td>
+          {{ getValor(item, coluna.key) }}
+        </td>
+        }
+        }
+      </tr>
+      } @empty {
+      <tr class="empty-row">
+        <td [attr.colspan]="ths.length || 1">Nenhum dado encontrado.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
 </div>
