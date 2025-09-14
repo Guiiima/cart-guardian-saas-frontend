@@ -39,17 +39,23 @@
     border-bottom: 1px solid var(--cor-borda-suave);
   }
 
-  .tabs button {
-    padding: 8px 16px;
-    border: 1px solid var(--cor-borda-suave);
-    background-color: transparent;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--cor-texto-mutado);
-    transition: all 0.2s ease-in-out;
-  }
+.tabs button {
+  flex: 1;             
+  white-space: normal;           
+  overflow-wrap: break-word;     
+  text-align: center;             
+  
+  padding: 8px 16px;
+  border: 1px solid var(--cor-borda-suave);
+  background-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cor-texto-mutado);
+  transition: all 0.2s ease-in-out;
+}
+
 
   .tabs button:not(.active):hover {
     background-color: var(--cor-borda-suave);
