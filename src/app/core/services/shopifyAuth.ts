@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import createApp, { ClientApplication } from '@shopify/app-bridge';
 import { getSessionToken } from '@shopify/app-bridge-utils';
 import { AppBridgeState } from '@shopify/app-bridge';
-import { COMBINET_DASHBOARD_DATA, MOCK_METRICAS } from '@core/mocks/dashboard';
+import { COMBINET_DASHBOARD_DATA, MOCK_METRICAS, MOCK_RANKING, MOCK_RECUPERACAO_SIMPLE } from '@core/mocks/dashboard';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -78,6 +78,12 @@ export class ShopifyAuthService {
     if( !environment.production) {
       if(endpoint.includes('metrics')) {
         return COMBINET_DASHBOARD_DATA;
+      }
+      else if(endpoint.includes('ranking')) {
+        return MOCK_RANKING;
+      }
+      else if(endpoint.includes('recuperacoes')) {
+        return MOCK_RECUPERACAO_SIMPLE;
       }
     }
 

@@ -22,17 +22,17 @@ export interface AppChartDataset {
   data: number[];
 }
 
-interface Recuperacao {
+export interface Recuperacao {
   id: string;
-  cliente: string;
   produto?: string;
-  quantidade?: number;
-  posicao?: number;
-  valor: number;
   status: 'Recuperado' | 'Pendente' | 'Falhou';
-  data: string;
 }
-
+export interface Ranking {
+  id: string;
+  posicao: number;
+  valor: number;
+  quantidade: number;
+}
 export interface CombinedDashboardData {
   kpisDiarios: DashboardMetrics;
   dadosDoGrafico: AppChartDataset;
@@ -55,10 +55,10 @@ export class HomeScreen implements OnInit {
 
   public metricasDosCards: Metrica[] = [];
   public dadosDoGrafico: AppChartData = { labels: [], datasets: [] };
-  public colunasDaTabela: Coluna<Recuperacao>[] = [];
+  public colunasDaTabela: Coluna<any>[] = [];
   public tabsDaTabela: Tabs[] = [];
 
-  private listaCompletaRecuperacoes: Recuperacao[] = [];
+  private listaCompletaRecuperacoes: any[] = [];
   public listaFiltradaRecuperacoes: Recuperacao[] = [];
 
   constructor(private shopifyAuthService: ShopifyAuthService) { }
@@ -68,13 +68,33 @@ export class HomeScreen implements OnInit {
     this.configurarComponentesVisuaisTable();
     this.carregarDadosDaTabela();
   }
+
+  async carregarDadosDaTabela(): Promise<void> {
+    try {
+      const endpoint = '/api/dashboard/recoveries';
+      const recuperacoes: Recuperacao[] = await this.shopifyAuthService.get(endpoint);
+
+      this.listaCompletaRecuperacoes = recuperacoes;
+      this.filtrarTabela('todos');
+
+    } catch (error) {
+      console.error("Erro ao carregar dados da tabela:", error);
+      this.listaCompletaRecuperacoes = [];
+      this.listaFiltradaRecuperacoes = [];
+    }
+  }
+
   public configurarComponentesVisuaisTable(type?: string): void {
     this.tabsDaTabela = [
       { id: 'ranking', titulo: 'Ranking Produtos Abandonados' },
       { id: 'recuperacoes', titulo: 'Produtos Recuperads' },
     ];
   }
-  public configurarComponentesVisuaisTds(type?: string): void {
+  public async configurarComponentesVisuaisTds(type?: string): Promise<void> {
+    const endpoint = `/api/dashboard/recoveries?typeTabela=${type}`;
+    setTimeout(async () => {
+      this.listaFiltradaRecuperacoes = await this.shopifyAuthService.get(endpoint);
+    }, 0);
     switch (type) {
       case 'ranking':
         this.colunasDaTabela = [
@@ -94,6 +114,7 @@ export class HomeScreen implements OnInit {
       default:
         break;
     }
+    this.listaFiltradaRecuperacoes
   }
 
   async carregarDadosDoDashboard(): Promise<void> {
@@ -105,21 +126,6 @@ export class HomeScreen implements OnInit {
 
     } catch (error) {
       console.error("Erro ao carregar dados do dashboard:", error);
-    }
-  }
-
-  async carregarDadosDaTabela(): Promise<void> {
-    try {
-      const endpoint = '/api/dashboard/recoveries';
-      const recuperacoes: Recuperacao[] = await this.shopifyAuthService.get(endpoint);
-
-      this.listaCompletaRecuperacoes = recuperacoes;
-      this.filtrarTabela('todos');
-
-    } catch (error) {
-      console.error("Erro ao carregar dados da tabela:", error);
-      this.listaCompletaRecuperacoes = [];
-      this.listaFiltradaRecuperacoes = [];
     }
   }
 

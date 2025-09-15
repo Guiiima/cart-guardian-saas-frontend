@@ -1,4 +1,4 @@
-import { AppChartDataset, CombinedDashboardData, DashboardMetrics } from "@features/home-screen/home-screen";
+import { AppChartDataset, CombinedDashboardData, DashboardMetrics, Ranking, Recuperacao } from "@features/home-screen/home-screen";
 import { ChartData } from "chart.js";
 
 export interface Metrica {
@@ -61,32 +61,28 @@ COMBINET_DASHBOARD_DATA = {
   kpisDiarios: MOCK_KPIS_DIARIOS,
   dadosDoGrafico: MOCK_GRAFICO_POR_PERIODO
 };
-// MOCK_GRAFICO_POR_PERIODO = {
-//   SEMANAL: {
-//     labels: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-//     datasets: [
-//       {
-//         label: 'Receita',
-//         data: [1200, 1900, 1500, 2100, 1800, 2300, 1750]
-//       }
-//     ]
-//   },
-//   MENSAL: {
-//     labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
-//     datasets: [
-//       {
-//         label: 'Receita',
-//         data: [8500, 9200, 7800, 11500]
-//       }
-//     ]
-//   },
-//   ANUAL: {
-//     labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-//     datasets: [
-//       {
-//         label: 'Receita',
-//         data: [45000, 47000, 52000, 49000, 55000, 58000, 61000, 59000, 63000, 68000, 71000, 75000]
-//       }
-//     ]
-//   }
-//};
+
+export const MOCK_RECUPERACAO_SIMPLE:  Recuperacao[]= [
+  { id: '1', produto: 'Notebook Dell', status: 'Recuperado' },
+  { id: '2', produto: 'Smartphone Samsung', status: 'Pendente' },
+  { id: '3', produto: 'Tablet Apple', status: 'Falhou' },
+  { id: '4', produto: 'Monitor LG', status: 'Recuperado' },
+  { id: '5', produto: 'Teclado Mecânico', status: 'Pendente' },
+  { id: '6', produto: 'Mouse Gamer', status: 'Recuperado' },
+  { id: '7', produto: 'Headset', status: 'Falhou' },
+  { id: '8', produto: 'Webcam HD', status: 'Recuperado' },
+  { id: '9', produto: 'Impressora Epson', status: 'Pendente' },
+  { id: '10', produto: 'Cadeira Gamer', status: 'Recuperado' }
+];
+export const MOCK_RANKING: Ranking[] = [
+  { id: '1', posicao: 1, valor: 5000, quantidade: 10 },
+  { id: '2', posicao: 2, valor: 4200, quantidade: 8 },
+  { id: '3', posicao: 3, valor: 3800, quantidade: 7 },
+  { id: '4', posicao: 4, valor: 3500, quantidade: 6 },
+  { id: '5', posicao: 5, valor: 3200, quantidade: 5 },
+  { id: '6', posicao: 6, valor: 3000, quantidade: 4 },
+  { id: '7', posicao: 7, valor: 2800, quantidade: 3 },
+  { id: '8', posicao: 8, valor: 2600, quantidade: 2 },
+  { id: '9', posicao: 9, valor: 2400, quantidade: 1 },
+  { id: '10', posicao: 10, valor: 2200, quantidade: 1 }
+];
