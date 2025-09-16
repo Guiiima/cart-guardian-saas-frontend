@@ -1,44 +1,45 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild, AfterViewInit, OnDestroy, Renderer2, ViewChildren, QueryList } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, HostListener, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Setting } from '../setting/setting';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatDialogModule,
+  ],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
 export class Header implements AfterViewInit, OnDestroy {
-  @ViewChildren('animatedElement') elementsToAnimate: QueryList<ElementRef> | undefined;
-
-  private observer?: IntersectionObserver;
-
-  constructor(private elementRef: ElementRef, private dialog: MatDialog) { }
-
-  ngAfterViewInit() {
-    this.type();
-    if (this.elementsToAnimate) {
-      this.elementsToAnimate.forEach((el: ElementRef) => this.observer?.observe(el.nativeElement));
-    }
-  }
-  @ViewChild('typingEffect') typingElementRef: ElementRef | undefined;
+  @ViewChild('typingEffect') typingElementRef?: ElementRef<HTMLElement>;
   isDropdownOpen = false;
+
   private phrases = [
     "Recuperando vendas, um carrinho por vez",
     "Transformando abandono em conversão",
     "Reconectando com seus clientes indecisos",
     "Sua principal ferramenta contra o abandono"
   ];
-  
   private phraseIndex = 0;
   private charIndex = 0;
   private isDeleting = false;
-  private timeoutId: any;
+  private timeoutId?: ReturnType<typeof setTimeout>;
 
   private readonly typingSpeed = 50;
   private readonly deletingSpeed = 50;
   private readonly delayBetweenPhrases = 4000;
 
+  constructor(
+    private elementRef: ElementRef, 
+    private dialog: MatDialog
+  ) { }
+
+  ngAfterViewInit(): void {
+    this.type();
+  }
 
   ngOnDestroy(): void {
     if (this.timeoutId) {
@@ -47,13 +48,23 @@ export class Header implements AfterViewInit, OnDestroy {
   }
 
   private type(): void {
+    if (!this.typingElementRef) return;
+    
     const currentPhrase = this.phrases[this.phraseIndex];
-    if (!this.typingElementRef) {
-      return;
-    }
     const element = this.typingElementRef.nativeElement;
 
-    if (!this.isDeleting) {
+    if (this.isDeleting) {
+      element.textContent = currentPhrase.substring(0, this.charIndex - 1);
+      this.charIndex--;
+
+      if (this.charIndex === 0) {
+        this.isDeleting = false;
+        this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
+        this.timeoutId = setTimeout(() => this.type(), this.typingSpeed);
+      } else {
+        this.timeoutId = setTimeout(() => this.type(), this.deletingSpeed);
+      }
+    } else {
       element.textContent = currentPhrase.substring(0, this.charIndex + 1);
       this.charIndex++;
 
@@ -64,36 +75,25 @@ export class Header implements AfterViewInit, OnDestroy {
         this.timeoutId = setTimeout(() => this.type(), this.typingSpeed);
       }
     }
-    else {
-      element.textContent = currentPhrase.substring(0, this.charIndex);
-      this.charIndex--;
-
-      if (this.charIndex < 0) {
-        this.charIndex = 0;
-        this.isDeleting = false;
-        this.phraseIndex = (this.phraseIndex + 1) % this.phrases.length;
-        this.timeoutId = setTimeout(() => this.type(), this.typingSpeed);
-      } else {
-        this.timeoutId = setTimeout(() => this.type(), this.deletingSpeed);
-      }
-    }
   }
+
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
+
   openConfig(): void {
-    // this.congiguracao.emit(true);
-    // this.isDropdownOpen = false;
     this.dialog.open(Setting, {
       width: '400px',
       data: { mensagem: 'Olá do pai!' }
     });
+    this.isDropdownOpen = false;
   }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.elementRef.nativeElement.contains(event.target) && this.isDropdownOpen) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target as Node);
+    if (!clickedInside && this.isDropdownOpen) {
       this.isDropdownOpen = false;
     }
   }
-
 }

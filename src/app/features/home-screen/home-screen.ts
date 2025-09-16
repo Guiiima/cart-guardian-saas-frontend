@@ -99,10 +99,6 @@ export class HomeScreen implements OnInit {
     ];
   }
   public async configurarComponentesVisuaisTds(type?: string): Promise<void> {
-    const endpoint = `/api/dashboard/recoveries?typeTabela=${type}`;
-    setTimeout(async () => {
-      this.listaFiltradaRecuperacoes = await this.shopifyAuthService.get(endpoint);
-    }, 0);
     switch (type) {
       case 'ranking':
         this.colunasDaTabela = [
@@ -154,7 +150,7 @@ export class HomeScreen implements OnInit {
         detalhe: `${kpis.taxaDeConversao.toFixed(2)}% de conversão`
       },
       {
-        id: 'abandonados',
+        id: 'carrinhos',
         titulo: 'Carrinhos Abandonados',
         icone: 'remove_shopping_cart',
         metrica: `${kpis.carrinhosAbandonados}`,
