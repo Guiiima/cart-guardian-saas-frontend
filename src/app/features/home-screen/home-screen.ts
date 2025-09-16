@@ -67,6 +67,7 @@ export class HomeScreen implements OnInit {
   async ngOnInit(): Promise<void> {
     this.carregarDadosDoDashboard();
     this.configurarComponentesVisuaisTable();
+    this.carregarListaRecuperacao();
   }
 
   async carregarListaRecuperacao(): Promise<void> {
@@ -91,7 +92,7 @@ export class HomeScreen implements OnInit {
     }
   }
 
-  public configurarComponentesVisuaisTable(type?: string): void {
+  public configurarComponentesVisuaisTable(): void {
     this.tabsDaTabela = [
       { id: 'ranking', titulo: 'Ranking Produtos Abandonados' },
       { id: 'recuperacoes', titulo: 'Produtos Recuperads' },
