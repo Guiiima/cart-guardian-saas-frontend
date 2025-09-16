@@ -57,7 +57,8 @@ export class HomeScreen implements OnInit {
   public dadosDoGrafico: AppChartData = { labels: [], datasets: [] };
   public colunasDaTabela: Coluna<any>[] = [];
   public tabsDaTabela: Tabs[] = [];
-
+  public listaRecuperacoes: Recuperacao[] = [];
+  public listaRanking: Ranking[] = [];
   private listaCompletaRecuperacoes: any[] = [];
   public listaFiltradaRecuperacoes: Recuperacao[] = [];
 
@@ -66,21 +67,27 @@ export class HomeScreen implements OnInit {
   async ngOnInit(): Promise<void> {
     this.carregarDadosDoDashboard();
     this.configurarComponentesVisuaisTable();
-    this.carregarDadosDaTabela();
   }
 
-  async carregarDadosDaTabela(): Promise<void> {
+  async carregarListaRecuperacao(): Promise<void> {
     try {
-      const endpoint = '/api/dashboard/recoveries';
-      const recuperacoes: Recuperacao[] = await this.shopifyAuthService.get(endpoint);
-
-      this.listaCompletaRecuperacoes = recuperacoes;
-      this.filtrarTabela('todos');
-
+      const endpoint = '/api/analytics/recuperacao';
+      this.listaRecuperacoes = await this.shopifyAuthService.get(endpoint);
+      console.log('Dados de recuperação carregados:', this.listaRecuperacoes);
     } catch (error) {
-      console.error("Erro ao carregar dados da tabela:", error);
-      this.listaCompletaRecuperacoes = [];
-      this.listaFiltradaRecuperacoes = [];
+      console.error("Erro ao carregar dados de recuperação:", error);
+      this.listaRecuperacoes = []; 
+    }
+  }
+
+  async carregarRankingProdutos(): Promise<void> {
+    try {
+      const endpoint = '/api/analytics/ranking';
+      this.listaRanking = await this.shopifyAuthService.get(endpoint);
+      console.log('Dados do ranking carregados:', this.listaRanking);
+    } catch (error) {
+      console.error("Erro ao carregar dados do ranking:", error);
+      this.listaRanking = []; 
     }
   }
 
