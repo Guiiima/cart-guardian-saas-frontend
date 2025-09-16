@@ -1,0 +1,55 @@
+<div class="login-container">
+  <mat-card aria-label="Formulário de login">
+    <mat-card-header>
+      <mat-card-title aria-level="1">Login</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="seuemail@exemplo.com"
+            autocomplete="email"
+            required
+          >
+          @if (email?.touched || email?.dirty) {
+            @if (email?.hasError('required')) {
+              <mat-error>Email é obrigatório.</mat-error>
+            } @else if (email?.hasError('email')) {
+              <mat-error>Formato de email inválido.</mat-error>
+            }
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+          @if (password?.hasError('required') && (password?.touched || password?.dirty)) {
+            <mat-error>Senha é obrigatória.</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="full-width"
+          type="submit"
+          [disabled]="loginForm.invalid"
+        >
+          Entrar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

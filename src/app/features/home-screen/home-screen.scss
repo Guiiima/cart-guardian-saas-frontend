@@ -1,0 +1,75 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.dashboard-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  padding: 1rem;
+  gap: 1.5rem;
+}
+
+
+.dashboard-details {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  padding: 0em 1em 1em 1em;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  container-type: inline-size;
+  container-name: details-container;
+}
+
+app-chart-component {
+  display: flex;
+  flex: 1;
+  height: 100%;
+}
+
+.dashboard-box {
+  border-radius: 12px;
+}
+
+.dashboard-box-30 {
+  flex: 0 0 40%;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-box-70 {
+  flex: 0 0 60%;
+}
+
+.dashboard-box-scroll {
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .main-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-profile-button {
+    padding-right: 4px;
+  }
+}
+
+
+@container details-container (max-width: 900px) {
+  .dashboard-details {
+    flex-direction: column;
+    gap: 1.5rem; 
+  }
+}

@@ -1,0 +1,22 @@
+<div class="settings-container">
+  <h1>Configurações de Notificação</h1>
+
+  <form [formGroup]="settingsForm" (ngSubmit)="onSave()">
+    <div class="card">
+      <label for="notification-message">Mensagem de Notificação</label>
+<textarea id="notification-message" formControlName="notificationMessage" placeholder="Escreva a mensagem que será enviada"></textarea>
+    </div>
+
+    <div class="card toggle-container">
+      <label for="enable-notifications">Ativar Notificações</label>
+      <input type="checkbox" id="enable-notifications" formControlName="enableNotifications" />
+    </div>
+
+    <div class="card">
+      <label for="send-delay">Tempo para envio (minutos)</label>
+      <input type="number" id="send-delay" formControlName="sendDelay" min="1" max="1440" />
+    </div>
+
+    <button type="submit" [disabled]="!settingsForm.dirty">Salvar Configurações</button>
+  </form>
+</div>
