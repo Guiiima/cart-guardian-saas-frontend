@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+
+export type TipoTabela = 'ranking' | 'recuperacoes';
 
 export interface Coluna<T extends object> {
   key: keyof T;
@@ -7,7 +9,7 @@ export interface Coluna<T extends object> {
 }
 
 export interface Tabs {
-  id: string;
+  id: TipoTabela; 
   titulo: string;
 }
 
@@ -16,31 +18,33 @@ export interface Tabs {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './table.html',
-  styleUrl: './table.scss'
+  styleUrls: ['./table.scss'] 
 })
-export class Table<T extends object> {
+export class Table<T extends object> implements OnInit {
   @Input() ths: Coluna<T>[] = [];
   @Input() lista: T[] = [];
   @Input() tabs: Tabs[] = [];
 
-  @Output() idTap = new EventEmitter<string>();
+  @Output() idTap = new EventEmitter<TipoTabela>();
 
-  currentType: string = '';
+  currentType!: TipoTabela; 
 
   ngOnInit(): void {
     if (this.tabs.length > 0) {
       this.currentType = this.tabs[0].id;
       this.setTableTabs(this.currentType);
+      this.lista
     }
   }
-  setTableTabs(tap: string): void {
+
+  setTableTabs(tap: TipoTabela): void {
     this.currentType = tap;
     this.idTap.emit(tap);
   }
+
   public getValor(item: T, key: keyof T): any {
     return item[key];
   }
-
 
   public getStatusClass(item: T): string {
     const itemComStatus = item as { status?: unknown };

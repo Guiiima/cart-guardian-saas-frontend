@@ -3,29 +3,22 @@
 
   <section class="dashboard-overview">
     @for (metrica of metricasDosCards; track metrica.id) {
-      <app-card-metrica 
-        [dados]="metrica"
-        [selecionado]="metrica.id === metricaSelecionada" 
-        (click)="onCardSelect(metrica.id)">
-      </app-card-metrica>
+    <app-card-metrica [dados]="metrica" [selecionado]="metrica.id === metricaSelecionada"
+      (click)="onCardSelect(metrica.id)">
+    </app-card-metrica>
     }
   </section>
 
   <section class="dashboard-details">
     <div class="dashboard-box dashboard-box-70">
-      <app-chart-component 
-        [chartData]="dadosDoGrafico" 
-        theme="energetic" 
-        (periodoChange)="onPeriodoChange($event)">
+      <app-chart-component [chartData]="dadosDoGrafico" theme="energetic" (periodoChange)="onPeriodoChange($event)">
       </app-chart-component>
     </div>
     <div class="dashboard-box dashboard-box-30 dashboard-box-scroll">
-      <app-table 
-        [ths]="colunasDaTabela" 
-        [lista]="listaRecuperacoes" 
-        [tabs]="tabsDaTabela"
+      <app-table [ths]="colunasDaTabela" [lista]="listTable" [tabs]="tabsDaTabela"
         (idTap)="configurarComponentesVisuaisTds($event)">
       </app-table>
+
     </div>
   </section>
 </main>
