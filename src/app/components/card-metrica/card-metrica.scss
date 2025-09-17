@@ -72,6 +72,33 @@ h2 span {
   color: #9e1616;
 }
 
+/* ================================================================ */
+/* ===== NOVO ESTÁGIO INTERMEDIÁRIO PARA DEIXAR MAIS COMPACTO ===== */
+/* ================================================================ */
+@container card (max-width: 380px) {
+  .card {
+    padding: 12px;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .metric {
+    font-size: 1.35rem;
+  }
+
+  .detail {
+    font-size: 0.8rem;
+  }
+
+  .card-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Regra para quando o card estiver BEM pequeno */
 @container card (max-width: 250px) {
   .card {
     padding: 10px;
@@ -80,6 +107,7 @@ h2 span {
 
   h2 {
     font-size: 0.8rem;
+    margin-bottom: 4px;
   }
 
   .metric {
@@ -93,16 +121,4 @@ h2 span {
   .card-icon {
     font-size: 1.1rem;
   }
-}
-
-@media (max-width: 480px) {
-  .card {
-    padding: 10px;
-    gap: 4px;
-  }
-
-  h2 { font-size: 0.8rem; }
-  .metric { font-size: 1.3rem; }
-  .detail { font-size: 0.75rem; }
-  .card-icon { font-size: 1.1rem; }
 }
