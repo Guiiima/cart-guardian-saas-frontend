@@ -28,6 +28,7 @@ export class HomeScreen implements OnInit {
   public colunasDaTabela: Coluna<any>[] = [];
   public tabsDaTabela: Tabs[] = [];
   public listTable: any[] = [];
+  public isLoadingTable = false;
 
   constructor(private dashboardService: Dashboard) { }
 
@@ -38,16 +39,24 @@ export class HomeScreen implements OnInit {
   }
 
   async carregarTabela(type: 'ranking' | 'recuperacoes'): Promise<void> {
+    const MIN_LOADING_MS = 300;
+    const start = Date.now();
+
+
     try {
-      setTimeout(async () => {
-        this.listTable = await this.dashboardService.getTableData(type);
-        this.listTable
-      }, 0);
+      this.listTable = await this.dashboardService.getTableData(type);
+      this.isLoadingTable = true;
     } catch (error) {
       console.error(`Erro ao carregar dados de ${type}:`, error);
       this.listTable = [];
+    } finally {
+      const elapsed = Date.now() - start;
+      const delay = Math.max(0, MIN_LOADING_MS - elapsed);
+      setTimeout(() => this.isLoadingTable = false, delay);
     }
   }
+
+
 
   public configurarComponentesVisuaisTable(): void {
     this.tabsDaTabela = [
@@ -65,7 +74,7 @@ export class HomeScreen implements OnInit {
           { key: 'valor', label: 'Valor Do produto' },
           { key: 'quantidade', label: 'Quantidade Abandonada' }
         ];
-        this.carregarTabela('ranking');
+        await this.carregarTabela('ranking');
         break;
       case 'recuperacoes':
         this.colunasDaTabela = [
@@ -73,7 +82,7 @@ export class HomeScreen implements OnInit {
           { key: 'produto', label: 'Produto' },
           { key: 'status', label: 'Status' },
         ];
-        this.carregarTabela('recuperacoes');
+        await this.carregarTabela('recuperacoes');
         break;
     }
   }

@@ -1,45 +1,56 @@
 <div class="card activity-table">
   <h2 class="table-title">Atividades Recentes</h2>
   @if (tabs.length > 0) {
-  <div class="tabs">
-    @for (tab of tabs; track tab.id) {
-    <button (click)="setTableTabs(tab.id)" [class.active]="currentType === tab.id || (!currentType && $index === 0)">
-      {{ tab.titulo }}
-    </button>
-    }
-  </div>
+    <div class="tabs">
+      @for (tab of tabs; track tab.id) {
+        <button (click)="setTableTabs(tab.id)" 
+                [class.active]="currentType === tab.id"
+                [disabled]="isLoading"> {{ tab.titulo }}
+        </button>
+      }
+    </div>
   }
   <table>
     <thead>
       <tr>
         @for (coluna of ths; track coluna.key) {
-        <th>{{ coluna.label }}</th>
+          <th>{{ coluna.label }}</th>
         }
       </tr>
     </thead>
 
-    <tbody>
-      @for (item of lista; track $index) {
-      <tr>
-        @for (coluna of ths; track coluna.key) {
-        @if (coluna.key === 'status') {
-        <td>
-          <span class="status" [ngClass]="getStatusClass(item)">
-            {{ getValor(item, coluna.key) }}
-          </span>
-        </td>
-        } @else {
-        <td>
-          {{ getValor(item, coluna.key) }}
-        </td>
+    @if (!isLoading) {
+      <tbody>
+        @for (item of lista; track $index) {
+          <tr>
+            @for (coluna of ths; track coluna.key) {
+              @if (coluna.key === 'status') {
+                <td>
+                  <span class="status" [ngClass]="getStatusClass(item)">
+                    {{ getValor(item, coluna.key) }}
+                  </span>
+                </td>
+              } @else {
+                <td>
+                  {{ getValor(item, coluna.key) }}
+                </td>
+              }
+            }
+          </tr>
+        } @empty {
+          <tr class="empty-row">
+            <td [attr.colspan]="ths.length || 1">Nenhum dado encontrado.</td>
+          </tr>
         }
+      </tbody>
+    } @else {
+      <tbody class="skeleton-loader">
+        @for (i of [0, 1, 2, 3, 4]; track i) { <tr>
+            @for (coluna of ths; track coluna.key) { <td><span class="skeleton-box"></span></td>
+            }
+          </tr>
         }
-      </tr>
-      } @empty {
-      <tr class="empty-row">
-        <td [attr.colspan]="ths.length || 1">Nenhum dado encontrado.</td>
-      </tr>
-      }
-    </tbody>
+      </tbody>
+    }
   </table>
 </div>

@@ -15,7 +15,7 @@
       </app-chart-component>
     </div>
     <div class="dashboard-box dashboard-box-30 dashboard-box-scroll">
-      <app-table [ths]="colunasDaTabela" [lista]="listTable" [tabs]="tabsDaTabela"
+      <app-table [ths]="colunasDaTabela" [lista]="listTable" [tabs]="tabsDaTabela" [isLoading]="isLoadingTable"
         (idTap)="configurarComponentesVisuaisTds($event)">
       </app-table>
 

@@ -1,6 +1,6 @@
   :host {
     display: block;
-    //container-type: inline-size;
+    container-type: inline-size;
     container-name: metricflow-card;
     --cor-primaria: #1abc9c;
     --cor-primaria-hover: #16a085;
@@ -15,6 +15,7 @@
     --cor-status-recuperado: #27ae60;
     --cor-status-pendente: #f39c12;
     --cor-status-falhou: #e74c3c;
+    --skeleton-color: #e0e0e0;
   }
 
   .card.activity-table {
@@ -102,16 +103,52 @@
     text-align: right;
   }
 
-  // .activity-table td:last-child,
-  // .activity-table th:last-child {
-  //   text-align: right;
-  // }
-  .activity-table tbody tr td {
-    transition: color 0.4s ease, background-color 0.4s ease;
+  .skeleton-loader {
+    .skeleton-box {
+      display: inline-block;
+      height: 20px;
+      width: 85%;
+      border-radius: 4px;
+      background-color: var(--skeleton-color);
+      position: relative;
+      overflow: hidden;
+
+      // Efeito de brilho "shimmer"
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+            var(--skeleton-color) 25%,
+            #f0f0f0 50%,
+            var(--skeleton-color) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+
+  .tabs button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   .activity-table tbody tr {
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition: background-color 0.2s, color 0.2s;
     cursor: pointer;
     border-bottom: 1px solid var(--cor-borda-suave);
   }
@@ -124,10 +161,12 @@
     border-bottom: none;
   }
 
+
   .activity-table tbody tr:hover {
     background-color: var(--cor-primaria-hover);
     color: var(--cor-texto-branco);
   }
+
 
   .activity-table tbody tr:hover td,
   .activity-table tbody tr:hover td .status {

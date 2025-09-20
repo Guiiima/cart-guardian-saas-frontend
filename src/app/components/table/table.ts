@@ -24,6 +24,7 @@ export class Table<T extends object> implements OnInit {
   @Input() ths: Coluna<T>[] = [];
   @Input() lista: T[] = [];
   @Input() tabs: Tabs[] = [];
+  @Input() isLoading: boolean = false;
 
   @Output() idTap = new EventEmitter<TipoTabela>();
 
@@ -33,7 +34,6 @@ export class Table<T extends object> implements OnInit {
     if (this.tabs.length > 0) {
       this.currentType = this.tabs[0].id;
       this.setTableTabs(this.currentType);
-      this.lista
     }
   }
 
