@@ -43,7 +43,8 @@ export class Dashboard {
 
     const metricasDosCards = this.transformKpisToCards(response.kpisDiarios);
     const dadosDoGrafico = this.transformChartData(response.dadosDoGrafico, metrica, metricasDosCards);
-
+    console.log('Dados do Dashboard:', response);
+    console.log('Métricas dos Cards:', metricasDosCards);
     return { metricasDosCards, dadosDoGrafico };
   }
 

@@ -1,13 +1,9 @@
-:host {
-  container-type: inline-size;
-  container-name: metricflow-card;
-  display: block;
-}
-
 .header-container {
   display: block;
   background-color: #f9fafb;
   box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
+  container-type: inline-size;
+  container-name: metricflow-card;
 }
 
 .main-header {
@@ -61,6 +57,49 @@
   position: relative;
   display: inline-block;
 }
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  min-width: 200px;
+  background: #fff; /* --background-color */
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08); /* --shadow-color */
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333; /* --secondary-text-color */
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f5f5f5; /* --background-hover */
+}
+
+.dropdown-divider {
+  border: none;
+  border-top: 1px solid #eee; /* --divider-color */
+  margin: 6px 0;
+}
+
+a.dropdown-item:last-child {
+  color: #e57373; /* --danger-color-strong */
+  font-weight: 500;
+}
+
+a.dropdown-item:last-child:hover {
+  background: #fdecea; /* --danger-color-light */
+  color: #d32f2f; /* --danger-color */
+}
 
 .user-profile-button {
   display: flex;
@@ -97,7 +136,7 @@
   transition: transform 0.2s ease;
 }
 
-.user-profile-button[aria-expanded="true"] .chevron-icon {
+.user-profile-button[aria-expanded='true'] .chevron-icon {
   transform: rotate(180deg);
 }
 
