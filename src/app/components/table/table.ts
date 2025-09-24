@@ -46,11 +46,15 @@ export class Table<T extends object> implements OnInit {
     return item[key];
   }
 
-  public getStatusClass(item: T): string {
-    const itemComStatus = item as { status?: unknown };
-    if (itemComStatus && typeof itemComStatus.status === 'string') {
-      return itemComStatus.status.toLowerCase();
-    }
-    return '';
+public getStatusClass(item: T): string {
+  const itemComStatus = item as { status?: unknown };
+  if (itemComStatus && typeof itemComStatus.status === 'string') {
+    return itemComStatus.status
+      .toLowerCase()
+      .normalize("NFD") 
+      .replace(/[\u0300-\u036f]/g, "") 
+      .replace(/\s+/g, "-"); 
   }
+  return '';
+}
 }

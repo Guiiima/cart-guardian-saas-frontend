@@ -3,7 +3,7 @@
   @if (tabs.length > 0) {
     <div class="tabs">
       @for (tab of tabs; track tab.id) {
-        <button (click)="setTableTabs(tab.id)" 
+        <button (click)="setTableTabs(tab.id)"
                 [class.active]="currentType === tab.id"
                 [disabled]="isLoading"> {{ tab.titulo }}
         </button>
@@ -18,15 +18,13 @@
         }
       </tr>
     </thead>
-
-    @if (!isLoading) {
       <tbody>
         @for (item of lista; track $index) {
           <tr>
             @for (coluna of ths; track coluna.key) {
               @if (coluna.key === 'status') {
                 <td>
-                  <span class="status" [ngClass]="getStatusClass(item)">
+                  <span class="status-badge" [ngClass]="getStatusClass(item)">
                     {{ getValor(item, coluna.key) }}
                   </span>
                 </td>
@@ -43,14 +41,5 @@
           </tr>
         }
       </tbody>
-    } @else {
-      <tbody class="skeleton-loader">
-        @for (i of [0, 1, 2, 3, 4]; track i) { <tr>
-            @for (coluna of ths; track coluna.key) { <td><span class="skeleton-box"></span></td>
-            }
-          </tr>
-        }
-      </tbody>
-    }
-  </table>
+    </table>
 </div>

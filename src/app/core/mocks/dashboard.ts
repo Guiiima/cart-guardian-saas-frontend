@@ -63,7 +63,7 @@ export const MOCK_RECUPERACAO_SIMPLE:  Recuperacao[]= [
   { id: '1', produto: 'Notebook Dell', status: 'Recuperado' },
   { id: '2', produto: 'Smartphone Samsung', status: 'Pendente' },
   { id: '3', produto: 'Tablet Apple', status: 'Falhou' },
-  { id: '4', produto: 'Monitor LG', status: 'Recuperado' },
+  { id: '4', produto: 'Monitor LG', status: 'Em Recuperação' },
   { id: '5', produto: 'Teclado Mecânico', status: 'Pendente' },
   { id: '6', produto: 'Mouse Gamer', status: 'Recuperado' },
   { id: '7', produto: 'Headset', status: 'Falhou' },
