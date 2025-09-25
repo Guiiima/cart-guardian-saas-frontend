@@ -7,7 +7,7 @@
 .settings-container h1 {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  color: #111827;
+  color: #1A472A; 
   text-align: center;
 }
 
@@ -25,20 +25,20 @@ form {
 }
 
 .card:hover {
-  box-shadow: 0 15px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 15px 10px rgba(30, 70, 42, 0.07); 
 }
 
 label {
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #374151;
+  color: #2F6B4F; 
 }
 
 textarea,
 input[type="number"],
 input[type="text"] {
   padding: 0.6rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #B2D8B2; 
   border-radius: 8px;
   font-size: 0.95rem;
   outline: none;
@@ -48,8 +48,8 @@ input[type="text"] {
 
 textarea:focus,
 input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #22C55E; 
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);  
 }
 
 .toggle-container {
@@ -65,12 +65,12 @@ input:focus {
 input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  accent-color: #2563eb;
+  accent-color: #059669; 
   cursor: pointer;
 }
 
 button[type="submit"] {
-  background-color: #10b981;
+  background-color: #10b981; 
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -82,11 +82,11 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #059669;
+  background-color: #059669; 
   transform: translateY(-1px);
 }
 
 button[type="submit"]:disabled {
-  background-color: #9ca3af;
+  background-color: #9CB8A5; 
   cursor: not-allowed;
 }

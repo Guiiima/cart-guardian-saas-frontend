@@ -83,8 +83,7 @@ export class Header implements AfterViewInit, OnDestroy {
 
   openConfig(): void {
     this.dialog.open(Setting, {
-      width: '400px',
-      data: { mensagem: 'Olá do pai!' }
+      width: '900px',
     });
     this.isDropdownOpen = false;
   }
