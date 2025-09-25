@@ -166,7 +166,7 @@ export class ChartComponentComponent implements OnChanges, AfterViewInit, OnDest
       plugins: {
         title: {
           display: true,
-          text: 'Meu Título do Gráfico',
+          text: data.datasets[0]?.label || this.chartTitle,
           color: palette.text,
           font: {
             size: 18,
