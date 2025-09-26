@@ -1,11 +1,6 @@
-<div class="app-container">
-    @if (mensagemErro) {
-    <div class="mensagem-erro">
-        {{ mensagemErro }}
-    </div>
-    }
+<div class="main">
     <app-navbar></app-navbar>
-    <main class="main-content" [class.expanded]="navbarFechada">
+    <div class="teste">
         <router-outlet></router-outlet>
-    </main>
+    </div>
 </div>

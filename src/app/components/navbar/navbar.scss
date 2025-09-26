@@ -1,57 +1,62 @@
 :host {
-  --primary-color: #1f1f2e;
-  --primary-hover-color: #34344a;
-  --border-color: #2e2e3c;
-  --text-color: #f0f0f0;
-  --text-light-color: #c1c1c1;
+  --primary-color: #ffffff;
+  --primary-hover-color: #d9f2e6;
+  --border-color: #e6e6e6;
+  --text-color: #1f1f2e;
+  --text-light-color: #4d665c;
   --background-color: #ffffff;
-  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --active-color: #40c785;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
+  display: flex;
   width: 60px;
-  height: 100%;
+  height: 100vh;
   background: var(--primary-color);
   overflow: hidden;
-  color: var(--background-color);
+  color: var(--text-color);
   padding-top: 1rem;
   box-shadow: var(--card-shadow);
-  transition: width 0.5s ease, padding 0.5s ease;
+  transition: width 0.4s ease, padding 0.4s ease;
+  border-right: 1px solid var(--border-color);
 }
 
 .sidebar.expanded {
   width: 220px;
 }
 
-.sidebar ul {
+.sidebar ul,
+.sidebar li {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .sidebar li {
-  margin: 1rem 0;
+  margin: 0.6rem 0;
 }
 
 .sidebar a {
   display: flex;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
   text-decoration: none;
   color: var(--text-light-color);
-  border-radius: 6px;
-  padding: 0.7rem 18px;
-  transition: padding 0.5s ease, background-color 0.2s ease, color 0.2s ease;
+  border-radius: 8px;
+  padding: 0.6rem 16px;
+  transition: padding 0.4s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar.expanded a {
-  padding: 0.7rem 1rem;
+  padding: 0.6rem 1rem;
 }
 
 .sidebar a svg {
-  min-width: 24px;
+  flex: 0 0 24px;
+  margin-right: 10px;
   stroke: var(--text-light-color);
   transition: stroke 0.2s ease;
 }
@@ -61,31 +66,30 @@
   visibility: hidden;
   max-width: 0;
   white-space: nowrap;
-  margin-left: 10px;
   transition: opacity 0.3s ease, max-width 0.3s ease;
 }
 
 .sidebar.expanded .text {
   opacity: 1;
   visibility: visible;
-  max-width: 150px;
+  max-width: 100%;
 }
 
 .sidebar a:hover {
   background: var(--primary-hover-color);
-  color: var(--background-color);
+  color: var(--text-color);
 }
 
 .sidebar a:hover svg {
-  stroke: var(--background-color);
+  stroke: var(--text-color);
 }
 
 .sidebar a.active {
-  background: var(--background-color);
-  color: var(--primary-color);
-  font-weight: bold;
+  background: var(--active-color);
+  color: var(--background-color);
+  font-weight: 600;
 }
 
 .sidebar a.active svg {
-  stroke: var(--primary-color);
+  stroke: var(--background-color);
 }
