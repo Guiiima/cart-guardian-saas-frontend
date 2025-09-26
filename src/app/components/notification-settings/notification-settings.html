@@ -1,0 +1,31 @@
+<div class="settings-container">
+  <header>
+
+    <h2>Configurações de Envio</h2>
+    <p>Defina o comportamento para o envio automático de e-mails.</p>
+  </header>
+
+  <form [formGroup]="settingsForm" (ngSubmit)="onSave()" class="settings-form">
+
+    <div class="card toggle-card">
+      <div class="toggle-content">
+        <label for="enable-notifications">Ativar Notificações via E-mail</label>
+        <p>Permite o envio automático de e-mails para os usuários.</p>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="enable-notifications" formControlName="enableNotifications" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="card delay-card" [@if]="settingsForm.get('enableNotifications')?.value">
+      <label for="send-delay">Tempo para envio (em minutos)</label>
+      <p>Após quantos minutos de inatividade o e-mail deve ser enviado.</p>
+      <input type="number" id="send-delay" formControlName="sendDelay" min="1" max="1440" />
+    </div>
+
+    <button type="submit" class="btn-save" [disabled]="settingsForm.invalid || !settingsForm.dirty">
+      Salvar Alterações
+    </button>
+  </form>
+</div>
