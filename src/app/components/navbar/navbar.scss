@@ -1,0 +1,91 @@
+:host {
+  --primary-color: #1f1f2e;
+  --primary-hover-color: #34344a;
+  --border-color: #2e2e3c;
+  --text-color: #f0f0f0;
+  --text-light-color: #c1c1c1;
+  --background-color: #ffffff;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  background: var(--primary-color);
+  overflow: hidden;
+  color: var(--background-color);
+  padding-top: 1rem;
+  box-shadow: var(--card-shadow);
+  transition: width 0.5s ease, padding 0.5s ease;
+}
+
+.sidebar.expanded {
+  width: 220px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-light-color);
+  border-radius: 6px;
+  padding: 0.7rem 18px;
+  transition: padding 0.5s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar.expanded a {
+  padding: 0.7rem 1rem;
+}
+
+.sidebar a svg {
+  min-width: 24px;
+  stroke: var(--text-light-color);
+  transition: stroke 0.2s ease;
+}
+
+.text {
+  opacity: 0;
+  visibility: hidden;
+  max-width: 0;
+  white-space: nowrap;
+  margin-left: 10px;
+  transition: opacity 0.3s ease, max-width 0.3s ease;
+}
+
+.sidebar.expanded .text {
+  opacity: 1;
+  visibility: visible;
+  max-width: 150px;
+}
+
+.sidebar a:hover {
+  background: var(--primary-hover-color);
+  color: var(--background-color);
+}
+
+.sidebar a:hover svg {
+  stroke: var(--background-color);
+}
+
+.sidebar a.active {
+  background: var(--background-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.sidebar a.active svg {
+  stroke: var(--primary-color);
+}

@@ -28,7 +28,11 @@
 
                 @if (isDropdownOpen) {
                 <ul class="dropdown-menu" id="user-menu">
-                    <li class="dropdown-item" (click)="openConfig()">Configurações do Perfil</li>
+                    <li class="dropdown-item" (click)="openConfig()">Configurações do Tempo de Espera</li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="dropdown-item" (click)="openTemplate()">Configurações do Template de Email</li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

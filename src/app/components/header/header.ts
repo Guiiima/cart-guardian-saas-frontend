@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Setting } from '../setting/setting';
 import { NotificationSettings } from '../notification-settings/notification-settings';
+import { TemplateSelector } from '../template-selector/template-selector';
 
 @Component({
   selector: 'app-header',
@@ -85,6 +85,14 @@ export class Header implements AfterViewInit, OnDestroy {
   openConfig(): void {
     this.dialog.open(NotificationSettings, {
       width: '900px',
+    });
+    this.isDropdownOpen = false;
+  }
+  openTemplate(): void {
+    this.dialog.open(TemplateSelector, {
+      width: '3000px',
+      height: '500px',
+
     });
     this.isDropdownOpen = false;
   }

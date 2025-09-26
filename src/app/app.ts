@@ -1,17 +1,29 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core'; // Adicione Inject, PLATFORM_ID
 import { isPlatformBrowser } from '@angular/common'; // Adicione isPlatformBrowser
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import createApp from '@shopify/app-bridge';
 import { HttpClient } from '@angular/common/http';
+import { animate, group, query, state, style, transition, trigger } from '@angular/animations';
+import { Navbar } from './components/navbar/navbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+
 })
 export class App {
   protected title = 'guardin-saas-frontend';
 
-  constructor() { }
+  mensagemErro: string = '';
+  exibirNavbar: boolean = false;
+  navbarFechada: boolean = true;
+  constructor(
+    private router: Router,
+  ) { }
+  toggleNavbar() {
+    this.navbarFechada = !this.navbarFechada;
+  }
+  
 }

@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'app-notification-settings',
   standalone: true,
   // Precisamos importar o ReactiveFormsModule para o [formGroup]
-  imports: [ CommonModule, ReactiveFormsModule ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './notification-settings.html',
   styleUrls: ['./notification-settings.scss']
 })

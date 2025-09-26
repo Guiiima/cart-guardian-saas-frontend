@@ -38,25 +38,25 @@ export class TemplateSelector implements OnInit {
         id: 'd-12345abcde',
         name: 'Boas-vindas ao Novo Usuário',
         description: 'Template para enviar aos usuários logo após o cadastro no sistema. Inclui um call-to-action para completar o perfil.',
-        thumbnailUrl: 'https://via.placeholder.com/400x500.png?text=Boas-Vindas'
+        thumbnailUrl: 'https://i.pinimg.com/1200x/fb/11/ab/fb11ab467790861dea01e73c62f8bc46.jpg'
       },
       {
         id: 'd-67890fghij',
         name: 'Redefinição de Senha',
         description: 'E-mail transacional para permitir que os usuários redefinam suas senhas com segurança.',
-        thumbnailUrl: 'https://via.placeholder.com/400x500.png?text=Reset+Senha'
+        thumbnailUrl: 'https://i.pinimg.com/1200x/ac/4d/93/ac4d938a6b3f44bce75b38b15c06f367.jpg'
       },
       {
         id: 'd-54321klmno',
         name: 'Newsletter Semanal',
         description: 'Engaje seus usuários com as últimas notícias e atualizações do seu produto ou serviço. Ideal para marketing.',
-        thumbnailUrl: 'https://via.placeholder.com/400x500.png?text=Newsletter'
+        thumbnailUrl: 'https://i.pinimg.com/1200x/81/81/3e/81813e128aaa4746d1aa9174b7d95acb.jpg'
       },
       {
         id: 'd-09876pqrst',
         name: 'Confirmação de Compra',
         description: 'Envie um resumo detalhado do pedido para o cliente após a finalização de uma compra na sua plataforma.',
-        thumbnailUrl: 'https://via.placeholder.com/400x500.png?text=Compra'
+        thumbnailUrl: 'https://i.pinimg.com/736x/f0/33/46/f0334698845d942200e84287df41f21b.jpg'
       }
     ];
   }
