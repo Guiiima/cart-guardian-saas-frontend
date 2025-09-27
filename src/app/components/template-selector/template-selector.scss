@@ -1,201 +1,132 @@
-/* --- Variáveis de Cores (Paleta fornecida) --- */
-:host {
-  --primary-color: #008060; /* Verde principal (tom de floresta/jade) */
-  --primary-hover-color: #00664d; /* Verde mais escuro para o hover */
-  --border-color: #dfe3e8;
-  --text-color: #4A4A4A;
-  --text-light-color: #9B9B9B;
-  --background-color: #ffffff;
-  --page-background: #f8f9fa; /* Fundo geral da página para contraste */
-  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* --- Estilos Gerais --- */
 .template-selector-container {
-  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--page-background);
-  padding: 30px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #ffffff;
   border-radius: 12px;
 }
 
-/* --- Cabeçalho e Barra de Busca --- */
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  flex-wrap: wrap; /* Permite quebrar linha em telas menores */
-  gap: 20px;
-}
+.selector-header {
+  text-align: center;
 
-.header-text h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 0;
-}
+  h2 {
+    color: #008060;
+    margin-bottom: 0.5rem;
+  }
 
-.header-text p {
-  font-size: 1rem;
-  color: var(--text-light-color);
-  margin-top: 5px;
-}
-
-.header-container .search-bar {
-  margin-bottom: 0;
-  min-width: 600px;
-}
-
-.selector-header,
-.template-selector-container > .search-bar {
-  display: none;
+  p {
+    color: #4a4a4a;
+    font-size: 0.95rem;
+  }
 }
 
 .search-bar {
-  margin-bottom: 2.5rem;
   display: flex;
   justify-content: center;
+
+  input {
+    width: 60%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #008060;
+      box-shadow: 0 0 0 2px rgba(0, 128, 96, 0.2);
+    }
+  }
 }
 
-.search-bar input {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border-radius: 2rem;
-  border: 1px solid var(--border-color);
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.search-bar input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
-}
-
-/* --- Grade de Templates --- */
-.template-grid {
+.templates-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-/* --- Card de Template --- */
 .template-card {
-  background-color: var(--background-color);
+  background: #f9fdfb;
+  border: 1px solid #dfe3e8;
   border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--card-shadow);
-  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
   cursor: pointer;
-}
+  transition: all 0.2s ease;
 
-.template-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-.template-card.selected {
-  border: 2px solid var(--primary-color);
-  box-shadow: 0 8px 20px rgba(0, 128, 96, 0.15);
-}
-
-.card-image-wrapper {
-  height: 180px;
-  background-color: #f0f0f0;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 20px;
-  flex-grow: 1; /* Faz o conteúdo ocupar o espaço disponível */
-}
-
-.card-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-color);
-  margin: 0 0 8px 0;
-}
-
-.card-description {
-  font-size: 0.9rem;
-  color: var(--text-light-color);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* --- Ações do Card (Botões) --- */
-.card-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 0 20px 20px 20px;
-  border-top: 1px solid var(--border-color);
-  margin-top: auto; /* Empurra para o final do card */
-  padding-top: 20px;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-hover-color);
-}
-
-.btn-secondary {
-  background-color: #f1f3f5;
-  color: var(--text-color);
-}
-
-.btn-secondary:hover {
-  background-color: #e9ecef;
-}
-
-/* --- Mensagem de "Nenhum Resultado" --- */
-.no-results {
-  text-align: center;
-  padding: 50px;
-  background-color: var(--background-color);
-  border-radius: 12px;
-  color: var(--text-light-color);
-}
-
-/* --- Ajustes para Telas Pequenas --- */
-@media (max-width: 768px) {
-  .header-container {
-    flex-direction: column;
-    align-items: flex-start;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
-  .search-bar input {
-    width: 100%;
+  &.selected {
+    border: 2px solid #008060;
   }
 
-  .template-grid {
-    grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+  .thumbnail {
+    height: 160px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .template-info {
+    padding: 1rem;
+
+    h3 {
+      margin: 0;
+      color: #008060;
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #4a4a4a;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .template-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid #dfe3e8;
+    background: #fff;
+
+    .btn-preview,
+    .btn-select {
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .btn-preview {
+      background: #e6f5f0;
+      color: #00664d;
+
+      &:hover {
+        background: #d1ede2;
+      }
+    }
+
+    .btn-select {
+      background: #008060;
+      color: #fff;
+
+      &:hover {
+        background: #00664d;
+      }
+    }
   }
 }

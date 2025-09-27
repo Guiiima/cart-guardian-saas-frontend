@@ -1,46 +1,40 @@
 <div class="template-selector-container">
-<div class="header-container">
-  <div class="header-text">
-    <!-- <h2>Selecione um Template de E-mail</h2>
-    <p>Escolha um dos templates abaixo para usar como base para suas comunicações.</p> -->
-  </div>
+  <header class="selector-header">
+    <h2>Selecione um Template de E-mail</h2>
+    <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
+  </header>
+
   <div class="search-bar">
     <input
       type="text"
-      placeholder="Buscar por nome ou descrição..."
+      placeholder="🔎 Buscar template..."
       [(ngModel)]="searchTerm"
       (input)="filterTemplates()"
     />
   </div>
-</div>
 
-  @if (filteredTemplates.length > 0) {
-  <div class="template-grid">
-
-    @for (template of filteredTemplates; track template.id) {
-    <div class="template-card" [class.selected]="isSelected(template)" (click)="selectTemplate(template)">
-      <div class="card-image-wrapper">
-        <img [src]="template.thumbnailUrl" [alt]="'Prévia do template ' + template.name" class="card-image">
+  <div class="templates-grid">
+    <div
+      class="template-card"
+      *ngFor="let template of filteredTemplates"
+      [class.selected]="isSelected(template)"
+      (click)="selectTemplate(template)"
+    >
+      <div class="thumbnail">
+        <img [src]="template.thumbnailUrl" [alt]="template.name" />
       </div>
-      <div class="card-content">
-        <h3 class="card-title">{{ template.name }}</h3>
-        <p class="card-description">{{ template.description }}</p>
+      <div class="template-info">
+        <h3>{{ template.name }}</h3>
+        <p>{{ template.description }}</p>
       </div>
-      <div class="card-actions">
-        <button class="btn btn-secondary"
-          (click)="previewTemplate(template); $event.stopPropagation();">Pré-visualizar</button>
-        <button class="btn btn-primary" (click)="selectTemplate(template); $event.stopPropagation();">
-          {{ isSelected(template) ? 'Selecionado' : 'Selecionar' }}
+      <div class="template-actions">
+        <button class="btn-preview" (click)="previewTemplate(template); $event.stopPropagation()">
+          Pré-visualizar
+        </button>
+        <button class="btn-select" (click)="selectTemplate(template); $event.stopPropagation()">
+          Selecionar
         </button>
       </div>
     </div>
-    }
-
   </div>
-  } @else {
-  <div class="no-results">
-    <p>Nenhum template encontrado com o termo "{{ searchTerm }}".</p>
-  </div>
-  }
-
 </div>
