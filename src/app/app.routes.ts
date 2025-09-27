@@ -8,5 +8,6 @@ import { TemplateSelector } from './components/template-selector/template-select
 export const routes: Routes = [
    //{ path: '', component: LoginScreen, title: 'Login' },
    { path: '', component: HomeScreen, title: 'DashBoard' },
+   { path: 'HomeSreen', component: HomeScreen, title: 'DashBoard' },
    { path: 'TemplateSelector', component: TemplateSelector, title: 'DashBoard' },
 ];
