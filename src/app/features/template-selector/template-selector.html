@@ -5,12 +5,13 @@
   </header>
 
   <div class="search-bar">
-    <input
+    <!-- <input
       type="text"
       placeholder="🔎 Buscar template..."
       [(ngModel)]="searchTerm"
       (input)="filterTemplates()"
-    />
+    /> -->
+    <app-search></app-search>
   </div>
 
   <div class="templates-grid">

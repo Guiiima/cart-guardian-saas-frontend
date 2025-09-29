@@ -1,0 +1,89 @@
+$search-bg: #ffffff;
+$icon-color: #ffffff;
+$transition-speed: 0.4s;
+
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: #14cc76;
+    border-radius: 30px;
+    overflow: hidden;
+    transition: width $transition-speed ease-in-out, background-color $transition-speed ease-in-out;
+
+    .search-input {
+        width: 0;
+        opacity: 0;
+        height: 40px;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        padding: 0;
+        color: white;
+        transition: width $transition-speed ease-in-out, opacity 0.2s ease-in-out, padding $transition-speed ease-in-out;  
+    }
+
+    .search-btn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        z-index: 10;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .icon-search, .icon-close {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            transition: opacity $transition-speed ease-in-out, transform $transition-speed ease-in-out;
+        }
+
+        .icon-search {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        .icon-close {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(-90deg);
+        }
+    }
+}
+
+.search-container.active {
+    width: 100%;
+    background-color: #252525;
+
+    .search-input {
+        width: 100%;
+        opacity: 1;
+        padding: 5px 70px 5px 20px;
+    }
+
+    .search-btn {
+        .icon-search {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+        .icon-close {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        svg {
+            stroke: white;
+        }
+    }
+}

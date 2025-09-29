@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { Search } from "app/components/search/search"; 
 
 export interface EmailTemplate {
   id: string;
@@ -12,7 +13,7 @@ export interface EmailTemplate {
 @Component({
   selector: 'app-template-selector',
   standalone: true,
-  imports: [ CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule, Search],
   templateUrl: './template-selector.html',
   styleUrls: ['./template-selector.scss']
 })
@@ -61,7 +62,6 @@ export class TemplateSelector implements OnInit {
     ];
   }
 
-  // O resto da lógica não precisa de alterações
   filterTemplates(): void {
     if (!this.searchTerm) {
       this.filteredTemplates = this.allTemplates;
