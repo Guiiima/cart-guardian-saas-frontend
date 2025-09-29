@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Header } from './header';
+import { Search } from './search';
 
-describe('Header', () => {
-  let component: Header;
-  let fixture: ComponentFixture<Header>;
+describe('Search', () => {
+  let component: Search;
+  let fixture: ComponentFixture<Search>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header]
+      imports: [Search]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Header);
+    fixture = TestBed.createComponent(Search);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

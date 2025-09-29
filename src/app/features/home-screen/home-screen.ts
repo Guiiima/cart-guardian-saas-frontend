@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Header } from "app/components/header/header";
 import { CardMetrica } from "app/components/card-metrica/card-metrica";
 import { ChartComponentComponent, AppChartData } from 'app/components/chart-component/chart-component';
 import { Coluna, Table, Tabs, TipoTabela } from 'app/components/table/table';
@@ -14,7 +13,7 @@ type Periodo = 'SEMANAL' | 'MENSAL' | 'ANUAL';
 @Component({
   selector: 'app-home-screen',
   standalone: true,
-  imports: [CommonModule, Header, CardMetrica, ChartComponentComponent, Table],
+  imports: [CommonModule, CardMetrica, ChartComponentComponent, Table],
   templateUrl: './home-screen.html',
   styleUrl: './home-screen.scss'
 })

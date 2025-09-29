@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NotificationSettings } from '../notification-settings/notification-settings';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { NotificationSettings } from '@features/notification-settings/notification-settings';
 
 @Component({
   selector: 'app-navbar',
