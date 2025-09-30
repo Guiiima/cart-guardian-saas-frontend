@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Search } from "app/components/search/search"; 
+import { Search } from "app/components/search/search";
+import { MatIconModule } from '@angular/material/icon';
 
 export interface EmailTemplate {
   id: string;
@@ -13,7 +14,7 @@ export interface EmailTemplate {
 @Component({
   selector: 'app-template-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, Search],
+  imports: [CommonModule, FormsModule, Search, MatIconModule],
   templateUrl: './template-selector.html',
   styleUrls: ['./template-selector.scss']
 })
@@ -88,4 +89,54 @@ export class TemplateSelector implements OnInit {
   isSelected(template: EmailTemplate): boolean {
     return this.selectedTemplateId === template.id;
   }
+
+  displayedTemplates: EmailTemplate[] = [];
+  selectedTemplate: EmailTemplate | null = null;
+  currentView: 'grid' | 'list' = 'grid';
+
+  // --- Lógica de Paginação ---
+  private batchSize = 8; // Quantos carregar por vez
+  private currentlyDisplayedCount = 0;
+
+  // --- Lógica de Busca ---
+  private currentSearchTerm = '';
+  clearFilters(): void {
+    this.currentSearchTerm = '';
+    // Se você tivesse outros filtros (categorias, etc.), limpe-os aqui também.
+    // Dispare um evento no seu app-search para limpar o input.
+    this.applyFiltersAndShowInitialBatch();
+  }
+
+  applyFiltersAndShowInitialBatch(): void {
+    // 1. Filtra a lista completa de templates
+    const filtered = this.allTemplates.filter(template =>
+      template.name.toLowerCase().includes(this.currentSearchTerm) ||
+      template.description.toLowerCase().includes(this.currentSearchTerm)
+    );
+
+    // 2. Reseta a paginação e exibe o primeiro lote dos resultados filtrados
+    this.currentlyDisplayedCount = 0;
+    this.displayedTemplates = [];
+    this.loadMore(filtered); // Passa a lista já filtrada
+  }
+
+  loadMore(sourceList?: EmailTemplate[]): void {
+    const source = sourceList || this.allTemplates.filter(t => t.name.toLowerCase().includes(this.currentSearchTerm));
+
+    const nextBatch = source.slice(
+      this.currentlyDisplayedCount,
+      this.currentlyDisplayedCount + this.batchSize
+    );
+    this.displayedTemplates.push(...nextBatch);
+    this.currentlyDisplayedCount += this.batchSize;
+  }
+
+  hasMoreTemplatesToShow(): boolean {
+    const sourceCount = this.allTemplates.filter(t => t.name.toLowerCase().includes(this.currentSearchTerm)).length;
+    return this.displayedTemplates.length < sourceCount;
+  }
+  setView(view: 'grid' | 'list'): void {
+    this.currentView = view;
+  }
 }
+

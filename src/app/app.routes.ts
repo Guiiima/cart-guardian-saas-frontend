@@ -8,7 +8,6 @@ import { Search } from './components/search/search';
 
 export const routes: Routes = [
    //{ path: '', component: LoginScreen, title: 'Login' },
-   { path: '', component: Search, title: 'DashBoard' },
    { path: 'HomeSreen', component: HomeScreen, title: 'DashBoard' },
    { path: 'TemplateSelector', component: TemplateSelector, title: 'DashBoard' },
 ];
