@@ -1,17 +1,14 @@
 <div class="template-selector-container">
-  <header class="selector-header">
-    <h2>Selecione um Template de E-mail</h2>
-    <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
-  </header>
-
-  <div class="search-bar">
-    <!-- <input
-      type="text"
-      placeholder="🔎 Buscar template..."
-      [(ngModel)]="searchTerm"
-      (input)="filterTemplates()"
-    /> -->
-    <app-search></app-search>
+  <div class="header-container">
+    
+    <div class="search-bar">
+      <app-search></app-search> 
+    </div>
+    <header class="selector-header">
+      <h2>Selecione um Template de E-mail</h2>
+      <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
+    </header>
+    
   </div>
 
   <div class="templates-grid">

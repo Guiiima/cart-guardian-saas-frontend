@@ -1,14 +1,17 @@
-$search-bg: #ffffff;
-$icon-color: #ffffff;
-$transition-speed: 0.6s; // mais lento que antes (era 0.4s)
+$search-bg: #e6f9f0;       // verde bem clarinho (fundo inicial)
+$search-bg-active: #2bdf79; // verde médio/escuro ativo
+$icon-color: #ffffff;       // ícones brancos
+$input-color: #e8ffe8;      // texto do input em verde-claro
+$btn-hover-bg: #27c764;     // verde intermediário para hover (opcional)
+$transition-speed: 0.6s;
 
 .search-container {
     display: flex;
     align-items: center;
     position: relative;
-    width: 60px;
-    height: 60px;
-    background-color: #14cc76;
+    width: 50px;
+    height: 50px;
+    background-color: #2ecc71; // verde médio inicial
     border-radius: 30px;
     overflow: hidden;
     transition: width $transition-speed ease-in-out, background-color $transition-speed ease-in-out;
@@ -23,7 +26,7 @@ $transition-speed: 0.6s; // mais lento que antes (era 0.4s)
         background: transparent;
         font-size: 16px;
         padding: 0;
-        color: white;
+        color: $input-color;
         transition: 
             width $transition-speed ease-in-out, 
             opacity $transition-speed ease-in-out, 
@@ -34,16 +37,21 @@ $transition-speed: 0.6s; // mais lento que antes (era 0.4s)
         background-color: transparent;
         border: none;
         cursor: pointer;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
         z-index: 10;
+        color: $icon-color;
         position: absolute;
         right: 0;
         top: 0;
+
+        &:hover {
+            background-color: $btn-hover-bg;
+        }
 
         .icon-search, .icon-close {
             position: absolute;
@@ -53,12 +61,9 @@ $transition-speed: 0.6s; // mais lento que antes (era 0.4s)
             transition: opacity $transition-speed ease-in-out, transform $transition-speed ease-in-out;
         }
 
-        .icon-search {
-            opacity: 1;
-        }
-
-        .icon-close {
-            opacity: 0;
+        .icon-search { opacity: 1; }
+        .icon-close { 
+            opacity: 0; 
             transform: translate(-50%, -50%) scale(0) rotate(-90deg);
         }
     }
@@ -66,12 +71,13 @@ $transition-speed: 0.6s; // mais lento que antes (era 0.4s)
 
 .search-container.active {
     width: 100%;
-    background-color: #252525;
+    background-color: $search-bg-active;
 
     .search-input {
         width: 100%;
         opacity: 1;
         padding: 5px 70px 5px 20px;
+        color: $input-color;
     }
 
     .search-btn {
@@ -86,7 +92,9 @@ $transition-speed: 0.6s; // mais lento que antes (era 0.4s)
         }
 
         svg {
-            stroke: white;
+            stroke: #2f7a4e; // verde médio para contraste do X
         }
     }
 }
+
+
