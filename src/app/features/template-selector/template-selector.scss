@@ -1,21 +1,7 @@
 /**
  * ==================================================================================
- * DESCRIÇÃO: Estilos para o componente de seletor de templates.
+ * DESCRIÇÃO: Estilos para o componente de seletor de templates com animações premium
  *
- * ÍNDICE:
- * 1. LAYOUT GERAL E CONTAINERS
- * 2. CABEÇALHO E FERRAMENTAS
- * - Títulos
- * - Barra de Ferramentas (Toolbar)
- * - Botões de Visualização (View Toggle)
- * 3. GRID DE TEMPLATES
- * 4. CARD DE TEMPLATE
- * - Estilo Base do Card
- * - Estados do Card (:hover, .selected)
- * - Componentes Internos (Thumbnail, Info, Actions)
- * - Botões de Ação (Preview, Select)
- * 5. MODO DE VISUALIZAÇÃO EM LISTA
- * 6. ANIMAÇÕES DE TROCA DE VISUALIZAÇÃO
  * ==================================================================================
  */
 
@@ -23,7 +9,6 @@
 /* 1. LAYOUT GERAL E CONTAINERS                  */
 /* ============================================= */
 .template-selector-container {
-  
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -46,8 +31,6 @@
 /* ============================================= */
 /* 2. CABEÇALHO E FERRAMENTAS                    */
 /* ============================================= */
-
-/* --- Títulos --- */
 .selector-header h2 {
   margin: 0;
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
@@ -62,13 +45,13 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 16px;
   color: #718096;
+  text-align: center;
 }
 
-/* --- Barra de Ferramentas (Toolbar) --- */
 .toolbar {
   display: flex;
   align-items: center;
-  padding: 10px 0px 10px 0px;
+  padding: 10px 0px;
   gap: 1rem;
 }
 
@@ -77,10 +60,8 @@
   flex: 1;
   min-width: 300px;
   max-width: 400px;
-  right: 0;
 }
 
-/* --- Botões de Visualização (View Toggle) --- */
 .view-toggle {
   display: flex;
   align-items: center;
@@ -108,7 +89,7 @@
 }
 
 .view-toggle button:hover {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(-10deg);
 }
 
 .view-toggle button svg {
@@ -124,14 +105,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  transition: all 0.4s ease;
+  transition: all 0.5s ease;
 }
 
 /* ============================================= */
-/* 4. CARD DE TEMPLATE                           */
+/* 4. CARD DE TEMPLATE PREMIUM                   */
 /* ============================================= */
-
-/* --- Estilo Base do Card --- */
 .template-card {
   display: flex;
   flex-direction: column;
@@ -139,32 +118,40 @@
   background: #f9fdfb;
   border: 1px solid #dfe3e8;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
   cursor: pointer;
 }
 
-/* --- Estados do Card (:hover, .selected) --- */
+/* Hover flutuante + brilho */
 .template-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px) scale(1.03) rotate(-1deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  filter: brightness(1.03);
 }
 
+/* Estado selecionado */
 .template-card.selected {
   border: 2px solid #008060;
-  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.2);
+  box-shadow: 0 6px 18px rgba(0, 128, 96, 0.25);
 }
 
-/* --- Componentes Internos (Thumbnail, Info, Actions) --- */
+/* Componentes Internos */
 .template-card .thumbnail {
   height: 160px;
   overflow: hidden;
+  border-bottom: 1px solid #dfe3e8;
 }
 
 .template-card .thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.template-card:hover .thumbnail img {
+  transform: scale(1.05);
 }
 
 .template-card .template-info {
@@ -193,14 +180,14 @@
   border-top: 1px solid #dfe3e8;
 }
 
-/* --- Botões de Ação (Preview, Select) --- */
+/* Botões de ação animados */
 .template-card .btn-preview,
 .template-card .btn-select {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   font-size: 0.85rem;
-  transition: background 0.2s;
+  transition: all 0.25s ease;
   cursor: pointer;
 }
 
@@ -211,6 +198,7 @@
 
 .template-card .btn-preview:hover {
   background: #d1ede2;
+  transform: scale(1.1) rotate(-2deg);
 }
 
 .template-card .btn-select {
@@ -220,6 +208,7 @@
 
 .template-card .btn-select:hover {
   background: #00664d;
+  transform: scale(1.1) rotate(2deg);
 }
 
 /* ============================================= */
@@ -255,34 +244,47 @@
 }
 
 /* ============================================= */
-/* 6. ANIMAÇÕES DE TROCA DE VISUALIZAÇÃO         */
+/* 6. ANIMAÇÕES DE TROCA DE VISUALIZAÇÃO PREMIUM */
 /* ============================================= */
-.templates-grid.view-list .template-card {
-  animation: fadeInList 0.4s ease;
-}
 
+/* Grid fade-in com rotação + stagger */
 .templates-grid:not(.view-list) .template-card {
-  animation: fadeInGrid 0.4s ease;
+  opacity: 0;
+  transform: scale(0.9) translateY(30px) rotate(-2deg);
+  animation: fadeInGridPremium 0.6s forwards;
 }
 
-@keyframes fadeInList {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
+@keyframes fadeInGridPremium {
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: scale(1) translateY(0) rotate(0);
   }
 }
 
-@keyframes fadeInGrid {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+/* Lista fade-in com deslocamento horizontal + stagger */
+.templates-grid.view-list .template-card {
+  opacity: 0;
+  transform: translateX(-30px) rotate(-1deg);
+  animation: fadeInListPremium 0.5s forwards;
+}
+
+@keyframes fadeInListPremium {
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateX(0) rotate(0);
   }
 }
+
+/* Stagger automático: grid */
+.templates-grid:not(.view-list) .template-card:nth-child(1) { animation-delay: 0s; }
+.templates-grid:not(.view-list) .template-card:nth-child(2) { animation-delay: 0.05s; }
+.templates-grid:not(.view-list) .template-card:nth-child(3) { animation-delay: 0.1s; }
+.templates-grid:not(.view-list) .template-card:nth-child(4) { animation-delay: 0.15s; }
+.templates-grid:not(.view-list) .template-card:nth-child(5) { animation-delay: 0.2s; }
+
+/* Stagger automático: lista */
+.templates-grid.view-list .template-card:nth-child(1) { animation-delay: 0s; }
+.templates-grid.view-list .template-card:nth-child(2) { animation-delay: 0.05s; }
+.templates-grid.view-list .template-card:nth-child(3) { animation-delay: 0.1s; }
+.templates-grid.view-list .template-card:nth-child(4) { animation-delay: 0.15s; }
+.templates-grid.view-list .template-card:nth-child(5) { animation-delay: 0.2s; }
