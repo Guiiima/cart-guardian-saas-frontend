@@ -15,6 +15,7 @@
  * - Componentes Internos (Thumbnail, Info, Actions)
  * - Botões de Ação (Preview, Select)
  * 5. MODO DE VISUALIZAÇÃO EM LISTA
+ * 6. ANIMAÇÕES DE TROCA DE VISUALIZAÇÃO
  * ==================================================================================
  */
 
@@ -113,7 +114,6 @@
   fill: currentColor;
 }
 
-
 /* ============================================= */
 /* 3. GRID DE TEMPLATES                          */
 /* ============================================= */
@@ -121,6 +121,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
+  transition: all 0.4s ease;
 }
 
 /* ============================================= */
@@ -136,7 +137,7 @@
   border: 1px solid #dfe3e8;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   cursor: pointer;
 }
 
@@ -248,4 +249,37 @@
   gap: 0.5rem;
   border-top: none;
   border-left: 1px solid #dfe3e8;
+}
+
+/* ============================================= */
+/* 6. ANIMAÇÕES DE TROCA DE VISUALIZAÇÃO         */
+/* ============================================= */
+.templates-grid.view-list .template-card {
+  animation: fadeInList 0.4s ease;
+}
+
+.templates-grid:not(.view-list) .template-card {
+  animation: fadeInGrid 0.4s ease;
+}
+
+@keyframes fadeInList {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInGrid {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
