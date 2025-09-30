@@ -1,6 +1,6 @@
 $search-bg: #ffffff;
 $icon-color: #ffffff;
-$transition-speed: 0.4s;
+$transition-speed: 0.6s; // mais lento que antes (era 0.4s)
 
 .search-container {
     display: flex;
@@ -24,7 +24,10 @@ $transition-speed: 0.4s;
         font-size: 16px;
         padding: 0;
         color: white;
-        transition: width $transition-speed ease-in-out, opacity 0.2s ease-in-out, padding $transition-speed ease-in-out;  
+        transition: 
+            width $transition-speed ease-in-out, 
+            opacity $transition-speed ease-in-out, 
+            padding $transition-speed ease-in-out;  
     }
 
     .search-btn {
@@ -46,18 +49,17 @@ $transition-speed: 0.4s;
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(0deg);
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
             transition: opacity $transition-speed ease-in-out, transform $transition-speed ease-in-out;
         }
 
         .icon-search {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(0deg);
         }
 
         .icon-close {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(-90deg);
+            transform: translate(-50%, -50%) scale(0) rotate(-90deg);
         }
     }
 }
@@ -75,11 +77,12 @@ $transition-speed: 0.4s;
     .search-btn {
         .icon-search {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(90deg);
+            transform: translate(-50%, -50%) scale(0) rotate(90deg);
         }
+
         .icon-close {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(0deg);
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
         }
 
         svg {
