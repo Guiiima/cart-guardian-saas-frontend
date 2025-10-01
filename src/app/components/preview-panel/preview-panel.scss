@@ -20,6 +20,9 @@
   width: 100%;
   max-width: 600px;
   overflow: hidden;
+  /* Adicione um padding horizontal ao viewport para a centralização */
+  /* Isso é crucial para que o primeiro/último item se centralize corretamente */
+  padding: 0 calc((100% - 400px) / 2);
 }
 
 .carousel-track {
@@ -27,21 +30,30 @@
   align-items: center;
   gap: 15px;
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Removido o padding daqui, agora está no .carousel-viewport para melhor alinhamento */
 }
 
 .preview-image {
-  height: 90vh;
-  justify-content: center;
+  /* REMOVIDO: height: 90vh; */ /* <<< REMOVA ESTA LINHA para que a altura seja flexível */
   display: flex;
-  border-radius: 8px;
+  justify-content: center;
+  align-items: center; /* Centraliza a imagem verticalmente dentro do painel */
+  /* Não precisa de border-radius aqui, pois a imagem já tem no img */
+  overflow: hidden; /* Garante que nada transborde */
+  height: 100%; /* Permite que o painel defina a altura, e a imagem se ajuste */
 }
 
 .preview-panel {
-  flex: 0 0 400px;
+  flex: 0 0 400px; /* Largura fixa para cada painel do carrossel */
+  height: 85vh;   /* <<< NOVO: Defina uma altura para o painel. Ajuste '85vh' conforme preferir */
+                  /* Isso dará espaço para as setas e um pequeno respiro */
   cursor: pointer;
   opacity: 0.7;
   transform: scale(0.95);
   transition: transform 0.5s ease, opacity 0.5s ease;
+  display: flex; /* Adicionado display flex para ajudar a centralizar o conteúdo */
+  justify-content: center;
+  align-items: center; /* Centraliza o conteúdo (preview-image) dentro do painel */
 }
 
 .preview-panel.active {
@@ -51,11 +63,13 @@
 
 .preview-panel img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100%; /* A imagem tentará preencher a altura total do .preview-image */
+  object-fit: contain; /* <<< ESSENCIAL: Garante que a imagem se ajuste sem cortar */
+  border-radius: 8px; /* Aplique o border-radius diretamente na imagem */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* O restante do seu CSS para as setas permanece o mesmo */
 .arrow {
   position: absolute;
   top: 50%;

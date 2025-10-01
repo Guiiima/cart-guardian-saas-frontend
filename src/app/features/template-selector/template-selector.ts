@@ -27,45 +27,81 @@ export class TemplateSelector implements OnInit {
   selectedTemplateId: string | null = null;
   searchTerm: string = '';
   currentView: 'grid' | 'list' = 'grid';
+  indexSelect: number = 0
 
   private batchSize = 8;
   private currentlyDisplayedCount = 0;
   private currentSearchTerm = '';
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.loadMockTemplates();
     this.filteredTemplates = this.allTemplates;
+    if (this.allTemplates.length > 0) {
+      this.buscarIdTemplate()
+    }
+  }
+  async buscarIdTemplate() {
+    //Por enquanto vou colocar manual depois tenho que alterar para buscar no banco
+    this.selectedTemplateId = this.allTemplates[1].id;
+    this.indexSelect = this.allTemplates.findIndex( x => x.id === this.selectedTemplateId)
+    this.selectedTemplate = this.allTemplates.find(x => x.id === this.selectedTemplateId) ?? null;
+
   }
 
   loadMockTemplates(): void {
     this.allTemplates = [
       {
-        id: 'd-12345abcde',
-        name: 'Boas-vindas ao Novo Usuário',
-        description: 'Template para enviar aos usuários logo após o cadastro no sistema. Inclui um call-to-action para completar o perfil.',
-        thumbnailUrl: 'https://i.pinimg.com/1200x/fb/11/ab/fb11ab467790861dea01e73c62f8bc46.jpg'
+        id: 'd-8fbd711045fb4f63ab851beda397f2c3',
+        name: 'O Minimalista e Pessoal',
+        description: 'Template com design limpo e personalizado, ideal para comunicação direta e pessoal.',
+        thumbnailUrl: 'template-1.png'
       },
       {
-        id: 'd-67890fghij',
-        name: 'Redefinição de Senha',
-        description: 'E-mail transacional para permitir que os usuários redefinam suas senhas com segurança.',
-        thumbnailUrl: 'https://i.pinimg.com/1200x/ac/4d/93/ac4d938a6b3f44bce75b38b15c06f367.jpg'
+        id: 'd-d064c3f93a3847a7949b5c382e0f6c09',
+        name: 'A Prova Social',
+        description: 'Mostra depoimentos, avaliações ou conquistas para gerar confiança.',
+        thumbnailUrl: 'template-2.png'
       },
       {
-        id: 'd-54321klmno',
-        name: 'Newsletter Semanal',
-        description: 'Engaje seus usuários com as últimas notícias e atualizações do seu produto ou serviço. Ideal para marketing.',
-        thumbnailUrl: 'https://i.pinimg.com/1200x/81/81/3e/81813e128aaa4746d1aa9174b7d95acb.jpg'
+        id: 'd-b01afe6458f143a894f36e485d3c16a8',
+        name: 'O Senso de Urgência',
+        description: 'Cria um efeito de urgência ou escassez para motivar ações rápidas.',
+        thumbnailUrl: 'template-3.png'
       },
       {
-        id: 'd-09876pqrst',
-        name: 'Confirmação de Compra',
-        description: 'Envie um resumo detalhado do pedido para o cliente após a finalização de uma compra na sua plataforma.',
-        thumbnailUrl: 'https://i.pinimg.com/736x/f0/33/46/f0334698845d942200e84287df41f21b.jpg'
+        id: 'd-8e33b8af92094ee09b1650230d1de356',
+        name: 'O Visualmente Atraente',
+        description: 'Design chamativo e moderno para atrair a atenção do usuário.',
+        thumbnailUrl: 'template-4.png'
+      },
+      {
+        id: 'd-ea42b9db9c36458a9bee1a53bb656925',
+        name: 'O Prestativo (Tire suas dúvidas)',
+        description: 'Focado em ajudar o usuário com suporte, FAQs ou instruções.',
+        thumbnailUrl: 'template-5.png'
+      },
+      {
+        id: 'd-9fa7cf886d1f4d31891c4295c1e2289d',
+        name: 'O Divertido e Gamificado',
+        description: 'Inclui elementos lúdicos ou gamificação para engajamento.',
+        thumbnailUrl: 'template-6.png'
+      },
+      {
+        id: 'd-ccc67f919a6f4ef28589ed067b9eb53c',
+        name: 'O Benefício em Foco',
+        description: 'Destaca vantagens ou benefícios do produto/serviço.',
+        thumbnailUrl: 'template-7.png'
+      },
+      {
+        id: 'd-23f352c8d3d441aa83b8122570f9fd38',
+        name: 'O Dark Mode',
+        description: 'Design moderno em modo escuro, ideal para usuários que preferem dark theme.',
+        thumbnailUrl: 'template-8.png'
       }
     ];
+
   }
 
   filterTemplates(): void {
@@ -80,8 +116,9 @@ export class TemplateSelector implements OnInit {
     );
   }
 
-  selectTemplate(template: EmailTemplate): void {
+  selectTemplate(template: EmailTemplate, index: Number): void {
     this.selectedTemplateId = template.id;
+    this.indexSelect = Number(index)
     console.log('Template Selecionado:', template);
   }
 

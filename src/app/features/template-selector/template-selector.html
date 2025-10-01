@@ -1,7 +1,7 @@
 <div class="template-selector-container">
 
   <div class="left-container">
-    <app-preview-panel [template]="selectedTemplate"></app-preview-panel>
+    <app-preview-panel [templates]="allTemplates" [indexTemplate]="indexSelect"></app-preview-panel>
   </div>
 
   <div class="right-container">
@@ -42,9 +42,9 @@
 
     <div class="templates-grid" [ngClass]="{'view-list': currentView === 'list'}">
 
-      @for (template of allTemplates; track template.id) {
+      @for (template of allTemplates; track template.id; let i = $index) {
       <div class="template-card" [class.selected]="selectedTemplateId === template.id"
-        (click)="selectTemplate(template)">
+        (click)="selectTemplate(template, $index)">
         <div class="thumbnail">
           <img [src]="template.thumbnailUrl" [alt]="template.name" />
         </div>
