@@ -9,6 +9,7 @@ export interface EmailTemplate {
   name: string;
   description: string;
   thumbnailUrl: string;
+  icon: string;
 }
 
 @Component({
@@ -25,7 +26,10 @@ export class TemplateSelector implements OnInit {
   selectedTemplateId: string | null = null;
   searchTerm: string = '';
   currentView: 'grid' | 'list' = 'grid';
+  thumbnailType: 'image' | 'icon' = 'image';
   indexSelect: number = 0;
+  isViewTransitioning: boolean = false;
+  isThumbnailTransitioning: boolean = false;
 
   constructor(private templateService: TemplateService) { }
 
@@ -71,6 +75,25 @@ export class TemplateSelector implements OnInit {
   }
 
   setView(view: 'grid' | 'list'): void {
-    this.currentView = view;
+    if (this.currentView === view || this.isViewTransitioning) return;
+
+    this.isViewTransitioning = true;
+    this.currentView = 'grid'; 
+    setTimeout(() => {
+      this.currentView = view;
+      this.isViewTransitioning = false;
+    }, 300); 
+  }
+
+
+  setThumbnailType(type: 'image' | 'icon'): void {
+    if (this.thumbnailType === type || this.isThumbnailTransitioning) return;
+
+    this.isThumbnailTransitioning = true;
+    const oldType = this.thumbnailType;
+    setTimeout(() => {
+      this.thumbnailType = type;
+      this.isThumbnailTransitioning = false;
+    }, 250);
   }
 }
