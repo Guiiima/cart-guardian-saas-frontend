@@ -53,7 +53,7 @@
           <p>{{ template.description }}</p>
         </div>
         <div class="template-actions">
-          <button class="btn-preview" (click)="previewTemplate(template); $event.stopPropagation()">
+          <button class="btn-preview" (click)="previewTemplate($index); $event.stopPropagation()">
             Pré-visualizar
           </button>
           <button class="btn-select" [class.selected]="selectedTemplateId === template.id">
@@ -64,8 +64,6 @@
       } @empty {
       <div class="empty-state">
         <h2>Nenhum Template Encontrado</h2>
-        <p>Tente ajustar os termos da sua busca ou limpar os filtros aplicados.</p>
-        <button class="btn-clear-filters" (click)="clearFilters()">Limpar Filtros e Busca</button>
       </div>
       }
     </div>

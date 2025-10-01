@@ -34,17 +34,16 @@ export class PreviewPanel implements OnInit {
   private readonly ITEM_GAP = 15;
 
   ngOnInit(): void {
-    this.indexTemplate
     if (this.templates.length > 0) {
-      this.selectTemplate();
+      this.selectTemplate(this.indexTemplate);
     }
   }
 
-  selectTemplate(index?: number): void {
-    if (this.indexTemplate < 0 || this.indexTemplate >= this.templates.length) {
+  selectTemplate(index: number): void {
+    if (index < 0 || index >= this.templates.length) {
       return;
     }
-    this.selectedIndex = this.indexTemplate;
+    this.selectedIndex = index;
     this.updateTrackPosition();
   }
 
