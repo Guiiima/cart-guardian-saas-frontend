@@ -1,7 +1,6 @@
 /**
  * ==================================================================================
  * DESCRIÇÃO: Estilos para o componente de seletor de templates com animações premium
- *
  * ==================================================================================
  */
 
@@ -10,12 +9,28 @@
 /* ============================================= */
 .template-selector-container {
   display: flex;
-  flex-direction: column;
   width: 100%;
-  gap: 1.5rem;
+  height: 100vh; /* Ocupa a tela inteira */
+  gap: 1rem;
+  background: #fff;
+}
+
+.left-container {
+  flex: 1; /* metade da tela */
   background: #ffffff;
-  height: 100vh;
-  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+}
+
+.right-container {
+  flex: 1; /* metade da tela */
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .header-container {
@@ -26,6 +41,7 @@
   gap: 20px;
   padding: 24px 32px;
   border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
 }
 
 /* ============================================= */
@@ -51,7 +67,7 @@
 .toolbar {
   display: flex;
   align-items: center;
-  padding: 10px 0px;
+  padding: 10px 0;
   gap: 1rem;
 }
 
@@ -97,7 +113,12 @@
   height: 24px;
   fill: currentColor;
 }
-
+.pre-view{
+    background-color: red;
+    width: 95%;
+    height: 95%;
+    border-radius: 20px;
+}
 /* ============================================= */
 /* 3. GRID DE TEMPLATES                          */
 /* ============================================= */
@@ -106,6 +127,13 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   transition: all 0.5s ease;
+}
+
+/* Visualização em lista */
+.templates-grid.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* ============================================= */
@@ -136,7 +164,7 @@
   box-shadow: 0 6px 18px rgba(0, 128, 96, 0.25);
 }
 
-/* Componentes Internos */
+/* Componentes internos do card */
 .template-card .thumbnail {
   height: 160px;
   overflow: hidden;
@@ -214,12 +242,6 @@
 /* ============================================= */
 /* 5. MODO DE VISUALIZAÇÃO EM LISTA              */
 /* ============================================= */
-.templates-grid.view-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .templates-grid.view-list .template-card {
   flex-direction: row;
   height: 140px;
@@ -254,18 +276,19 @@
   animation: fadeInGridPremium 0.6s forwards;
 }
 
-@keyframes fadeInGridPremium {
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0) rotate(0);
-  }
-}
-
 /* Lista fade-in com deslocamento horizontal + stagger */
 .templates-grid.view-list .template-card {
   opacity: 0;
   transform: translateX(-30px) rotate(-1deg);
   animation: fadeInListPremium 0.5s forwards;
+}
+
+/* Keyframes */
+@keyframes fadeInGridPremium {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0) rotate(0);
+  }
 }
 
 @keyframes fadeInListPremium {

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Search } from "app/components/search/search";
 import { MatIconModule } from '@angular/material/icon';
+import { PreviewPanel } from "app/components/preview-panel/preview-panel";
 
 export interface EmailTemplate {
   id: string;
@@ -14,20 +15,24 @@ export interface EmailTemplate {
 @Component({
   selector: 'app-template-selector',
   standalone: true,
-  imports: [CommonModule, FormsModule, Search, MatIconModule],
+  imports: [CommonModule, FormsModule, Search, MatIconModule, PreviewPanel],
   templateUrl: './template-selector.html',
   styleUrls: ['./template-selector.scss']
 })
 export class TemplateSelector implements OnInit {
-
-  @Output() templateSelected = new EventEmitter<EmailTemplate>();
-
   allTemplates: EmailTemplate[] = [];
   filteredTemplates: EmailTemplate[] = [];
+  displayedTemplates: EmailTemplate[] = [];
+  selectedTemplate: EmailTemplate | null = null;
   selectedTemplateId: string | null = null;
   searchTerm: string = '';
+  currentView: 'grid' | 'list' = 'grid';
 
-  constructor() { }
+  private batchSize = 8;
+  private currentlyDisplayedCount = 0;
+  private currentSearchTerm = '';
+
+  constructor() {}
 
   ngOnInit(): void {
     this.loadMockTemplates();
@@ -78,50 +83,36 @@ export class TemplateSelector implements OnInit {
   selectTemplate(template: EmailTemplate): void {
     this.selectedTemplateId = template.id;
     console.log('Template Selecionado:', template);
-    this.templateSelected.emit(template);
   }
 
   previewTemplate(template: EmailTemplate): void {
-    alert(`Pré-visualizando o template: ${template.name}`);
-    console.log('Pré-visualizando:', template);
+    this.selectedTemplate = template;
   }
 
   isSelected(template: EmailTemplate): boolean {
     return this.selectedTemplateId === template.id;
   }
 
-  displayedTemplates: EmailTemplate[] = [];
-  selectedTemplate: EmailTemplate | null = null;
-  currentView: 'grid' | 'list' = 'grid';
-
-  // --- Lógica de Paginação ---
-  private batchSize = 8; // Quantos carregar por vez
-  private currentlyDisplayedCount = 0;
-
-  // --- Lógica de Busca ---
-  private currentSearchTerm = '';
   clearFilters(): void {
     this.currentSearchTerm = '';
-    // Se você tivesse outros filtros (categorias, etc.), limpe-os aqui também.
-    // Dispare um evento no seu app-search para limpar o input.
     this.applyFiltersAndShowInitialBatch();
   }
 
   applyFiltersAndShowInitialBatch(): void {
-    // 1. Filtra a lista completa de templates
     const filtered = this.allTemplates.filter(template =>
       template.name.toLowerCase().includes(this.currentSearchTerm) ||
       template.description.toLowerCase().includes(this.currentSearchTerm)
     );
 
-    // 2. Reseta a paginação e exibe o primeiro lote dos resultados filtrados
     this.currentlyDisplayedCount = 0;
     this.displayedTemplates = [];
-    this.loadMore(filtered); // Passa a lista já filtrada
+    this.loadMore(filtered);
   }
 
   loadMore(sourceList?: EmailTemplate[]): void {
-    const source = sourceList || this.allTemplates.filter(t => t.name.toLowerCase().includes(this.currentSearchTerm));
+    const source = sourceList || this.allTemplates.filter(t =>
+      t.name.toLowerCase().includes(this.currentSearchTerm)
+    );
 
     const nextBatch = source.slice(
       this.currentlyDisplayedCount,
@@ -132,11 +123,13 @@ export class TemplateSelector implements OnInit {
   }
 
   hasMoreTemplatesToShow(): boolean {
-    const sourceCount = this.allTemplates.filter(t => t.name.toLowerCase().includes(this.currentSearchTerm)).length;
+    const sourceCount = this.allTemplates.filter(t =>
+      t.name.toLowerCase().includes(this.currentSearchTerm)
+    ).length;
     return this.displayedTemplates.length < sourceCount;
   }
+
   setView(view: 'grid' | 'list'): void {
     this.currentView = view;
   }
 }
-

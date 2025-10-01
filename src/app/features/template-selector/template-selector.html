@@ -1,12 +1,17 @@
 <div class="template-selector-container">
 
-  <div class="header-container">
-    <header class="selector-header">
-      <h2>Selecione um Modelo para seu E-mail</h2>
-      <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
-    </header>
-
+  <div class="left-container">
+    <app-preview-panel [template]="selectedTemplate"></app-preview-panel>
   </div>
+
+  <div class="right-container">
+    <div class="header-container">
+      <header class="selector-header">
+        <h2>Selecione um Modelo para seu E-mail</h2>
+        <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
+      </header>
+    </div>
+
     <div class="toolbar">
 
       <div class="view-toggle">
@@ -35,32 +40,33 @@
       </div>
     </div>
 
-  <div class="templates-grid" [ngClass]="{'view-list': currentView === 'list'}">
+    <div class="templates-grid" [ngClass]="{'view-list': currentView === 'list'}">
 
-    @for (template of allTemplates; track template.id) {
-    <div class="template-card" [class.selected]="selectedTemplateId === template.id" (click)="selectTemplate(template)">
-      <div class="thumbnail">
-        <img [src]="template.thumbnailUrl" [alt]="template.name" />
+      @for (template of allTemplates; track template.id) {
+      <div class="template-card" [class.selected]="selectedTemplateId === template.id"
+        (click)="selectTemplate(template)">
+        <div class="thumbnail">
+          <img [src]="template.thumbnailUrl" [alt]="template.name" />
+        </div>
+        <div class="template-info">
+          <h3>{{ template.name }}</h3>
+          <p>{{ template.description }}</p>
+        </div>
+        <div class="template-actions">
+          <button class="btn-preview" (click)="previewTemplate(template); $event.stopPropagation()">
+            Pré-visualizar
+          </button>
+          <button class="btn-select" [class.selected]="selectedTemplateId === template.id">
+            {{ selectedTemplateId === template.id ? 'Selecionado' : 'Selecionar' }}
+          </button>
+        </div>
       </div>
-      <div class="template-info">
-        <h3>{{ template.name }}</h3>
-        <p>{{ template.description }}</p>
+      } @empty {
+      <div class="empty-state">
+        <h2>Nenhum Template Encontrado</h2>
+        <p>Tente ajustar os termos da sua busca ou limpar os filtros aplicados.</p>
+        <button class="btn-clear-filters" (click)="clearFilters()">Limpar Filtros e Busca</button>
       </div>
-      <div class="template-actions">
-        <button class="btn-preview" (click)="previewTemplate(template); $event.stopPropagation()">
-          Pré-visualizar
-        </button>
-        <button class="btn-select" [class.selected]="selectedTemplateId === template.id">
-          {{ selectedTemplateId === template.id ? 'Selecionado' : 'Selecionar' }}
-        </button>
-      </div>
+      }
     </div>
-    } @empty {
-    <div class="empty-state">
-      <h2>Nenhum Template Encontrado</h2>
-      <p>Tente ajustar os termos da sua busca ou limpar os filtros aplicados.</p>
-      <button class="btn-clear-filters" (click)="clearFilters()">Limpar Filtros e Busca</button>
-    </div>
-    }
   </div>
-</div>
