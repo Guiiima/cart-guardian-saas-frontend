@@ -46,7 +46,8 @@ export class TemplateSelector implements OnInit {
         this.shopifyAuthService.getSettings()
       ]);
 
-      const savedTemplateId = settings?.templateId;
+      const savedTemplateId = settings?.templateEmail;
+      console.log('Template salvo nas configurações:', settings);
       this.initSelection(savedTemplateId);
 
     } catch (error) {
@@ -71,14 +72,17 @@ export class TemplateSelector implements OnInit {
 
     if (savedTemplateId) {
       templateToSelect = this.allTemplates.find(t => t.id === savedTemplateId);
+      console.log('Template encontrado para seleção:', templateToSelect);
     }
 
     if (!templateToSelect && this.allTemplates.length > 0) {
       templateToSelect = this.allTemplates[0];
+      console.log('Nenhum template salvo. Selecionando o primeiro template disponível:', templateToSelect);
     }
 
     if (templateToSelect) {
       const index = this.allTemplates.indexOf(templateToSelect);
+      console.log('Índice do template selecionado:', index);
       this.selectTemplate(templateToSelect, index, false);
     }
   }
