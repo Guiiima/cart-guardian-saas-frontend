@@ -38,7 +38,9 @@ export class ShopifyAuthService {
         throw new Error('Parâmetro "host" não encontrado na URL.');
       }
 
-      const config = await lastValueFrom(this.httpClient.get<any>(`/api/config?host=${host}`));
+      const config = await lastValueFrom(
+        this.httpClient.get<any>(`/api/config?host=${host}`)
+      );
 
       if (config && config.apiKey) {
         this.app = createApp({
@@ -75,14 +77,12 @@ export class ShopifyAuthService {
   }
 
   public async get(endpoint: string): Promise<any> {
-    if( !environment.production) {
-      if(endpoint.includes('metrics')) {
+    if (!environment.production) {
+      if (endpoint.includes('metrics')) {
         return COMBINET_DASHBOARD_DATA;
-      }
-      else if(endpoint.includes('ranking')) {
+      } else if (endpoint.includes('ranking')) {
         return MOCK_RANKING;
-      }
-      else if(endpoint.includes('recuperacoes')) {
+      } else if (endpoint.includes('recuperacoes')) {
         return MOCK_RECUPERACAO_SIMPLE;
       }
     }
@@ -90,6 +90,10 @@ export class ShopifyAuthService {
     const headers = await this.getAuthHeaders();
     const request$ = this.httpClient.get(endpoint, { headers });
     return await lastValueFrom(request$);
+  }
+
+  public whenReady(): Promise<void> {
+    return this.ensureInitialized(); // ✅ garante inicialização
   }
 
 }
