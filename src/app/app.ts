@@ -26,7 +26,5 @@ export class App {
     this.navbarFechada = !this.navbarFechada;
   }
    ngOnInit(): void {
-    // Log DEPOIS que o Angular e o Router foram inicializados
-    console.log('URL dentro do AppComponent (ngOnInit):', window.location.href);
   }
 }

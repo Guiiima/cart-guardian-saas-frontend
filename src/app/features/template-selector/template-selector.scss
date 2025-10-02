@@ -9,6 +9,98 @@ app-preview-panel {
   background: #fff;
 }
 
+/* Mobile-first: empilha colunas */
+@media (max-width: 1024px) {
+  .template-selector-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-container {
+    flex: unset;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    box-shadow: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .right-container {
+    flex: unset;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* HEADER */
+.header-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.selector-header h2 {
+  margin: 0;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: #008060;
+  text-align: center;
+}
+
+.selector-header p {
+  margin: 8px 0 0;
+  font-size: clamp(14px, 2vw, 16px);
+  color: #718096;
+  text-align: center;
+}
+
+/* TOOLBAR */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px 0;
+  gap: 0.8rem;
+}
+
+.search-bar {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Em telas muito pequenas, centraliza e aumenta a área de clique */
+@media (max-width: 480px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+  }
+
+  .view-toggle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .view-toggle button svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
 .left-container {
   flex: 1;
   background: #ffffff;
@@ -59,7 +151,7 @@ app-preview-panel {
   display: flex;
   align-items: center;
   padding: 10px 0;
-  gap: 1rem;
+  //gap: 1rem;
 }
 
 .search-bar {
@@ -115,10 +207,43 @@ app-preview-panel {
 /* === GRID / LIST === */
 .templates-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
   padding: 1rem;
-  transition: all 0.4s ease;
+}
+
+/* Ajuste para telas pequenas: menos espaço e cards mais compactos */
+@media (max-width: 600px) {
+  .templates-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .template-card .thumbnail {
+    height: 180px;
+  }
+}
+
+/* LIST MODE: ajusta altura e info em telas pequenas */
+@media (max-width: 768px) {
+  .templates-grid.view-list .template-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .templates-grid.view-list .thumbnail {
+    flex: unset;
+    width: 100%;
+    height: 180px;
+  }
+
+  .templates-grid.view-list .template-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    border-left: none;
+    border-top: 1px solid #dfe3e8;
+  }
 }
 
 .templates-grid.view-list {
@@ -166,6 +291,7 @@ app-preview-panel {
   filter: grayscale(100%);
   transition: transform 0.4s ease, filter 0.3s ease;
 }
+
 .template-card:hover .thumbnail img {
   transform: scale(1.05);
   filter: grayscale(0%);
@@ -281,17 +407,45 @@ app-preview-panel {
 }
 
 /* delays escalonados */
-.templates-grid:not(.view-list) .template-card:nth-child(1) { animation-delay: 0s; }
-.templates-grid:not(.view-list) .template-card:nth-child(2) { animation-delay: 0.05s; }
-.templates-grid:not(.view-list) .template-card:nth-child(3) { animation-delay: 0.1s; }
-.templates-grid:not(.view-list) .template-card:nth-child(4) { animation-delay: 0.15s; }
-.templates-grid:not(.view-list) .template-card:nth-child(5) { animation-delay: 0.2s; }
+.templates-grid:not(.view-list) .template-card:nth-child(1) {
+  animation-delay: 0s;
+}
 
-.templates-grid.view-list .template-card:nth-child(1) { animation-delay: 0s; }
-.templates-grid.view-list .template-card:nth-child(2) { animation-delay: 0.05s; }
-.templates-grid.view-list .template-card:nth-child(3) { animation-delay: 0.1s; }
-.templates-grid.view-list .template-card:nth-child(4) { animation-delay: 0.15s; }
-.templates-grid.view-list .template-card:nth-child(5) { animation-delay: 0.2s; }
+.templates-grid:not(.view-list) .template-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.templates-grid:not(.view-list) .template-card:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.templates-grid:not(.view-list) .template-card:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.templates-grid:not(.view-list) .template-card:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.templates-grid.view-list .template-card:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.templates-grid.view-list .template-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.templates-grid.view-list .template-card:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.templates-grid.view-list .template-card:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.templates-grid.view-list .template-card:nth-child(5) {
+  animation-delay: 0.2s;
+}
 
 /* === FADE-OUT entre views === */
 .template-card.fade-out {
@@ -310,11 +464,25 @@ app-preview-panel {
 }
 
 @keyframes thumbFadeOut {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
 @keyframes thumbFadeIn {
-  from { opacity: 0; transform: scale(1.05); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

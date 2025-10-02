@@ -20,7 +20,6 @@ export class Dashboard {
 
   public getTableData(type: 'ranking' | 'recuperacoes'): Promise<any[]> {
     if (!environment.production) {
-      console.log(`%c[MOCK] Retornando dados para tabela: ${type}`, 'color: dodgerblue;');
       const mockData = type === 'ranking' ? MOCK_RANKING : MOCK_RECUPERACAO_SIMPLE;
       return Promise.resolve(mockData);
     }
@@ -31,7 +30,6 @@ export class Dashboard {
 
   public async getHomeScreenData(metrica: string, periodo: string): Promise<HomeScreenData> {
     if (!environment.production) {
-      console.log(`%c[MOCK] Retornando dados para dashboard`, 'color: dodgerblue;');
       const response: CombinedDashboardData = COMBINET_DASHBOARD_DATA;
       const metricasDosCards = this.transformKpisToCards(response.kpisDiarios);
       const dadosDoGrafico = this.transformChartData(response.dadosDoGrafico, metrica, metricasDosCards);
@@ -43,8 +41,6 @@ export class Dashboard {
 
     const metricasDosCards = this.transformKpisToCards(response.kpisDiarios);
     const dadosDoGrafico = this.transformChartData(response.dadosDoGrafico, metrica, metricasDosCards);
-    console.log('Dados do Dashboard:', response);
-    console.log('Métricas dos Cards:', metricasDosCards);
     return { metricasDosCards, dadosDoGrafico };
   }
 

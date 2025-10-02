@@ -68,6 +68,6 @@ export class TemplateService {
   constructor() { }
 
   getTemplates(): EmailTemplate[] {
-    return [...this.templates]; // retorna cópia para não alterar o original
+    return [...this.templates]; 
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Search } from "app/components/search/search";
 import { PreviewPanel } from "app/components/preview-panel/preview-panel";
 import { TemplateService } from '@core/services/Templates/template-service';
+import { ShopifyAuthService } from '@core/services/shopifyAuth';
 
 export interface EmailTemplate {
   id: string;
@@ -20,6 +21,8 @@ export interface EmailTemplate {
   styleUrls: ['./template-selector.scss']
 })
 export class TemplateSelector implements OnInit {
+  public isSaving = false;
+  public isLoading = true;
   allTemplates: EmailTemplate[] = [];
   filteredTemplates: EmailTemplate[] = [];
   selectedTemplate: EmailTemplate | null = null;
@@ -31,19 +34,69 @@ export class TemplateSelector implements OnInit {
   isViewTransitioning: boolean = false;
   isThumbnailTransitioning: boolean = false;
 
-  constructor(private templateService: TemplateService) { }
+  constructor(
+    private templateService: TemplateService,
+    private shopifyAuthService: ShopifyAuthService
+  ) { }
 
-  ngOnInit(): void {
-    this.allTemplates = this.templateService.getTemplates();
-    this.filteredTemplates = [...this.allTemplates];
-    this.initSelection();
+  async ngOnInit(): Promise<void> {
+    try {
+      const [_, settings] = await Promise.all([
+        this.loadAllTemplates(),
+        this.shopifyAuthService.getSettings()
+      ]);
+
+      const savedTemplateId = settings?.templateId;
+      this.initSelection(savedTemplateId);
+
+    } catch (error) {
+      console.error('Erro ao inicializar dados:', error);
+      this.initSelection();
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  private initSelection(): void {
-    if (this.allTemplates.length > 1) {
-      this.selectedTemplateId = this.allTemplates[1].id;
-      this.indexSelect = this.allTemplates.findIndex(t => t.id === this.selectedTemplateId);
-      this.selectedTemplate = this.allTemplates[this.indexSelect] ?? null;
+  private async loadAllTemplates(): Promise<void> {
+    this.allTemplates = this.templateService.getTemplates();
+    this.filteredTemplates = [...this.allTemplates];
+  }
+
+  private initSelection(savedTemplateId?: string | null): void {
+    if (!this.allTemplates || this.allTemplates.length === 0) {
+      return;
+    }
+
+    let templateToSelect: EmailTemplate | undefined;
+
+    if (savedTemplateId) {
+      templateToSelect = this.allTemplates.find(t => t.id === savedTemplateId);
+    }
+
+    if (!templateToSelect && this.allTemplates.length > 0) {
+      templateToSelect = this.allTemplates[0];
+    }
+
+    if (templateToSelect) {
+      const index = this.allTemplates.indexOf(templateToSelect);
+      this.selectTemplate(templateToSelect, index, false);
+    }
+  }
+
+  async selectTemplate(template: EmailTemplate, index: number, shouldSave: boolean = true): Promise<void> {
+    this.selectedTemplateId = template.id;
+    this.indexSelect = index;
+    this.selectedTemplate = template;
+
+    if (shouldSave) {
+      this.isSaving = true;
+      try {
+        await this.shopifyAuthService.saveSelectedTemplate(template.id);
+      } catch (error) {
+        console.error('Erro ao salvar o template:', error);
+      } finally {
+        this.isSaving = false;
+      }
     }
   }
 
@@ -59,13 +112,6 @@ export class TemplateSelector implements OnInit {
     );
   }
 
-  selectTemplate(template: EmailTemplate, index: number): void {
-    this.selectedTemplateId = template.id;
-    this.indexSelect = index;
-    this.selectedTemplate = template;
-    console.log('Template selecionado:', template);
-  }
-
   previewTemplate(index: number): void {
     this.indexSelect = index;
   }
@@ -76,24 +122,20 @@ export class TemplateSelector implements OnInit {
 
   setView(view: 'grid' | 'list'): void {
     if (this.currentView === view || this.isViewTransitioning) return;
-
     this.isViewTransitioning = true;
-    this.currentView = 'grid'; 
     setTimeout(() => {
       this.currentView = view;
       this.isViewTransitioning = false;
-    }, 300); 
+    }, 300);
   }
-
 
   setThumbnailType(type: 'image' | 'icon'): void {
     if (this.thumbnailType === type || this.isThumbnailTransitioning) return;
-
     this.isThumbnailTransitioning = true;
-    const oldType = this.thumbnailType;
     setTimeout(() => {
       this.thumbnailType = type;
       this.isThumbnailTransitioning = false;
     }, 250);
   }
 }
+

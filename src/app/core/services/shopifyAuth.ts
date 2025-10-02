@@ -5,8 +5,11 @@ import { lastValueFrom } from 'rxjs';
 import createApp, { ClientApplication } from '@shopify/app-bridge';
 import { getSessionToken } from '@shopify/app-bridge-utils';
 import { AppBridgeState } from '@shopify/app-bridge';
-import { COMBINET_DASHBOARD_DATA, MOCK_METRICAS, MOCK_RANKING, MOCK_RECUPERACAO_SIMPLE } from '@core/mocks/dashboard';
+
 import { environment } from '../../../environments/environment';
+
+// Mock data
+import { COMBINET_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO_SIMPLE } from '@core/mocks/dashboard';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +19,10 @@ export class ShopifyAuthService {
   private app: ClientApplication<AppBridgeState> | undefined;
   private initializationPromise: Promise<void> | null = null;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
-  private ensureInitialized(): Promise<void> {
+  // Inicialização única do App Bridge
+  public whenReady(): Promise<void> {
     if (!this.initializationPromise) {
       this.initializationPromise = this.initializeAppBridge();
     }
@@ -27,73 +31,90 @@ export class ShopifyAuthService {
 
   private async initializeAppBridge(): Promise<void> {
     if (!environment.production) {
+      console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
       return;
     }
 
+    const params = new URLSearchParams(window.location.search);
+    const host = params.get('host');
+
+    if (!host) throw new Error('Parâmetro "host" não encontrado na URL.');
+
     try {
-      const params = new URLSearchParams(window.location.search);
-      const host = params.get('host');
+      const config = await lastValueFrom(this.httpClient.get<any>(`/api/config?host=${host}`));
 
-      if (!host) {
-        throw new Error('Parâmetro "host" não encontrado na URL.');
-      }
+      if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
 
-      const config = await lastValueFrom(
-        this.httpClient.get<any>(`/api/config?host=${host}`)
-      );
+      this.app = createApp({
+        apiKey: config.apiKey,
+        host: config.host,
+        forceRedirect: true,
+      });
 
-      if (config && config.apiKey) {
-        this.app = createApp({
-          apiKey: config.apiKey,
-          host: config.host,
-          forceRedirect: true,
-        });
-      } else {
-        throw new Error('API Key não recebida do backend.');
-      }
     } catch (error) {
-      console.error('Falha crítica ao inicializar o Shopify App Bridge:', error);
+      console.error('Falha ao inicializar o Shopify App Bridge:', error);
       return Promise.reject(error);
     }
   }
 
+  // Retorna os headers com token JWT
   private async getAuthHeaders(): Promise<HttpHeaders> {
-    await this.ensureInitialized();
+    await this.whenReady();
 
-    if (!this.app) {
-      throw new Error('Shopify App Bridge não está disponível.');
-    }
+    if (!this.app) throw new Error('Shopify App Bridge não disponível.');
+
     const token = await getSessionToken(this.app);
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  public async post(endpoint: string, data: any): Promise<any> {
-    if (!environment.production) {
-      return Promise.resolve({ success: true, message: "Resposta mockada" });
-    }
-    const headers = await this.getAuthHeaders();
-    const request$ = this.httpClient.post(endpoint, data, { headers });
-    return await lastValueFrom(request$);
-  }
-
+  // GET genérico
   public async get(endpoint: string): Promise<any> {
     if (!environment.production) {
-      if (endpoint.includes('metrics')) {
-        return COMBINET_DASHBOARD_DATA;
-      } else if (endpoint.includes('ranking')) {
-        return MOCK_RANKING;
-      } else if (endpoint.includes('recuperacoes')) {
-        return MOCK_RECUPERACAO_SIMPLE;
-      }
+      return this.mockGet(endpoint);
     }
 
-    const headers = await this.getAuthHeaders();
-    const request$ = this.httpClient.get(endpoint, { headers });
-    return await lastValueFrom(request$);
+    try {
+      const headers = await this.getAuthHeaders();
+      const request$ = this.httpClient.get(endpoint, { headers });
+      return await lastValueFrom(request$);
+    } catch (error) {
+      console.error(`Erro ao fazer GET para ${endpoint}:`, error);
+      return Promise.reject(error);
+    }
   }
 
-  public whenReady(): Promise<void> {
-    return this.ensureInitialized(); // ✅ garante inicialização
+  // POST genérico
+  public async post(endpoint: string, data: any): Promise<any> {
+    if (!environment.production) {
+      console.warn(`MODO DESENVOLVIMENTO: Simulação de POST para ${endpoint}`, data);
+      return Promise.resolve({ success: true, message: 'Resposta mockada' });
+    }
+
+    try {
+      const headers = await this.getAuthHeaders();
+      const request$ = this.httpClient.post(endpoint, data, { headers });
+      return await lastValueFrom(request$);
+    } catch (error) {
+      console.error(`Erro ao fazer POST para ${endpoint}:`, error);
+      return Promise.reject(error);
+    }
   }
 
+  // Mock de GET
+  private mockGet(endpoint: string): Promise<any> {
+    if (endpoint.includes('/api/dashboard/metrics')) return Promise.resolve(COMBINET_DASHBOARD_DATA);
+    if (endpoint.includes('/api/analytics/ranking')) return Promise.resolve(MOCK_RANKING);
+    if (endpoint.includes('/api/analytics/recuperacao')) return Promise.resolve(MOCK_RECUPERACAO_SIMPLE);
+    if (endpoint.includes('/api/settings')) return Promise.resolve({ id: 'mock-id-123', templateEmail: 'd-mock-template-id' });
+    return Promise.resolve({});
+  }
+
+  // Funções específicas
+  public async saveSelectedTemplate(templateId: string): Promise<any> {
+    return this.post('/api/settings/template', { templateId });
+  }
+
+  public async getSettings(): Promise<any> {
+    return this.get('/api/settings');
+  }
 }
