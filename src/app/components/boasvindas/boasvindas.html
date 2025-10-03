@@ -1,17 +1,15 @@
 <div class="welcome-container" [class.zoom-effect]="isNavigating">
 
-  <!-- Mensagem fixa -->
-  <h2 id="welcome-fixed">
-    <span *ngFor="let char of welcomeTextArray; let i = index" [style.--i]="i + 1"
-          [innerHTML]="char === ' ' ? '&nbsp;' : char">
-    </span>
-  </h2>
+    <!-- Mensagem fixa -->
+    <h2 id="welcome-fixed">
+        Bem-vindo ao Cart Guardian
+    </h2>
 
-  <!-- Mensagem aleatória -->
-  <h1 id="page-logo" (click)="navigateToGraph()">
-    <span *ngFor="let char of randomMessageArray; let i = index" [style.--i]="i + 1"
-          [innerHTML]="char === ' ' ? '&nbsp;' : char">
-    </span>
-  </h1>
+    <!-- Mensagem aleatória -->
+    <h1 id="page-logo" (click)="navigateToGraph()">
+        <span *ngFor="let char of randomMessageArray; let i = index" [style.--i]="i + 1"
+            [innerHTML]="char === ' ' ? '&nbsp;' : char">
+        </span>
+    </h1>
 
 </div>

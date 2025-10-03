@@ -104,12 +104,12 @@ export class TemplateSelector implements OnInit {
     }
   }
 
-  buscarTemplates(): void {
-    if (!this.searchTerm.trim()) {
+  buscarTemplates(searchTerm: String): void {
+    if (!searchTerm.trim()) {
       this.filteredTemplates = [...this.allTemplates];
       return;
     }
-    const lowerSearch = this.searchTerm.toLowerCase();
+    const lowerSearch = searchTerm.toLowerCase();
     this.filteredTemplates = this.allTemplates.filter(t =>
       t.name.toLowerCase().includes(lowerSearch) ||
       t.description.toLowerCase().includes(lowerSearch)

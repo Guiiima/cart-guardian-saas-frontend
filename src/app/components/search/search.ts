@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,10 +11,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class Search {
   @ViewChild('searchInput') searchInput!: ElementRef;
+  @Output() inputValue = new EventEmitter<String>();
 
   searchText: string = '';
   isSearchActive: boolean = false;
-
+  onInput(value?: Event) {
+    if(value === undefined) return;
+    const input = value.target as HTMLInputElement;
+    this.inputValue.emit(input.value);
+  }
   toggleSearch(): void {
     this.isSearchActive = !this.isSearchActive;
 
