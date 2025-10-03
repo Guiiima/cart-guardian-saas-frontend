@@ -42,7 +42,7 @@ export class NotificationSettings implements OnInit {
       });
       this.campaignId = "mock-campaign-id-123";
       this.lojaId = "mock-loja-id-456";
-      return; 
+      return;
     }
 
     try {
@@ -54,7 +54,8 @@ export class NotificationSettings implements OnInit {
         this.settingsForm.patchValue({
           notificationMessage: settings.templateEmail,
           enableNotifications: settings.ativa,
-          sendDelay: settings.tempoEsperaMin
+          sendDelay: settings.tempoEsperaMin,
+          logoUrl: settings.logoUrl
         });
       }
     } catch (error) {
@@ -64,12 +65,12 @@ export class NotificationSettings implements OnInit {
   }
 
   async onSave(): Promise<void> {
-    if (this.settingsForm.valid) { 
+    if (this.settingsForm.valid) {
       if (!environment.production) {
         console.warn("MODO DESENVOLVIMENTO: Simulação de salvamento bem-sucedida.", this.settingsForm.value);
         this.snackBar.open('Configurações salvas com sucesso! (Simulação)', 'Fechar', { duration: 3000 });
         this.settingsForm.markAsPristine();
-        return; 
+        return;
       }
 
       const settingsData = {
@@ -79,9 +80,15 @@ export class NotificationSettings implements OnInit {
         ativa: this.settingsForm.value.enableNotifications,
         tempoEsperaMin: this.settingsForm.value.sendDelay
       };
+      const logoData = {
+        logoUrl: this.settingsForm.value.logoUrl
+      };
 
       try {
-        await this.shopifyAuthService.post('/api/campanhas', settingsData);
+        await Promise.all([
+          this.shopifyAuthService.post('/api/campanhas', settingsData),
+          this.shopifyAuthService.post('/api/settings/logo', logoData) // <-- CHAMA A API DA LOGO
+        ]);
 
         this.snackBar.open('Configurações salvas com sucesso!', 'Fechar', { duration: 3000 });
         this.settingsForm.markAsPristine();

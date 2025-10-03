@@ -1,8 +1,7 @@
 <div class="settings-container">
   
   <header>
-
-    <h2>Configurações de Envio</h2>
+    <h2>Configurações da Campanha</h2>
     <p>Defina o comportamento para o envio automático de e-mails.</p>
   </header>
 
@@ -10,8 +9,8 @@
 
     <div class="card toggle-card">
       <div class="toggle-content">
-        <label for="enable-notifications">Ativar Notificações via E-mail</label>
-        <p>Permite o envio automático de e-mails para os usuários.</p>
+        <label for="enable-notifications">Ativar Campanha de Recuperação</label>
+        <p>Permite o envio automático de e-mails para os carrinhos abandonados.</p>
       </div>
       <label class="switch">
         <input type="checkbox" id="enable-notifications" formControlName="enableNotifications" />
@@ -25,6 +24,11 @@
       <input type="number" id="send-delay" formControlName="sendDelay" min="1" max="1440" />
     </div>
 
+    <div class="card logo-url-card" [@if]="settingsForm.get('enableNotifications')?.value">
+      <label for="logo-url">URL da Logo da Loja</label>
+      <p>Cole aqui a URL pública da imagem da sua logo. Ela aparecerá no topo dos e-mails.</p>
+      <input type="url" id="logo-url" formControlName="logoUrl" placeholder="https://cdn.sua-loja.com/logo.png" />
+    </div>
     <button type="submit" class="btn-save" [disabled]="settingsForm.invalid || !settingsForm.dirty">
       Salvar Alterações
     </button>

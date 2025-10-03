@@ -18,8 +18,10 @@
   color: var(--text-color);
   padding-top: 1rem;
   box-shadow: var(--card-shadow);
-  transition: width 0.4s ease, padding 0.4s ease;
   border-right: 1px solid var(--border-color);
+
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.expanded {
@@ -47,7 +49,7 @@
   color: var(--text-light-color);
   border-radius: 8px;
   padding: 0.6rem 16px;
-  transition: padding 0.4s ease, background-color 0.2s ease, color 0.2s ease;
+  transition: all 0.3s ease; 
 }
 
 .sidebar.expanded a {
@@ -58,7 +60,7 @@
   flex: 0 0 24px;
   margin-right: 10px;
   stroke: var(--text-light-color);
-  transition: stroke 0.2s ease;
+  transition: stroke 0.3s ease, transform 0.3s ease;
 }
 
 .text {
@@ -66,13 +68,15 @@
   visibility: hidden;
   max-width: 0;
   white-space: nowrap;
-  transition: opacity 0.3s ease, max-width 0.3s ease;
+  transition: opacity 0.4s ease, max-width 0.4s ease, transform 0.4s ease;
+  transform: translateX(-10px);
 }
 
 .sidebar.expanded .text {
   opacity: 1;
   visibility: visible;
   max-width: 100%;
+  transform: translateX(0);
 }
 
 .sidebar a:hover {
@@ -82,6 +86,7 @@
 
 .sidebar a:hover svg {
   stroke: var(--text-color);
+  transform: scale(1.1); 
 }
 
 .sidebar a.active {
