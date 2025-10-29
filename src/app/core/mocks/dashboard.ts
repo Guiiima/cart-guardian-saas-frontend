@@ -1,43 +1,40 @@
-import { AppChartDataset, CombinedDashboardData, DashboardMetrics, Ranking, Recuperacao } from "@features/home-screen/home-screen";
-import { ChartData } from "chart.js";
+import { DashboardMetrics } from "@core/interface/dashboardMetrics";
+import { AppChartDataset } from "@core/interface/appChartDataset";
+import { CombinedDashboardData } from "@core/interface/combinedDashboardData";
+import { Ranking } from "@core/interface/ranking";
+import { Recuperacao } from "@core/interface/recuperacao";
+import { metrica } from "@core/enums/metrica";
 
-export interface Metrica {
-  id: string;
-  titulo: string;
-  metrica: string;
-  icone: string;
-  detalhe: string;
-}
 
-export let MOCK_METRICAS: Metrica[];
+
 export let MOCK_KPIS_DIARIOS: DashboardMetrics;
 export let MOCK_GRAFICO_POR_PERIODO: AppChartDataset;
-export let COMBINET_DASHBOARD_DATA: CombinedDashboardData;
+export let COMBINED_DASHBOARD_DATA: CombinedDashboardData;
 
-MOCK_METRICAS = [
+export const MOCK_METRICAS = [
   {
-    id: 'receita_total',
+    id: metrica.RECEITA,
     titulo: 'Receita Total (Mês)',
     icone: 'monetization_on',
     metrica: 'R$ 45.870,50',
     detalhe: '+12,5% em relação ao mês anterior'
   },
   {
-    id: 'novos_clientes',
+    id: metrica.CONVERSAO,
     titulo: 'Novos Clientes',
     icone: 'person_add',
     metrica: '215',
     detalhe: '+32 novos este mês'
   },
   {
-    id: 'taxa_recuperacao',
+    id: metrica.ABANDONADOS,
     titulo: 'Taxa de Recuperação',
     icone: 'published_with_changes',
     metrica: '23,4%',
     detalhe: 'A meta é 25%'
   },
   {
-    id: 'ticket_medio',
+    id: metrica.TICKET,
     titulo: 'Ticket Médio',
     icone: 'receipt_long',
     metrica: 'R$ 213,35',
@@ -57,16 +54,16 @@ MOCK_GRAFICO_POR_PERIODO = {
   data: [1200, 1900, 1500, 2100, 1800, 2300, 1750]
 };
 
-COMBINET_DASHBOARD_DATA = {
+COMBINED_DASHBOARD_DATA = {
   kpisDiarios: MOCK_KPIS_DIARIOS,
   dadosDoGrafico: MOCK_GRAFICO_POR_PERIODO
 };
 
-export const MOCK_RECUPERACAO_SIMPLE:  Recuperacao[]= [
+export const MOCK_RECUPERACAO:  Recuperacao[]= [
   { id: '1', produto: 'Notebook Dell', status: 'Recuperado' },
   { id: '2', produto: 'Smartphone Samsung', status: 'Pendente' },
   { id: '3', produto: 'Tablet Apple', status: 'Falhou' },
-  { id: '4', produto: 'Monitor LG', status: 'Recuperado' },
+  { id: '4', produto: 'Monitor LG', status: 'Em Recuperação' },
   { id: '5', produto: 'Teclado Mecânico', status: 'Pendente' },
   { id: '6', produto: 'Mouse Gamer', status: 'Recuperado' },
   { id: '7', produto: 'Headset', status: 'Falhou' },

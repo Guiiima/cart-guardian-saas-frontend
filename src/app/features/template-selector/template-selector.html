@@ -1,0 +1,109 @@
+<div class="template-selector-container">
+
+  <div class="left-container">
+    <app-preview-panel [templates]="allTemplates" [indexTemplate]="indexSelect"></app-preview-panel>
+  </div>
+
+  <div class="right-container">
+    <div class="header-container">
+      <header class="selector-header">
+        <h2>Selecione um Modelo para seu E-mail</h2>
+        <p>Escolha um dos templates abaixo para personalizar os e-mails enviados aos seus clientes.</p>
+      </header>
+    </div>
+
+    <div class="toolbar">
+
+      <!-- Toggle GRID/LIST -->
+      <div class="view-toggle">
+        @if (currentView === 'grid') {
+        <button [class.active]="currentView === 'grid'" (click)="setView('list')" aria-label="Mudar para lista"
+          title="Mudar para lista">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path
+              d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM9 2.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
+          </svg>
+        </button>
+        }
+        @else {
+        <button [class.active]="currentView === 'list'" (click)="setView('grid')" aria-label="Mudar para grade"
+          title="Mudar para grade">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+          </svg>
+        </button>
+        }
+      </div>
+
+      <!-- Toggle IMAGE/ICON -->
+      <div class="view-toggle">
+        @if (thumbnailType === 'image') {
+        <button [class.active]="thumbnailType === 'image'" (click)="setThumbnailType('icon')"
+          aria-label="Mudar para visualização de ícone" title="Mudar para visualização de ícone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+            <path
+              d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+          </svg>
+        </button>
+        }
+        @else {
+        <button [class.active]="thumbnailType === 'icon'" (click)="setThumbnailType('image')"
+          aria-label="Mudar para visualização de imagem" title="Mudar para visualização de imagem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h6zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4H5z" />
+          </svg>
+        </button>
+        }
+      </div>
+
+      <div class="search-bar">
+        <app-search (inputValue)="buscarTemplates($event)"></app-search>
+      </div>
+    </div>
+
+    <!-- GRID/LIST com animação -->
+    <div class="templates-grid" [ngClass]="{'view-list': currentView === 'list', 'fade-out': isViewTransitioning}">
+
+      @for (template of filteredTemplates; track template.id; let i = $index) {
+      <div class="template-card" [class.selected]="selectedTemplateId === template.id"
+        (click)="selectTemplate(template, $index)">
+
+        <!-- Thumbnail animada -->
+        <div class="thumbnail">
+          @if (thumbnailType === 'image') {
+          <img [src]="template.thumbnailUrl" [alt]="template.name" [class.fade-out]="isThumbnailTransitioning"
+            [class.fade-in]="!isThumbnailTransitioning && thumbnailType === 'image'" />
+          }
+          @else {
+          <img [src]="template.icon" [alt]="template.name" [class.fade-out]="isThumbnailTransitioning"
+            [class.fade-in]="!isThumbnailTransitioning && thumbnailType === 'icon'" />
+          }
+
+        </div>
+
+        <div class="template-info">
+          <h3>{{ template.name }}</h3>
+          <p>{{ template.description }}</p>
+        </div>
+
+        <div class="template-actions">
+          <button class="btn-preview" (click)="previewTemplate($index); $event.stopPropagation()">
+            Pré-visualizar
+          </button>
+          <button class="btn-select" [class.selected]="selectedTemplateId === template.id">
+            {{ selectedTemplateId === template.id ? 'Selecionado' : 'Selecionar' }}
+          </button>
+        </div>
+      </div>
+      }
+      @empty {
+      <div class="empty-state">
+        <h2>Nenhum Template Encontrado</h2>
+      </div>
+      }
+    </div>
+  </div>
+</div>

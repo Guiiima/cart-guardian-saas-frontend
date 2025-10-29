@@ -1,13 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Metrica } from '@core/interface/metrica';
 
-export interface Metrica {
-  id: string;
-  titulo: string;
-  metrica: string;
-  icone: string;
-  detalhe: string;
-}
 
 @Component({
   selector: 'app-card-metrica',

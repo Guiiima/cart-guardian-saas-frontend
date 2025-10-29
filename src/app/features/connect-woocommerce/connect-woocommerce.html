@@ -1,0 +1,47 @@
+<div class="connect-container">
+  <header>
+    <h2>Conectar sua Loja WooCommerce</h2>
+    <p>
+      Para começar, gere suas chaves de API no painel do WooCommerce em
+      <strong>Configurações > Avançado > API REST</strong> e cole-as abaixo.
+    </p>
+  </header>
+
+  <form [formGroup]="connectForm" (ngSubmit)="onSubmit()" class="connect-form">
+    
+    <div class="form-field">
+      <label for="storeUrl">URL da Loja</label>
+      <input id="storeUrl" type="url" formControlName="storeUrl" placeholder="https://sualoja.com.br" required />
+      
+      @if (connectForm.controls['storeUrl'].invalid && connectForm.controls['storeUrl'].touched) {
+        <div class="error-message">
+          Por favor, insira uma URL válida.
+        </div>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="consumerKey">Consumer Key</label>
+      <input id="consumerKey" type="text" formControlName="consumerKey" placeholder="ck_xxxxxxxxxx" required />
+    </div>
+
+    <div class="form-field">
+      <label for="consumerSecret">Consumer Secret</label>
+      <input id="consumerSecret" type="password" formControlName="consumerSecret" placeholder="cs_xxxxxxxxxx" required />
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-message general-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <button type="submit" class="btn-connect" [disabled]="connectForm.invalid || isLoading">
+      @if (!isLoading) {
+        <span>Conectar Loja</span>
+      } @else {
+        <span>A validar...</span>
+      }
+    </button>
+  </form>
+</div>  

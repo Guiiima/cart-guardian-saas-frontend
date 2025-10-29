@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:guardin-saas-frontend": "node dist/guardin-saas-frontend/server/server.mjs"
+    "serve:ssr:guardin-saas-frontend": "node dist/guardin-saas-frontend/server/server.mjs",
+    "build:deploy": "ng build && xcopy /E /I /Y dist\\guardin-saas-frontend\\browser C:\\Users\\guilh\\Downloads\\backend\\backend\\src\\main\\resources\\static"
   },
   "prettier": {
     "overrides": [
@@ -21,6 +22,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^20.1.6",
     "@angular/cdk": "^20.1.5",
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",

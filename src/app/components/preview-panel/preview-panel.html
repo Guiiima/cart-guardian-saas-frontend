@@ -1,0 +1,39 @@
+<div class="carousel-container">
+
+  @if (templates.length > 0) {
+  <div class="carousel-main-preview">
+    <button class="arrow left" (click)="prevTemplate()">
+      &#10094;
+    </button>
+
+    <div class="carousel-viewport">
+      <div class="carousel-track" [style.transform]="trackTransform">
+        @for (template of templates; track template.name; let i = $index) {
+          <div class="preview-panel" [class.active]="i === selectedIndex">
+            <div class="preview-image">
+              <img [src]="template.thumbnailUrl" [alt]="template.name" />
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <button class="arrow right" (click)="nextTemplate()">
+      &#10095;
+    </button>
+  </div>
+
+  <!-- <div class="carousel-thumbnails">
+      @for (template of templates; track template.name; let i = $index) {
+        <div
+          class="thumbnail"
+          (click)="selectTemplate(i)"
+          [class.active]="i === selectedIndex">
+          <img [src]="template.thumbnailUrl" [alt]="template.name" />
+        </div>
+      }
+    </div> -->
+  } @else {
+  <p>Nenhum template disponível.</p>
+  }
+</div>

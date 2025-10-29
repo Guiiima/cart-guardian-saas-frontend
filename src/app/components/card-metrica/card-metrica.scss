@@ -11,7 +11,10 @@
   outline: 2px solid transparent;
   gap: 5px;
   container-type: inline-size;
-  container-name: metric-card-container;
+  container-name: card;
+  max-width: 100%;
+  min-width: 150px;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -55,9 +58,9 @@ h2 span {
 
 .detail {
   margin: 0;
+  margin-top: auto;
   font-size: 0.85rem;
   font-weight: 500;
-  margin-top: auto;
   color: #374151;
 }
 
@@ -69,14 +72,53 @@ h2 span {
   color: #9e1616;
 }
 
-@container metric-card-container (max-width: 200px) {
-  .metric {
-    font-size: 1.4rem;
+/* ================================================================ */
+/* ===== NOVO ESTÁGIO INTERMEDIÁRIO PARA DEIXAR MAIS COMPACTO ===== */
+/* ================================================================ */
+@container card (max-width: 380px) {
+  .card {
+    padding: 12px;
   }
+
   h2 {
     font-size: 0.85rem;
+    margin-bottom: 6px;
   }
+
+  .metric {
+    font-size: 1.35rem;
+  }
+
   .detail {
     font-size: 0.8rem;
+  }
+
+  .card-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Regra para quando o card estiver BEM pequeno */
+@container card (max-width: 250px) {
+  .card {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  h2 {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
+  .metric {
+    font-size: 1.3rem;
+  }
+
+  .detail {
+    font-size: 0.75rem;
+  }
+
+  .card-icon {
+    font-size: 1.1rem;
   }
 }
