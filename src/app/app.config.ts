@@ -4,11 +4,11 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 import { routes } from './app.routes';
-import { ShopifyAuthService } from '@core/services/shopifyAuth';
+import { ApiService } from '@core/services/ApiService';
 
 export function initializeShopifyAuth(): Promise<void> {
-  const shopifyAuthService = inject(ShopifyAuthService);
-  return shopifyAuthService.whenReady();
+  const apiService = inject(ApiService);
+  return apiService.whenReady();
 }
 
 export const appConfig: ApplicationConfig = {

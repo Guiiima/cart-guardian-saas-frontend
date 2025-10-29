@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from 'environments/environment';
-import { ShopifyAuthService } from '@core/services/shopifyAuth';
+import { ApiService } from '@core/services/ApiService';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -20,7 +20,7 @@ export class NotificationSettings implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private shopifyAuthService: ShopifyAuthService,
+    private shopifyAuthService: ApiService,
     private snackBar: MatSnackBar
   ) { }
 

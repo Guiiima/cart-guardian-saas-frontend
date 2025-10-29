@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Search } from "app/components/search/search";
 import { PreviewPanel } from "app/components/preview-panel/preview-panel";
 import { TemplateService } from '@core/services/Templates/template-service';
-import { ShopifyAuthService } from '@core/services/shopifyAuth';
+import { ApiService } from '@core/services/ApiService';
 
 export interface EmailTemplate {
   id: string;
@@ -36,7 +36,7 @@ export class TemplateSelector implements OnInit {
 
   constructor(
     private templateService: TemplateService,
-    private shopifyAuthService: ShopifyAuthService
+    private shopifyAuthService: ApiService
   ) { }
 
   async ngOnInit(): Promise<void> {

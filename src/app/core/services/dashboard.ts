@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ShopifyAuthService } from './shopifyAuth';
+import { ApiService } from './ApiService';
 import { AppChartData } from 'app/components/chart-component/chart-component';
 import { environment } from '../../../environments/environment';
-import { COMBINET_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO_SIMPLE } from '@core/mocks/dashboard';
+import { COMBINED_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO } from '@core/mocks/dashboard';
 import { CombinedDashboardData } from '@core/interface/combinedDashboardData';
 import { HomeScreenData } from '@core/interface/homeScreenData';
 import { DashboardMetrics } from '@core/interface/dashboardMetrics';
@@ -16,11 +16,11 @@ import { metrica } from '@core/enums/metrica';
 })
 export class Dashboard {
 
-  constructor(private shopifyAuth: ShopifyAuthService) { }
+  constructor(private shopifyAuth: ApiService) { }
 
   public getTableData(type: 'ranking' | 'recuperacoes'): Promise<any[]> {
     if (!environment.production) {
-      const mockData = type === 'ranking' ? MOCK_RANKING : MOCK_RECUPERACAO_SIMPLE;
+      const mockData = type === 'ranking' ? MOCK_RANKING : MOCK_RECUPERACAO;
       return Promise.resolve(mockData);
     }
     
@@ -30,7 +30,7 @@ export class Dashboard {
 
   public async getHomeScreenData(metrica: string, periodo: string): Promise<HomeScreenData> {
     if (!environment.production) {
-      const response: CombinedDashboardData = COMBINET_DASHBOARD_DATA;
+      const response: CombinedDashboardData = COMBINED_DASHBOARD_DATA;
       const metricasDosCards = this.transformKpisToCards(response.kpisDiarios);
       const dadosDoGrafico = this.transformChartData(response.dadosDoGrafico, metrica, metricasDosCards);
       return { metricasDosCards, dadosDoGrafico };

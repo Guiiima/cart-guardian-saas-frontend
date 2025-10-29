@@ -8,20 +8,23 @@ import { AppBridgeState } from '@shopify/app-bridge';
 
 import { environment } from '../../../environments/environment';
 
-// Mock data
-import { COMBINET_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO_SIMPLE } from '@core/mocks/dashboard';
+// Mock data para as chamadas GET em ambiente de desenvolvimento
+import { COMBINED_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO } from '@core/mocks/dashboard';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShopifyAuthService {
+export class ApiService {
 
   private app: ClientApplication<AppBridgeState> | undefined;
   private initializationPromise: Promise<void> | null = null;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
-  // Inicialização única do App Bridge
+  /**
+   * Garante que a inicialização do App Bridge (se aplicável) seja concluída
+   * antes de prosseguir. Usado pelo APP_INITIALIZER.
+   */
   public whenReady(): Promise<void> {
     if (!this.initializationPromise) {
       this.initializationPromise = this.initializeAppBridge();
@@ -29,18 +32,22 @@ export class ShopifyAuthService {
     return this.initializationPromise;
   }
 
+  /**
+   * Inicializa o Shopify App Bridge, mas apenas em ambiente de produção.
+   */
   private async initializeAppBridge(): Promise<void> {
     if (!environment.production) {
       console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
       return;
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const host = params.get('host');
-
-    if (!host) throw new Error('Parâmetro "host" não encontrado na URL.');
-
+    // A lógica de inicialização para produção permanece a mesma
     try {
+      const params = new URLSearchParams(window.location.search);
+      const host = params.get('host');
+
+      if (!host) throw new Error('Parâmetro "host" não encontrado na URL.');
+      
       const config = await lastValueFrom(this.httpClient.get<any>(`/api/config?host=${host}`));
 
       if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
@@ -50,24 +57,30 @@ export class ShopifyAuthService {
         host: config.host,
         forceRedirect: true,
       });
+      console.log("Shopify App Bridge inicializado em modo de produção.");
 
     } catch (error) {
-      console.error('Falha ao inicializar o Shopify App Bridge:', error);
+      console.error('Falha crítica ao inicializar o Shopify App Bridge:', error);
       return Promise.reject(error);
     }
   }
 
-  // Retorna os headers com token JWT
+  /**
+   * Obtém os cabeçalhos de autenticação com o token JWT da Shopify.
+   * Só funciona em ambiente de produção.
+   */
   private async getAuthHeaders(): Promise<HttpHeaders> {
     await this.whenReady();
-
-    if (!this.app) throw new Error('Shopify App Bridge não disponível.');
-
+    if (!this.app) throw new Error('Shopify App Bridge não está disponível.');
     const token = await getSessionToken(this.app);
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  // GET genérico
+  /**
+   * Realiza uma requisição GET para o backend.
+   * Em desenvolvimento, retorna dados mockados.
+   * Em produção, faz uma chamada autenticada.
+   */
   public async get(endpoint: string): Promise<any> {
     if (!environment.production) {
       return this.mockGet(endpoint);
@@ -83,13 +96,23 @@ export class ShopifyAuthService {
     }
   }
 
-  // POST genérico
+  /**
+   * Realiza uma requisição POST para o backend.
+   * Em desenvolvimento, faz a chamada real sem autenticação (via proxy).
+   * Em produção, faz uma chamada autenticada.
+   */
   public async post(endpoint: string, data: any): Promise<any> {
+    // --- LÓGICA CORRIGIDA PARA TESTES LOCAIS ---
     if (!environment.production) {
-      console.warn(`MODO DESENVOLVIMENTO: Simulação de POST para ${endpoint}`, data);
-      return Promise.resolve({ success: true, message: 'Resposta mockada' });
+      console.warn(`MODO DESENVOLVIMENTO: A fazer chamada POST REAL (sem token) para ${endpoint}`, data);
+      
+      // Faz a chamada de API real. O proxy.conf.json a redirecionará para o backend.
+      const request$ = this.httpClient.post(endpoint, data);
+      return await lastValueFrom(request$);
     }
+    // ------------------------------------------
 
+    // Lógica de produção
     try {
       const headers = await this.getAuthHeaders();
       const request$ = this.httpClient.post(endpoint, data, { headers });
@@ -100,21 +123,29 @@ export class ShopifyAuthService {
     }
   }
 
-  // Mock de GET
+  /**
+   * Retorna dados mockados para as chamadas GET em ambiente de desenvolvimento.
+   */
   private mockGet(endpoint: string): Promise<any> {
-    if (endpoint.includes('/api/dashboard/metrics')) return Promise.resolve(COMBINET_DASHBOARD_DATA);
+    console.warn(`MODO DESENVOLVIMENTO: Simulação de GET para ${endpoint}`);
+    if (endpoint.includes('/api/dashboard/metrics')) return Promise.resolve(COMBINED_DASHBOARD_DATA);
     if (endpoint.includes('/api/analytics/ranking')) return Promise.resolve(MOCK_RANKING);
-    if (endpoint.includes('/api/analytics/recuperacao')) return Promise.resolve(MOCK_RECUPERACAO_SIMPLE);
+    if (endpoint.includes('/api/analytics/recuperacao')) return Promise.resolve(MOCK_RECUPERACAO);
     if (endpoint.includes('/api/settings')) return Promise.resolve({ id: 'mock-id-123', templateEmail: 'd-mock-template-id' });
     return Promise.resolve({});
   }
 
-  // Funções específicas
+  // --- Funções Específicas da API (que usam os métodos genéricos GET/POST) ---
+
+  public async getSettings(): Promise<any> {
+    return this.get('/api/settings');
+  }
+
   public async saveSelectedTemplate(templateId: string): Promise<any> {
     return this.post('/api/settings/template', { templateId });
   }
 
-  public async getSettings(): Promise<any> {
-    return this.get('/api/settings');
+  public async connectWooCommerceStore(data: { storeUrl: string, consumerKey: string, consumerSecret: string }): Promise<any> {
+    return this.post('/api/woocommerce/connect', data);
   }
 }

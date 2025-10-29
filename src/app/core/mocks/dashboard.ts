@@ -9,7 +9,7 @@ import { metrica } from "@core/enums/metrica";
 
 export let MOCK_KPIS_DIARIOS: DashboardMetrics;
 export let MOCK_GRAFICO_POR_PERIODO: AppChartDataset;
-export let COMBINET_DASHBOARD_DATA: CombinedDashboardData;
+export let COMBINED_DASHBOARD_DATA: CombinedDashboardData;
 
 export const MOCK_METRICAS = [
   {
@@ -54,12 +54,12 @@ MOCK_GRAFICO_POR_PERIODO = {
   data: [1200, 1900, 1500, 2100, 1800, 2300, 1750]
 };
 
-COMBINET_DASHBOARD_DATA = {
+COMBINED_DASHBOARD_DATA = {
   kpisDiarios: MOCK_KPIS_DIARIOS,
   dadosDoGrafico: MOCK_GRAFICO_POR_PERIODO
 };
 
-export const MOCK_RECUPERACAO_SIMPLE:  Recuperacao[]= [
+export const MOCK_RECUPERACAO:  Recuperacao[]= [
   { id: '1', produto: 'Notebook Dell', status: 'Recuperado' },
   { id: '2', produto: 'Smartphone Samsung', status: 'Pendente' },
   { id: '3', produto: 'Tablet Apple', status: 'Falhou' },
