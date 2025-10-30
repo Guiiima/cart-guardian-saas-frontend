@@ -22,7 +22,6 @@ export const routes: Routes = [
       path: 'HomeSreen', 
       component: HomeScreen,
       title: 'DashBoard',
-      canActivate: [authGuard] 
    },
    {
       path: 'TemplateSelector', 

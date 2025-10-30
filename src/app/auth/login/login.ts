@@ -63,7 +63,7 @@ export class Login implements OnInit {
     this.errorMessage = null;
 
     try {
-      await this.authService.login(this.loginForm.value);
+      //await this.authService.login(this.loginForm.value);
       this.router.navigate(['/HomeSreen']);
     } catch (error: any) {
       console.error('Falha no login', error);
