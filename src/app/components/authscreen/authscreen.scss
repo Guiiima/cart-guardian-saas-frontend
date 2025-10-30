@@ -1,0 +1,239 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  background: url('/fundo.png') center center fixed;
+  background-size: cover;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+
+.container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 14px 28px rgba(30, 42, 56, 0.2),
+              0 10px 10px rgba(30, 42, 56, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  max-width: 100%;
+  min-height: 500px;
+  transition: all 0.6s ease-in-out;
+}
+
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.sign-in-container h1,
+.sign-up-container h1 {
+  margin-bottom: 0.5rem;
+  color: #1e2a38;
+}
+
+.sign-in-container a {
+  color: #2e4a62;
+  font-size: 13px;
+  text-decoration: none;
+  margin: 10px 0 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+.sign-in-container a:hover {
+  text-decoration: underline;
+  color: #1e2a38;
+}
+
+.sign-up-container {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.right-panel-active .sign-in-container {
+  transform: translateX(100%);
+}
+
+.container.right-panel-active .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+}
+
+form {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+input {
+  background-color: #eafaf2;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  color: #1e2a38;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  background-color: #d0f0e0;
+  box-shadow: 0 0 0 2px #2e4a62;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid #2e4a62;
+  background-color: #2e4a62;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1e2a38;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: #a8bfc7;
+  cursor: not-allowed;
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: linear-gradient(to right, #1e2a38, #2e4a62);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+.overlay-panel h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.overlay-panel p {
+  font-size: 0.95rem;
+  margin: 10px 0 15px;
+}
+
+.ghost {
+  background-color: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.ghost:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.error-message {
+  color: #e57373;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .sign-in-container,
+  .sign-up-container,
+  .overlay-container {
+    width: 100%;
+    position: relative;
+  }
+
+  .overlay {
+    display: none;
+  }
+}

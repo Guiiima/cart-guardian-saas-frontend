@@ -8,13 +8,14 @@ import { PreviewPanel } from './components/preview-panel/preview-panel';
 import { NotificationSettings } from '@features/notification-settings/notification-settings';
 import { Boasvindas } from './components/boasvindas/boasvindas';
 import { ConnectWoocommerce } from '@features/connect-woocommerce/connect-woocommerce';
-import { RegisterComponent } from '@features/register/register';
+import { RegisterComponent } from 'app/components/register/register';
 import { authGuard } from '@core/guards/auth-guard';
+import { Authscreen } from 'app/components/authscreen/authscreen';
 
 // 1. Importe o seu novo guarda
 
 export const routes: Routes = [
-   { path: '', component: Login, title: 'Login' },
+   { path: '', component: Authscreen, title: 'Login' },
    { path: 'login', component: Login, title: 'Login' },
    { path: 'register', component: RegisterComponent, title: 'Register' },
 
