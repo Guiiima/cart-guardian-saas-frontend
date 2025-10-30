@@ -19,7 +19,8 @@ export class ApiService {
   private isShopifyEmbedded = false;
   private authService: AuthService | undefined;
 
-  constructor(private httpClient: HttpClient) { }
+  // 2. Injete o Injector
+  constructor(private httpClient: HttpClient, private injector: Injector) { }
 
   public whenReady(): Promise<void> {
     if (!this.initializationPromise) {
@@ -27,60 +28,64 @@ export class ApiService {
     }
     return this.initializationPromise;
   }
-private async initializeAppLogic(): Promise<void> {
-        if (!environment.production) {
-            console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
-            this.isShopifyEmbedded = false;
-            return;
-        }
 
-        try {
-            const params = new URLSearchParams(window.location.search);
-            const host = params.get('host');
-
-            if (!host) {
-                console.log('Parâmetro "host" não encontrado. Iniciando em modo Standalone (Netlify/WooCommerce).');
-                this.isShopifyEmbedded = false;
-                return;
-            }
-
-            this.isShopifyEmbedded = true;
-
-            const config = await lastValueFrom(this.httpClient.get<any>(`${this.apiUrl}/api/config?host=${host}`));
-            if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
-
-            this.app = createApp({
-                apiKey: config.apiKey,
-                host: config.host,
-                forceRedirect: true,
-            });
-            console.log("Shopify App Bridge inicializado com sucesso.");
-        } catch (error) {
-            console.error('Falha crítica ao inicializar o Shopify App Bridge:', error);
-            this.isShopifyEmbedded = false;
-            return Promise.reject(error);
-        }
+  // --- CORREÇÃO 3: LÓGICA DE INICIALIZAÇÃO AJUSTADA ---
+  private async initializeAppLogic(): Promise<void> {
+    if (!environment.production) {
+      console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
+      this.isShopifyEmbedded = false; 
+      return;
     }
 
-    private async getAuthHeaders(): Promise<HttpHeaders> {
-        await this.whenReady();
-        if (!this.app) throw new Error('Shopify App Bridge não está disponível.');
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const host = params.get('host');
 
-        const token = await getSessionToken(this.app);
-        return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      if (!host) {
+        // Modo Standalone (Netlify)
+        console.log('Parâmetro "host" não encontrado. Iniciando em modo Standalone.');
+        this.isShopifyEmbedded = false;
+        return; // Retorna imediatamente, não tenta chamar /api/config
+      }
+      
+      // Modo Shopify (Embutido)
+      console.log('Parâmetro "host" encontrado. Iniciando em modo Shopify Embedded.');
+      this.isShopifyEmbedded = true;
+      
+      const config = await lastValueFrom(this.httpClient.get<any>(`${this.apiUrl}/api/config?host=${host}`));
+      if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
+
+      this.app = createApp({
+        apiKey: config.apiKey,
+        host: config.host,
+        forceRedirect: true,
+      });
+      console.log("Shopify App Bridge inicializado com sucesso.");
+
+    } catch (error) {
+      console.error('Falha crítica ao inicializar o App Bridge:', error);
+      this.isShopifyEmbedded = false;
+      return Promise.reject(error);
     }
+  }
 
-  /**
-   * Constrói os cabeçalhos de autenticação corretos dependendo do modo.
-   */
+  private async getAuthHeaders(): Promise<HttpHeaders> {
+    await this.whenReady(); 
+    if (!this.app) throw new Error('Shopify App Bridge não está disponível.');
+    
+    const token = await getSessionToken(this.app);
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  // --- CORREÇÃO 4: LÓGICA DE HEADERS AJUSTADA ---
   private async buildHeaders(): Promise<HttpHeaders> {
     let headers = new HttpHeaders();
     
     if (this.isShopifyEmbedded) {
       headers = await this.getAuthHeaders();
     } else {
-      
-      if (!this.authService) this.authService = inject(AuthService); 
+      // Obtém o AuthService usando o Injector para evitar ciclo de dependência
+      if (!this.authService) this.authService = this.injector.get(AuthService); 
       
       const internalToken = this.authService.getToken();
       if (internalToken) {
@@ -90,6 +95,7 @@ private async initializeAppLogic(): Promise<void> {
     return headers;
   }
 
+  // --- GET e POST agora usam o buildHeaders corrigido ---
 
   public async get(endpoint: string): Promise<any> {
     const url = this.apiUrl + endpoint;
@@ -100,7 +106,7 @@ private async initializeAppLogic(): Promise<void> {
 
     await this.whenReady(); 
     try {
-      const headers = await this.buildHeaders();
+      const headers = await this.buildHeaders(); // Chama o método corrigido
       const request$ = this.httpClient.get(url, { headers });
       return await lastValueFrom(request$);
     } catch (error) {
@@ -108,19 +114,18 @@ private async initializeAppLogic(): Promise<void> {
       return Promise.reject(error);
     }
   }
-
+  
   public async post(endpoint: string, data: any): Promise<any> {
     const url = this.apiUrl + endpoint;
 
     if (!environment.production) {
-      console.warn(`MODO DESENVOLVIMENTO: A fazer chamada POST REAL (sem token) para ${url}`, data);
       const request$ = this.httpClient.post(url, data);
       return await lastValueFrom(request$);
     }
 
     await this.whenReady(); 
     try {
-      const headers = await this.buildHeaders();
+      const headers = await this.buildHeaders(); // Chama o método corrigido
       const request$ = this.httpClient.post(url, data, { headers });
       return await lastValueFrom(request$);
     } catch (error) {
@@ -128,6 +133,45 @@ private async initializeAppLogic(): Promise<void> {
       return Promise.reject(error);
     }
   }
+
+
+  // public async get(endpoint: string): Promise<any> {
+  //   const url = this.apiUrl + endpoint;
+
+  //   if (!environment.production) {
+  //     return this.mockGet(endpoint);
+  //   }
+
+  //   await this.whenReady(); 
+  //   try {
+  //     const headers = await this.buildHeaders();
+  //     const request$ = this.httpClient.get(url, { headers });
+  //     return await lastValueFrom(request$);
+  //   } catch (error) {
+  //     console.error(`Erro ao fazer GET para ${url}:`, error);
+  //     return Promise.reject(error);
+  //   }
+  // }
+
+  // public async post(endpoint: string, data: any): Promise<any> {
+  //   const url = this.apiUrl + endpoint;
+
+  //   if (!environment.production) {
+  //     console.warn(`MODO DESENVOLVIMENTO: A fazer chamada POST REAL (sem token) para ${url}`, data);
+  //     const request$ = this.httpClient.post(url, data);
+  //     return await lastValueFrom(request$);
+  //   }
+
+  //   await this.whenReady(); 
+  //   try {
+  //     const headers = await this.buildHeaders();
+  //     const request$ = this.httpClient.post(url, data, { headers });
+  //     return await lastValueFrom(request$);
+  //   } catch (error) {
+  //     console.error(`Erro ao fazer POST para ${url}:`, error);
+  //     return Promise.reject(error);
+  //   }
+  // }
 
 
   public async login(credentials: any): Promise<any> {
