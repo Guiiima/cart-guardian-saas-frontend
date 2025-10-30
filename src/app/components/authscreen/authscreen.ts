@@ -47,6 +47,7 @@ export class Authscreen implements OnInit {
 
     try {
       await this.authService.login(this.signInForm.value);
+      this.router.navigate(['/HomeSreen']);
     } catch (error: any) {
       console.error('Falha no login:', error);
       this.errorMessageLogin = error?.error?.error || 'E-mail ou palavra-passe inválidos.';
@@ -66,6 +67,7 @@ export class Authscreen implements OnInit {
 
     try {
       await this.authService.register(this.signUpForm.value);
+      this.router.navigate(['/Login']);
     } catch (error: any) {
       console.error('Falha no registo:', error);
       this.errorMessageRegister = error?.error?.error || 'Este e-mail já está a ser utilizado.';
