@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core'; 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import createApp, { ClientApplication } from '@shopify/app-bridge';
@@ -6,17 +6,20 @@ import { getSessionToken } from '@shopify/app-bridge-utils';
 import { AppBridgeState } from '@shopify/app-bridge';
 import { environment } from '../../../environments/environment';
 import { COMBINED_DASHBOARD_DATA, MOCK_RANKING, MOCK_RECUPERACAO } from '@core/mocks/dashboard';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+
   private app: ClientApplication<AppBridgeState> | undefined;
   private initializationPromise: Promise<void> | null = null;
-  private apiUrl = environment.apiUrl; 
+  private apiUrl = environment.apiUrl;
   private isShopifyEmbedded = false;
+  private authService: AuthService | undefined;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   public whenReady(): Promise<void> {
     if (!this.initializationPromise) {
@@ -24,65 +27,80 @@ export class ApiService {
     }
     return this.initializationPromise;
   }
+private async initializeAppLogic(): Promise<void> {
+        if (!environment.production) {
+            console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
+            this.isShopifyEmbedded = false;
+            return;
+        }
 
-  private async initializeAppLogic(): Promise<void> {
-    if (!environment.production) {
-      console.warn('MODO DESENVOLVIMENTO: Shopify App Bridge não será inicializado.');
-      this.isShopifyEmbedded = false; 
-      return;
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const host = params.get('host');
+
+            if (!host) {
+                console.log('Parâmetro "host" não encontrado. Iniciando em modo Standalone (Netlify/WooCommerce).');
+                this.isShopifyEmbedded = false;
+                return;
+            }
+
+            this.isShopifyEmbedded = true;
+
+            const config = await lastValueFrom(this.httpClient.get<any>(`${this.apiUrl}/api/config?host=${host}`));
+            if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
+
+            this.app = createApp({
+                apiKey: config.apiKey,
+                host: config.host,
+                forceRedirect: true,
+            });
+            console.log("Shopify App Bridge inicializado com sucesso.");
+        } catch (error) {
+            console.error('Falha crítica ao inicializar o Shopify App Bridge:', error);
+            this.isShopifyEmbedded = false;
+            return Promise.reject(error);
+        }
     }
 
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const host = params.get('host');
+    private async getAuthHeaders(): Promise<HttpHeaders> {
+        await this.whenReady();
+        if (!this.app) throw new Error('Shopify App Bridge não está disponível.');
 
-      if (!host) {
-        console.log('Parâmetro "host" não encontrado. Iniciando em modo Standalone (Netlify/WooCommerce).');
-        this.isShopifyEmbedded = false;
-        return; 
-      }
-      
-      this.isShopifyEmbedded = true;
-      
-      const config = await lastValueFrom(this.httpClient.get<any>(`${this.apiUrl}/api/config?host=${host}`));
-      if (!config || !config.apiKey) throw new Error('API Key não recebida do backend.');
-
-      this.app = createApp({
-        apiKey: config.apiKey,
-        host: config.host,
-        forceRedirect: true,
-      });
-      console.log("Shopify App Bridge inicializado com sucesso.");
-    } catch (error) {
-      console.error('Falha crítica ao inicializar o Shopify App Bridge:', error);
-      this.isShopifyEmbedded = false;
-      return Promise.reject(error);
+        const token = await getSessionToken(this.app);
+        return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
-  }
 
-  private async getAuthHeaders(): Promise<HttpHeaders> {
-    await this.whenReady(); 
-    if (!this.app) throw new Error('Shopify App Bridge não está disponível.');
+  /**
+   * Constrói os cabeçalhos de autenticação corretos dependendo do modo.
+   */
+  private async buildHeaders(): Promise<HttpHeaders> {
+    let headers = new HttpHeaders();
     
-    const token = await getSessionToken(this.app);
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    if (this.isShopifyEmbedded) {
+      headers = await this.getAuthHeaders();
+    } else {
+      
+      if (!this.authService) this.authService = inject(AuthService); 
+      
+      const internalToken = this.authService.getToken();
+      if (internalToken) {
+        headers = headers.set('Authorization', `Bearer ${internalToken}`);
+      }
+    }
+    return headers;
   }
+
 
   public async get(endpoint: string): Promise<any> {
     const url = this.apiUrl + endpoint;
 
     if (!environment.production) {
-      return this.mockGet(endpoint); 
+      return this.mockGet(endpoint);
     }
 
     await this.whenReady(); 
     try {
-      let headers = new HttpHeaders();
-      
-      if (this.isShopifyEmbedded) {
-        headers = await this.getAuthHeaders();
-      }
-      
+      const headers = await this.buildHeaders();
       const request$ = this.httpClient.get(url, { headers });
       return await lastValueFrom(request$);
     } catch (error) {
@@ -102,12 +120,7 @@ export class ApiService {
 
     await this.whenReady(); 
     try {
-      let headers = new HttpHeaders();
-      
-      if (this.isShopifyEmbedded) {
-        headers = await this.getAuthHeaders();
-      }
-      
+      const headers = await this.buildHeaders();
       const request$ = this.httpClient.post(url, data, { headers });
       return await lastValueFrom(request$);
     } catch (error) {
@@ -116,12 +129,36 @@ export class ApiService {
     }
   }
 
+
+  public async login(credentials: any): Promise<any> {
+    const url = this.apiUrl + '/api/auth/login';
+    return await lastValueFrom(this.httpClient.post(url, credentials));
+  }
+
+  public async register(credentials: any): Promise<any> {
+    const url = this.apiUrl + '/api/auth/register';
+    return await lastValueFrom(this.httpClient.post(url, credentials));
+  }
+
+
   private mockGet(endpoint: string): Promise<any> {
-    console.warn(`MODO DESENVOLVIMENTO: Simulação de GET para ${endpoint}`);
-    if (endpoint.includes('/api/dashboard/metrics')) return Promise.resolve(COMBINED_DASHBOARD_DATA);
-    if (endpoint.includes('/api/analytics/ranking')) return Promise.resolve(MOCK_RANKING);
-    if (endpoint.includes('/api/analytics/recuperacao')) return Promise.resolve(MOCK_RECUPERACAO);
-    if (endpoint.includes('/api/settings')) return Promise.resolve({ id: 'mock-id-123', templateEmail: 'd-mock-template-id' });
+    try {
+      if (endpoint.includes('/api/dashboard/combined')) {
+        return Promise.resolve(COMBINED_DASHBOARD_DATA);
+      }
+      if (endpoint.includes('/api/dashboard/ranking')) {
+        return Promise.resolve(MOCK_RANKING);
+      }
+      if (endpoint.includes('/api/dashboard/recuperacao')) {
+        return Promise.resolve(MOCK_RECUPERACAO);
+      }
+      if (endpoint.includes('/api/settings')) {
+        return Promise.resolve({ tenant: 'dev', features: [] });
+      }
+    } catch (e) {
+      return Promise.resolve({});
+    }
+
     return Promise.resolve({});
   }
 

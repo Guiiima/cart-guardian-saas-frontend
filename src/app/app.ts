@@ -19,9 +19,13 @@ export class App {
   mensagemErro: string = '';
   exibirNavbar: boolean = false;
   navbarFechada: boolean = true;
-  constructor(
-    private router: Router,
-  ) { }
+  isLoginPage = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      this.isLoginPage = this.router.url === '/login'; 
+    });
+  }
   toggleNavbar() {
     this.navbarFechada = !this.navbarFechada;
   }

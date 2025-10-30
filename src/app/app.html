@@ -1,6 +1,6 @@
 <div class="main">
-    <app-navbar></app-navbar>
-    <div class="container">
-        <router-outlet></router-outlet>
-    </div>
+  <app-navbar *ngIf="!isLoginPage"></app-navbar>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
 </div>
