@@ -64,6 +64,7 @@ export class Login implements OnInit {
 
     try {
       await this.authService.login(this.loginForm.value);
+      this.router.navigate(['/HomeSreen']);
     } catch (error: any) {
       console.error('Falha no login', error);
       this.errorMessage = error?.error?.error || 'E-mail ou palavra-passe inválidos.';
