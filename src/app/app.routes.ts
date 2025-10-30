@@ -14,7 +14,7 @@ import { authGuard } from '@core/guards/auth-guard';
 // 1. Importe o seu novo guarda
 
 export const routes: Routes = [
-   { path: '', component: RegisterComponent, title: 'Login' },
+   { path: '', component: Login, title: 'Login' },
    { path: 'login', component: Login, title: 'Login' },
    { path: 'register', component: RegisterComponent, title: 'Register' },
 
