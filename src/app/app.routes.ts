@@ -8,11 +8,40 @@ import { PreviewPanel } from './components/preview-panel/preview-panel';
 import { NotificationSettings } from '@features/notification-settings/notification-settings';
 import { Boasvindas } from './components/boasvindas/boasvindas';
 import { ConnectWoocommerce } from '@features/connect-woocommerce/connect-woocommerce';
+import { RegisterComponent } from '@features/register/register';
+import { authGuard } from '@core/guards/auth-guard';
+
+// 1. Importe o seu novo guarda
 
 export const routes: Routes = [
-   { path: '', component: Boasvindas, title: 'DashBoard' },
-   { path: 'HomeSreen', component: HomeScreen, title: 'DashBoard' },
-   { path: 'TemplateSelector', component: TemplateSelector, title: 'DashBoard' },
-   { path: 'NotificationSettings', component: NotificationSettings, title: 'NotificationSettings' },
-   { path: 'ConnectWoocommerce', component: ConnectWoocommerce, title: 'Connect WooCommerce' },
+   { path: '', component: Login, title: 'Login' },
+   { path: 'login', component: Login, title: 'Login' },
+   { path: 'register', component: RegisterComponent, title: 'Register' },
+
+   {
+      path: 'HomeSreen', 
+      component: HomeScreen,
+      title: 'DashBoard',
+      canActivate: [authGuard] 
+   },
+   {
+      path: 'TemplateSelector', 
+      component: TemplateSelector,
+      title: 'DashBoard', 
+      canActivate: [authGuard] 
+   },
+   {
+      path: 'NotificationSettings', 
+      component: NotificationSettings,
+      title: 'NotificationSettings',
+      canActivate: [authGuard] 
+   },
+   {
+      path: 'ConnectWoocommerce', 
+      component: ConnectWoocommerce,
+      title: 'Connect WooCommerce',
+      canActivate: [authGuard] 
+   },
+
+   { path: '**', redirectTo: '/Boasvindas' }
 ];
