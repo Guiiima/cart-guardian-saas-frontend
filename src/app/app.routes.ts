@@ -14,7 +14,7 @@ import { Authscreen } from 'app/components/authscreen/authscreen';
 
 
 export const routes: Routes = [
-   { path: '', component: HomeScreen, title: 'Login' },
+   { path: '', component: Authscreen, title: 'Login' },
    { path: 'login', component: Login, title: 'Login' },
    { path: 'register', component: RegisterComponent, title: 'Register' },
 
