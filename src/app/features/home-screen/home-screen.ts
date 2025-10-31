@@ -38,20 +38,14 @@ export class HomeScreen implements OnInit {
   }
 
   async carregarTabela(type: 'ranking' | 'recuperacoes'): Promise<void> {
-    const MIN_LOADING_MS = 300;
-    const start = Date.now();
-
-
+    this.isLoadingTable = false;
     try {
-      this.listTable = await this.dashboardService.getTableData(type);
       this.isLoadingTable = true;
+      this.listTable = await this.dashboardService.getTableData(type);
+      this.isLoadingTable = false;
     } catch (error) {
       console.error(`Erro ao carregar dados de ${type}:`, error);
       this.listTable = [];
-    } finally {
-      const elapsed = Date.now() - start;
-      const delay = Math.max(0, MIN_LOADING_MS - elapsed);
-      setTimeout(() => this.isLoadingTable = false, delay);
     }
   }
 

@@ -1,23 +1,33 @@
 <div class="card activity-table">
   <h2 class="table-title">Atividades Recentes</h2>
+
   @if (tabs.length > 0) {
     <div class="tabs">
       @for (tab of tabs; track tab.id) {
-        <button (click)="setTableTabs(tab.id)"
-                [class.active]="currentType === tab.id"
-                [disabled]="isLoading"> {{ tab.titulo }}
+        <button
+          (click)="setTableTabs(tab.id)"
+          [class.active]="currentType === tab.id"
+          [disabled]="isLoading">
+          {{ tab.titulo }}
         </button>
       }
     </div>
   }
-  <table>
-    <thead>
-      <tr>
-        @for (coluna of ths; track coluna.key) {
-          <th>{{ coluna.label }}</th>
-        }
-      </tr>
-    </thead>
+
+  <!-- Spinner enquanto carrega -->
+  @if (isLoading) {
+    <div class="loading-container">
+      <span class="loader"></span>
+    </div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          @for (coluna of ths; track coluna.key) {
+            <th>{{ coluna.label }}</th>
+          }
+        </tr>
+      </thead>
       <tbody>
         @for (item of lista; track $index) {
           <tr>
@@ -42,4 +52,5 @@
         }
       </tbody>
     </table>
+  }
 </div>

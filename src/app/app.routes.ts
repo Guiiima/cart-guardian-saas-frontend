@@ -12,10 +12,9 @@ import { RegisterComponent } from 'app/components/register/register';
 import { authGuard } from '@core/guards/auth-guard';
 import { Authscreen } from 'app/components/authscreen/authscreen';
 
-// 1. Importe o seu novo guarda
 
 export const routes: Routes = [
-   { path: '', component: Authscreen, title: 'Login' },
+   { path: '', component: HomeScreen, title: 'Login' },
    { path: 'login', component: Login, title: 'Login' },
    { path: 'register', component: RegisterComponent, title: 'Register' },
 

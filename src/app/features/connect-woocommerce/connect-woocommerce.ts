@@ -1,9 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { ApiService } from '@core/services/ApiService';
-
 
 @Component({
   selector: 'app-connect-woocommerce',
@@ -17,14 +16,12 @@ export class ConnectWoocommerce implements OnInit {
   private router = inject(Router);
   private apiService = inject(ApiService);
 
-  isLoading = false;
+  isLoading = true; 
+  isAlreadyConnected = false;
   errorMessage: string | null = null;
-
-connectForm!: FormGroup<{
-  storeUrl: FormControl<string>;
-  consumerKey: FormControl<string>;
-  consumerSecret: FormControl<string>;
-}>;
+  connectForm!: FormGroup;
+  showConsumerSecret = false;
+  originalConsumerKey: string | null = null;
 
   ngOnInit(): void {
     this.connectForm = this.fb.nonNullable.group({
@@ -32,6 +29,44 @@ connectForm!: FormGroup<{
       consumerKey: ['', Validators.required],
       consumerSecret: ['', Validators.required]
     });
+
+    this.loadStoreStatus();
+
+    // Monitora mudanças no campo consumerKey
+    this.connectForm.get('consumerKey')?.valueChanges.subscribe(value => {
+      if (this.originalConsumerKey && value !== this.originalConsumerKey) {
+        this.showConsumerSecret = true;
+        this.connectForm.get('consumerSecret')?.enable();
+      }
+    });
+  }
+
+  async loadStoreStatus(): Promise<void> {
+    try {
+      const settings = await this.apiService.getSettings();
+
+      if (settings?.shop?.platform === 'WOOCOMMERCE') {
+        this.isAlreadyConnected = true;
+        this.originalConsumerKey = settings.shop.consumerKey;
+
+        this.connectForm.patchValue({
+          storeUrl: settings.shop.shopUrl,
+          consumerKey: settings.shop.consumerKey,
+          consumerSecret: ''
+        });
+
+        // Deixa apenas storeUrl desativado
+        this.connectForm.get('storeUrl')?.disable();
+        this.connectForm.get('consumerSecret')?.disable();
+
+        // Oculta o campo consumerSecret inicialmente
+        this.showConsumerSecret = false;
+      }
+    } catch {
+      console.log('Nenhuma configuração de loja encontrada. Exibindo formulário de conexão.');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   async onSubmit(): Promise<void> {
@@ -45,12 +80,12 @@ connectForm!: FormGroup<{
 
     try {
       await this.apiService.connectWooCommerceStore(this.connectForm.getRawValue());
-
-      alert('Loja conectada com sucesso!'); 
-      this.router.navigate(['/dashboard']);
+      alert('Loja conectada com sucesso!');
+      this.isAlreadyConnected = true;
+      this.connectForm.disable();
     } catch (error: any) {
       console.error('Erro ao conectar a loja WooCommerce', error);
-      this.errorMessage = error?.error?.error || 'Ocorreu um erro desconhecido. Tente novamente.';
+      this.errorMessage = error?.error?.message ?? error?.message ?? 'Ocorreu um erro desconhecido.';
     } finally {
       this.isLoading = false;
     }
