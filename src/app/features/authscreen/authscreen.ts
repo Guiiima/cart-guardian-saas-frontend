@@ -46,7 +46,7 @@ export class Authscreen implements OnInit {
     this.clearErrors();
 
     try {
-      await this.authService.login(this.signInForm.value);
+      //await this.authService.login(this.signInForm.value);
       this.router.navigate(['/HomeSreen']);
     } catch (error: any) {
       console.error('Falha no login:', error);
@@ -66,7 +66,7 @@ export class Authscreen implements OnInit {
     this.clearErrors();
 
     try {
-      await this.authService.register(this.signUpForm.value);
+      //await this.authService.register(this.signUpForm.value);
       this.router.navigate(['/Login']);
     } catch (error: any) {
       console.error('Falha no registo:', error);
