@@ -1,3 +1,7 @@
+/* =================================== */
+/* BASE LAYOUT & ESTRUTURA
+/* =================================== */
+
 app-preview-panel {
   width: 100%;
 }
@@ -9,104 +13,14 @@ app-preview-panel {
   background: #fff;
 }
 
-/* Mobile-first: empilha colunas */
-@media (max-width: 1024px) {
-  .template-selector-container {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .left-container {
-    flex: unset;
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-    box-shadow: none;
-    border-bottom: 1px solid #e2e8f0;
-  }
-
-  .right-container {
-    flex: unset;
-    width: 100%;
-    box-shadow: none;
-    border-radius: 0;
-  }
-}
-
-/* HEADER */
-.header-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 24px 16px;
-  border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 1rem;
-}
-
-.selector-header h2 {
-  margin: 0;
-  font-size: clamp(20px, 4vw, 28px);
-  font-weight: 700;
-  color: #008060;
-  text-align: center;
-}
-
-.selector-header p {
-  margin: 8px 0 0;
-  font-size: clamp(14px, 2vw, 16px);
-  color: #718096;
-  text-align: center;
-}
-
-/* TOOLBAR */
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 10px 0;
-  gap: 0.8rem;
-}
-
-.search-bar {
-  position: relative;
-  flex: 1;
-  min-width: 220px;
-  max-width: 400px;
-  width: 100%;
-}
-
-/* Em telas muito pequenas, centraliza e aumenta a área de clique */
-@media (max-width: 480px) {
-  .toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-bar {
-    min-width: unset;
-    max-width: unset;
-    width: 100%;
-  }
-
-  .view-toggle {
-    width: 48px;
-    height: 48px;
-  }
-
-  .view-toggle button svg {
-    width: 28px;
-    height: 28px;
-  }
-}
-
 .left-container {
   flex: 1;
   background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* O padding foi removido daqui e colocado no media query de 1024px, 
+     onde ele realmente se aplica quando a coluna é empilhada. */
 }
 
 .right-container {
@@ -119,13 +33,25 @@ app-preview-panel {
   box-shadow: -10px 0 15px -5px rgba(0, 0, 0, 0.2);
 }
 
+.pre-view {
+  /* Bloco de pré-visualização dentro do left-container */
+  background-color: red; /* Cor de placeholder */
+  width: 95%;
+  height: 95%;
+  border-radius: 20px;
+}
+
+/* =================================== */
+/* HEADER & TOOLBAR
+/* =================================== */
+
 .header-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 24px 32px;
+  padding: 24px 32px; /* Padding padrão (desktop) */
   border-bottom: 1px solid #e2e8f0;
   margin-bottom: 1rem;
 }
@@ -133,7 +59,8 @@ app-preview-panel {
 .selector-header h2 {
   margin: 0;
   font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 28px;
+  /* Usei clamp() para tipografia fluida, como na sua primeira versão */
+  font-size: clamp(20px, 4vw, 28px);
   font-weight: 700;
   color: #008060;
   text-align: center;
@@ -142,16 +69,18 @@ app-preview-panel {
 .selector-header p {
   margin: 8px 0 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
+  /* Usei clamp() para tipografia fluida */
+  font-size: clamp(14px, 2vw, 16px);
   color: #718096;
   text-align: center;
 }
 
 .toolbar {
   display: flex;
+  flex-wrap: wrap; /* Garante que o toolbar quebre em telas menores se necessário */
   align-items: center;
   padding: 10px 0;
-  //gap: 1rem;
+  gap: 0.8rem;
 }
 
 .search-bar {
@@ -197,53 +126,15 @@ app-preview-panel {
   fill: currentColor;
 }
 
-.pre-view {
-  background-color: red;
-  width: 95%;
-  height: 95%;
-  border-radius: 20px;
-}
+/* =================================== */
+/* TEMPLATE GRID & LIST VIEW
+/* =================================== */
 
-/* === GRID / LIST === */
 .templates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
   padding: 1rem;
-}
-
-/* Ajuste para telas pequenas: menos espaço e cards mais compactos */
-@media (max-width: 600px) {
-  .templates-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 0.5rem;
-  }
-
-  .template-card .thumbnail {
-    height: 180px;
-  }
-}
-
-/* LIST MODE: ajusta altura e info em telas pequenas */
-@media (max-width: 768px) {
-  .templates-grid.view-list .template-card {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .templates-grid.view-list .thumbnail {
-    flex: unset;
-    width: 100%;
-    height: 180px;
-  }
-
-  .templates-grid.view-list .template-actions {
-    flex-direction: row;
-    justify-content: space-between;
-    border-left: none;
-    border-top: 1px solid #dfe3e8;
-  }
 }
 
 .templates-grid.view-list {
@@ -252,7 +143,34 @@ app-preview-panel {
   gap: 1rem;
 }
 
-/* === TEMPLATE CARD === */
+/* Ajustes específicos do modo LISTA */
+.templates-grid.view-list .template-card {
+  flex-direction: row;
+  height: 140px;
+}
+
+.templates-grid.view-list .thumbnail {
+  flex: 0 0 200px;
+  height: 100%;
+}
+
+.templates-grid.view-list .template-info {
+  flex: 1;
+  padding: 1rem 1.5rem;
+}
+
+.templates-grid.view-list .template-actions {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  border-top: none;
+  border-left: 1px solid #dfe3e8;
+}
+
+/* =================================== */
+/* TEMPLATE CARD
+/* =================================== */
+
 .template-card {
   display: flex;
   flex-direction: column;
@@ -265,6 +183,7 @@ app-preview-panel {
   cursor: pointer;
 }
 
+/* --- Estados do Card --- */
 .template-card:hover {
   transform: translateY(-6px) scale(1.03) rotate(-1deg);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -276,6 +195,13 @@ app-preview-panel {
   box-shadow: 0 6px 18px rgba(0, 128, 96, 0.25);
 }
 
+.template-card.fade-out {
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+  transition: all 0.3s ease;
+}
+
+/* --- Conteúdo Interno do Card --- */
 .template-card .thumbnail {
   height: 250px;
   overflow: hidden;
@@ -323,6 +249,7 @@ app-preview-panel {
   border-top: 1px solid #dfe3e8;
 }
 
+/* --- Botões do Card --- */
 .template-card .btn-preview,
 .template-card .btn-select {
   padding: 0.5rem 1rem;
@@ -355,31 +282,11 @@ app-preview-panel {
   box-shadow: 0 4px 12px rgba(0, 128, 96, 0.3);
 }
 
-/* === LIST MODE === */
-.templates-grid.view-list .template-card {
-  flex-direction: row;
-  height: 140px;
-}
+/* =================================== */
+/* ANIMAÇÕES & KEYFRAMES
+/* =================================== */
 
-.templates-grid.view-list .thumbnail {
-  flex: 0 0 200px;
-  height: 100%;
-}
-
-.templates-grid.view-list .template-info {
-  flex: 1;
-  padding: 1rem 1.5rem;
-}
-
-.templates-grid.view-list .template-actions {
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  border-top: none;
-  border-left: 1px solid #dfe3e8;
-}
-
-/* === ANIMAÇÕES DE ENTRADA === */
+/* --- Animação de entrada escalonada --- */
 .templates-grid:not(.view-list) .template-card {
   opacity: 0;
   transform: scale(0.9) translateY(30px) rotate(-2deg);
@@ -391,6 +298,14 @@ app-preview-panel {
   transform: translateX(-30px) scale(0.98) rotate(-1deg);
   animation: fadeInListPremium 0.5s forwards;
 }
+
+/* Delays escalonados (unifiquei as regras pois eram idênticas) */
+.templates-grid .template-card:nth-child(1) { animation-delay: 0s; }
+.templates-grid .template-card:nth-child(2) { animation-delay: 0.05s; }
+.templates-grid .template-card:nth-child(3) { animation-delay: 0.1s; }
+.templates-grid .template-card:nth-child(4) { animation-delay: 0.15s; }
+.templates-grid .template-card:nth-child(5) { animation-delay: 0.2s; }
+/* Adicione mais se necessário */
 
 @keyframes fadeInGridPremium {
   to {
@@ -406,55 +321,7 @@ app-preview-panel {
   }
 }
 
-/* delays escalonados */
-.templates-grid:not(.view-list) .template-card:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.templates-grid:not(.view-list) .template-card:nth-child(2) {
-  animation-delay: 0.05s;
-}
-
-.templates-grid:not(.view-list) .template-card:nth-child(3) {
-  animation-delay: 0.1s;
-}
-
-.templates-grid:not(.view-list) .template-card:nth-child(4) {
-  animation-delay: 0.15s;
-}
-
-.templates-grid:not(.view-list) .template-card:nth-child(5) {
-  animation-delay: 0.2s;
-}
-
-.templates-grid.view-list .template-card:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.templates-grid.view-list .template-card:nth-child(2) {
-  animation-delay: 0.05s;
-}
-
-.templates-grid.view-list .template-card:nth-child(3) {
-  animation-delay: 0.1s;
-}
-
-.templates-grid.view-list .template-card:nth-child(4) {
-  animation-delay: 0.15s;
-}
-
-.templates-grid.view-list .template-card:nth-child(5) {
-  animation-delay: 0.2s;
-}
-
-/* === FADE-OUT entre views === */
-.template-card.fade-out {
-  opacity: 0;
-  transform: scale(0.95) translateY(10px);
-  transition: all 0.3s ease;
-}
-
-/* === TROCA DE THUMBNAIL (imagem ↔ ícone) === */
+/* --- Animação de troca de Thumbnail --- */
 .thumbnail img.fade-out {
   animation: thumbFadeOut 0.25s forwards;
 }
@@ -464,25 +331,103 @@ app-preview-panel {
 }
 
 @keyframes thumbFadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
 }
 
 @keyframes thumbFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(1.05);
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* =================================== */
+/* RESPONSIVE MEDIA QUERIES
+/* (Abordagem Desktop-first, max-width)
+/* =================================== */
+
+/* Tablet (empilhamento principal) */
+@media (max-width: 1024px) {
+  .template-selector-container {
+    flex-direction: column;
+    height: auto;
   }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .left-container {
+    flex: unset;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    box-shadow: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .right-container {
+    flex: unset;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* Tablet pequeno (ajuste modo Lista) */
+@media (max-width: 768px) {
+  .templates-grid.view-list .template-card {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .templates-grid.view-list .thumbnail {
+    flex: unset;
+    width: 100%;
+    height: 180px;
+  }
+
+  .templates-grid.view-list .template-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    border-left: none;
+    border-top: 1px solid #dfe3e8;
+  }
+}
+
+/* Mobile (Grid de 1 coluna e padding do header) */
+@media (max-width: 600px) {
+  .header-container {
+    padding: 24px 16px; /* Padding horizontal reduzido */
+  }
+
+  .templates-grid {
+    grid-template-columns: 1fr; /* Coluna única */
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .template-card .thumbnail {
+    height: 180px; /* Reduz altura da imagem no mobile */
+  }
+}
+
+/* Mobile pequeno (empilhamento do Toolbar) */
+@media (max-width: 480px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+  }
+
+  .view-toggle {
+    /* Aumenta área de toque */
+    width: 48px;
+    height: 48px;
+  }
+
+  .view-toggle button svg {
+    width: 28px;
+    height: 28px;
   }
 }

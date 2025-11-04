@@ -1,14 +1,22 @@
 .carousel-container {
+  --carousel-item-width: 400px;
+  --carousel-item-height: 85vh;
+  --carousel-item-height-safe: 85svh;
+  --carousel-gap: 15px;
+  --carousel-nav-padding: 15px;
+}
+
+.carousel-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
   justify-content: center;
   width: 100%;
-  
-  /* AJUSTES PARA O EFEITO DE NÉVOA */
-  background-color: rgba(243, 241, 241, 0.329); /* Cor branca semi-transparente */
-  backdrop-filter: blur(5px);                  /* Blur mais suave */
+  height: 100vh;
+  height: 100svh;
+  background-color: rgba(243, 241, 241, 0.329);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .carousel-main-preview {
@@ -23,14 +31,32 @@
   width: 100%;
   max-width: 600px;
   overflow: hidden;
-  padding: 0 calc((100% - 400px) / 2);
+  padding-left: calc((100% - var(--carousel-item-width)) / 2);
+  padding-right: calc((100% - var(--carousel-item-width)) / 2);
 }
 
 .carousel-track {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: var(--carousel-gap);
   transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.preview-panel {
+  flex: 0 0 var(--carousel-item-width);
+  height: var(--carousel-item-height-safe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.7;
+  transform: scale(0.95);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.preview-panel.active {
+  opacity: 1;
+  transform: scale(1.02);
 }
 
 .preview-image {
@@ -39,23 +65,7 @@
   align-items: center;
   overflow: hidden;
   height: 100%;
-}
-
-.preview-panel {
-  flex: 0 0 400px;
-  height: 85vh;
-  cursor: pointer;
-  opacity: 0.7;
-  transform: scale(0.95);
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.preview-panel.active {
-  opacity: 1;
-  transform: scale(1.02);
+  width: 100%;
 }
 
 .preview-panel img {
@@ -92,9 +102,9 @@
 }
 
 .arrow.left {
-  left: 15px;
+  left: var(--carousel-nav-padding);
 }
 
 .arrow.right {
-  right: 15px;
+  right: var(--carousel-nav-padding);
 }
