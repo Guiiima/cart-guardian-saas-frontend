@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './ApiService';
 
-// Interface para os dados do utilizador que guardamos
+
 interface UserState {
   email: string;
   isLoggedIn: boolean;
@@ -19,7 +19,6 @@ export class AuthService {
 
   private readonly TOKEN_KEY = 'cartguardian_token';
 
-  // Um 'Subject' para que outros componentes saibam em tempo real se o utilizador está logado
   private currentUserSubject = new BehaviorSubject<UserState | null>(this.getUserFromStorage());
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -58,7 +57,6 @@ export class AuthService {
    */
   private getUserFromStorage(): UserState | null {
     if (this.isAuthenticated()) {
-      // No futuro, podemos guardar mais dados do utilizador (como o e-mail) no localStorage
       return { email: 'utilizador@logado.com', isLoggedIn: true }; 
     }
     return null;
@@ -69,11 +67,11 @@ export class AuthService {
    * @param credentials - email e password
    */
   async login(credentials: { email: string, password: string }): Promise<any> {
-    const response = await this.apiService.login(credentials); // Chama o endpoint público de login
+    const response = await this.apiService.login(credentials); 
     if (response && response.token) {
       this.saveToken(response.token);
       this.currentUserSubject.next({ email: response.email, isLoggedIn: true });
-      this.router.navigate(['/dashboard']); // Redireciona para o dashboard após o login
+      this.router.navigate(['/dashboard']); 
     }
     return response;
   }
@@ -83,11 +81,10 @@ export class AuthService {
    * @param credentials - email e password
    */
   async register(credentials: { email: string, password: string }): Promise<any> {
-    const response = await this.apiService.register(credentials); // Chama o endpoint público de registo
+    const response = await this.apiService.register(credentials); 
     if (response && response.token) {
       this.saveToken(response.token);
       this.currentUserSubject.next({ email: response.email, isLoggedIn: true });
-      // Redireciona para o passo de conexão da loja
       this.router.navigate(['/connect-woocommerce']); 
     }
     return response;
@@ -99,6 +96,21 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']); // Redireciona para a página de login
+    this.router.navigate(['/login']); 
+  }
+  /**
+   * Chama a API para iniciar o fluxo de "esqueci a senha".
+   */
+  async forgotPassword(email: string): Promise<any> {
+    return this.apiService.forgotPassword(email);
+  }
+
+  /**
+   * Tenta redefinir a senha do utilizador usando o token.
+   */
+  async resetPassword(token: string, newPassword: string): Promise<any> {
+    const response = await this.apiService.resetPassword({ token, newPassword });
+    this.router.navigate(['/login']);
+    return response;
   }
 }

@@ -209,4 +209,21 @@ export class ApiService {
   }): Promise<any> {
     return this.post('/api/woocommerce/connect', data);
   }
+  /**
+   * Envia um pedido de redefinição de senha para o backend.
+   * @param email O e-mail do utilizador.
+   */
+  public async forgotPassword(email: string): Promise<any> {
+    const url = this.apiUrl + '/api/auth/forgot-password';
+    return await lastValueFrom(this.httpClient.post(url, { email }));
+  }
+
+  /**
+   * Envia o token de reset e a nova senha para o backend.
+   * @param data O token e a nova senha.
+   */
+  public async resetPassword(data: { token: string, newPassword: string }): Promise<any> {
+    const url = this.apiUrl + '/api/auth/reset-password';
+    return await lastValueFrom(this.httpClient.post(url, data));
+  }
 }
