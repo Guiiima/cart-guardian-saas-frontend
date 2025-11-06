@@ -11,32 +11,35 @@ import { ConnectWoocommerce } from '@features/connect-woocommerce/connect-woocom
 import { RegisterComponent } from 'app/components/register/register';
 import { authGuard } from '@core/guards/auth-guard';
 import { Authscreen } from '@features/authscreen/authscreen';
+import { ResetPassword } from '@features/reset-password/reset-password';
+import { ForgotPassword } from '@features/forgot-password/forgot-password';
 
 
 export const routes: Routes = [
    { path: '', component: Authscreen, title: 'Login' },
    { path: 'login', component: Login, title: 'Login' },
    { path: 'register', component: RegisterComponent, title: 'Register' },
-
+   { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
+   { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
    {
-      path: 'HomeSreen', 
+      path: 'HomeSreen',
       component: HomeScreen,
       title: 'DashBoard',
    },
    {
-      path: 'TemplateSelector', 
+      path: 'TemplateSelector',
       component: TemplateSelector,
-      title: 'DashBoard', 
+      title: 'DashBoard',
       //canActivate: [authGuard] 
    },
    {
-      path: 'NotificationSettings', 
+      path: 'NotificationSettings',
       component: NotificationSettings,
       title: 'NotificationSettings',
       //canActivate: [authGuard] 
    },
    {
-      path: 'ConnectWoocommerce', 
+      path: 'ConnectWoocommerce',
       component: ConnectWoocommerce,
       title: 'Connect WooCommerce',
       //canActivate: [authGuard] 

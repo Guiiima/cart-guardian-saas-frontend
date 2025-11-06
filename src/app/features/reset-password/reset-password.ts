@@ -1,11 +1,74 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '@core/services/auth.service';
+// ... imports do Material
+import { MatCardModule } from '@angular/material/card';
+import { passwordsMatchValidator } from 'app/components/register/register';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-reset-password',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+    ReactiveFormsModule],
   templateUrl: './reset-password.html',
-  styleUrl: './reset-password.scss'
+  styleUrls: ['./reset-password.scss']
 })
-export class ResetPassword {
+export class ResetPassword implements OnInit {
+  resetForm!: FormGroup;
+  isLoading = false;
+  errorMessage: string | null = null;
+  private token: string | null = null;
+  successMessage!: string;
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.token = this.route.snapshot.queryParamMap.get('token');
+
+    if (!this.token) {
+      this.errorMessage = "Token de redefinição inválido ou ausente.";
+    }
+
+    this.resetForm = this.fb.group({
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validators: passwordsMatchValidator
+    });
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.resetForm.invalid || !this.token) return;
+
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    try {
+      await this.authService.resetPassword(this.token, this.resetForm.value.newPassword);
+      this.successMessage = "Senha redefinida com sucesso! Redirecionando para o login...";
+
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2500); // 2.5 segundos antes do redirecionamento
+    } catch (error: any) {
+      this.errorMessage = error?.error?.error || "Ocorreu um erro. O token pode ter expirado.";
+    } finally {
+      this.isLoading = false;
+    }
+  }
 
 }

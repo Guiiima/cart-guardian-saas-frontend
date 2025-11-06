@@ -41,7 +41,7 @@ export class ForgotPassword implements OnInit {
 
     try {
       const response = await this.authService.forgotPassword(this.forgotForm.value.email);
-      this.message = response.message; // "Se o seu e-mail estiver registado..."
+      this.message = response.message; 
     } catch (error: any) {
       this.isError = true;
       this.message = error?.error?.error || "Ocorreu um erro. Tente novamente.";
