@@ -1,4 +1,3 @@
-
 <div class="container" [class.right-panel-active]="isRightPanelActive" id="container">
 
   <!-- REGISTRO -->
@@ -7,16 +6,43 @@
       <h1>Criar Conta</h1>
       <span>Use o seu e-mail para o registo</span>
 
+      <!-- Email -->
       <input type="email" placeholder="Email" formControlName="email" />
-      <input type="password" placeholder="Password" formControlName="password" />
-
-      @if (errorMessageRegister) {
-        <div class="error-message">
-          {{ errorMessageRegister }}
-        </div>
+      @if (signUpForm.get('email')?.touched && signUpForm.get('email')?.errors?.['required']) {
+        <div class="error-message">O email é obrigatório.</div>
+      }
+      @if (signUpForm.get('email')?.touched && signUpForm.get('email')?.errors?.['email']) {
+        <div class="error-message">Digite um email válido.</div>
       }
 
-      <button type="submit" [disabled]="isLoading">
+      <!-- Senha -->
+      <input type="password" placeholder="Password" formControlName="password" />
+      @if (signUpForm.get('password')?.touched && signUpForm.get('password')?.errors?.['required']) {
+        <div class="error-message">A senha é obrigatória.</div>
+      }
+      @if (signUpForm.get('password')?.touched && signUpForm.get('password')?.errors?.['minlength']) {
+        <div class="error-message">A senha deve ter pelo menos 8 caracteres.</div>
+      }
+      @if (signUpForm.get('password')?.touched && signUpForm.get('password')?.errors?.['pattern']) {
+        <div class="error-message">A senha deve conter letra maiúscula, minúscula e número.</div>
+      }
+
+      <!-- Confirmar Senha -->
+      <input type="password" placeholder="Confirmar Password" formControlName="confirmPassword" />
+      @if (signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.errors?.['required']) {
+        <div class="error-message">Confirme a sua senha.</div>
+      }
+      @if (signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.errors?.['mismatch']) {
+        <div class="error-message">As senhas não coincidem.</div>
+      }
+
+      <!-- Erro geral de registro -->
+      @if (errorMessageRegister) {
+        <div class="error-message">{{ errorMessageRegister }}</div>
+      }
+
+      <!-- Botão -->
+      <button type="submit" [disabled]="isLoading || signUpForm.invalid">
         @if (!isLoading) {
           <span>Registar</span>
         } @else {
@@ -32,17 +58,28 @@
       <h1>Login</h1>
       <span>Use a sua conta</span>
 
+      <!-- Email -->
       <input type="email" placeholder="Email" formControlName="email" />
-      <input type="password" placeholder="Password" formControlName="password" />
+      @if (signInForm.get('email')?.touched && signInForm.get('email')?.errors?.['required']) {
+        <div class="error-message">O email é obrigatório.</div>
+      }
+      @if (signInForm.get('email')?.touched && signInForm.get('email')?.errors?.['email']) {
+        <div class="error-message">Digite um email válido.</div>
+      }
 
+      <!-- Senha -->
+      <input type="password" placeholder="Password" formControlName="password" />
+      @if (signInForm.get('password')?.touched && signInForm.get('password')?.errors?.['required']) {
+        <div class="error-message">A senha é obrigatória.</div>
+      }
+
+      <!-- Erro geral de login -->
       @if (errorMessageLogin) {
-        <div class="error-message">
-          {{ errorMessageLogin }}
-        </div>
+        <div class="error-message">{{ errorMessageLogin }}</div>
       }
 
       <a href="/forgot-password">Esqueceu-se da palavra-passe?</a>
-      <button type="submit" [disabled]="isLoading">
+      <button type="submit" [disabled]="isLoading || signInForm.invalid">
         @if (!isLoading) {
           <span>Login</span>
         } @else {

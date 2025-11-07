@@ -25,6 +25,11 @@ export class Authscreen implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
+    this.initializeForms();
+  }
+
+  // --- Inicializa os formulários ---
+  private initializeForms(): void {
     this.signInForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -32,10 +37,33 @@ export class Authscreen implements OnInit {
 
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
-    });
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/) // Exemplo: força senha com maiúscula, minúscula e número
+        ]
+      ],
+      confirmPassword: ['', Validators.required]
+    }, { validators: this.passwordMatchValidator });
   }
 
+  // --- Valida se as senhas coincidem ---
+  private passwordMatchValidator(form: FormGroup): void {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+
+    if (password && confirmPassword) {
+      if (password.value !== confirmPassword.value) {
+        confirmPassword.setErrors({ mismatch: true });
+      } else {
+        confirmPassword.setErrors(null);
+      }
+    }
+  }
+
+  // --- SUBMIT LOGIN ---
   async onLoginSubmit(): Promise<void> {
     if (this.signInForm.invalid) {
       this.signInForm.markAllAsTouched();
@@ -46,8 +74,8 @@ export class Authscreen implements OnInit {
     this.clearErrors();
 
     try {
-      //await this.authService.login(this.signInForm.value);
-      this.router.navigate(['/HomeSreen']);
+      // await this.authService.login(this.signInForm.value);
+      this.router.navigate(['/HomeScreen']);
     } catch (error: any) {
       console.error('Falha no login:', error);
       this.errorMessageLogin = error?.error?.error || 'E-mail ou palavra-passe inválidos.';
@@ -56,6 +84,7 @@ export class Authscreen implements OnInit {
     }
   }
 
+  // --- SUBMIT REGISTRO ---
   async onRegisterSubmit(): Promise<void> {
     if (this.signUpForm.invalid) {
       this.signUpForm.markAllAsTouched();
@@ -66,8 +95,8 @@ export class Authscreen implements OnInit {
     this.clearErrors();
 
     try {
-      //await this.authService.register(this.signUpForm.value);
-      this.router.navigate(['/Login']);
+      // await this.authService.register(this.signUpForm.value);
+      console.log('Cadastro bem-sucedido!', this.signUpForm.value);
     } catch (error: any) {
       console.error('Falha no registo:', error);
       this.errorMessageRegister = error?.error?.error || 'Este e-mail já está a ser utilizado.';
@@ -76,6 +105,7 @@ export class Authscreen implements OnInit {
     }
   }
 
+  // --- Troca de telas ---
   toggleSignUp(): void {
     this.isRightPanelActive = true;
     this.clearErrors();
@@ -86,9 +116,18 @@ export class Authscreen implements OnInit {
     this.clearErrors();
   }
 
-  // --- Limpeza de mensagens ---
+  // --- Limpa mensagens de erro ---
   private clearErrors(): void {
     this.errorMessageLogin = null;
     this.errorMessageRegister = null;
+  }
+
+  // --- Getters úteis para o HTML ---
+  get password() {
+    return this.signUpForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.signUpForm.get('confirmPassword');
   }
 }

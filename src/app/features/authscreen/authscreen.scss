@@ -17,7 +17,7 @@
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 14px 28px rgba(30, 42, 56, 0.2),
-              0 10px 10px rgba(30, 42, 56, 0.1);
+    0 10px 10px rgba(30, 42, 56, 0.1);
   position: relative;
   overflow: hidden;
   width: 900px;
@@ -352,4 +352,16 @@ button:disabled {
     display: flex;
     transform: none;
   }
+
+  .error-message {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    text-align: left;
+  }
+
+  input.ng-touched.ng-invalid {
+    border: 1px solid #d9534f;
+  }
+
 }
