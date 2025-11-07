@@ -26,7 +26,7 @@ export class App {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.showNavbar = !(event.url === '/' ||event.url === '/login' || event.url === '/register');
+        this.showNavbar = !(event.url === '/' ||event.url === '/login' || event.url === '/register' || event.url === '/forgot-password' || event.url === '/reset-password');
       });
   }
   toggleNavbar() {
