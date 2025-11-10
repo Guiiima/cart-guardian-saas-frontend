@@ -14,36 +14,54 @@ import { Authscreen } from '@features/authscreen/authscreen';
 import { ResetPassword } from '@features/reset-password/reset-password';
 import { ForgotPassword } from '@features/forgot-password/forgot-password';
 
+const isInsideIframe = window.self !== window.top;
+
+const wildcardRedirect = isInsideIframe ? '/Boasvindas' : '/DashBoard';
+
 
 export const routes: Routes = [
-   { path: '', component: Authscreen, title: 'Login' },
-   { path: 'login', component: Authscreen, title: 'Login' },
-   { path: 'register', component: Authscreen, title: 'Register' },
-   { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
-   { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
-   {
-      path: 'DashBoard',
-      component: HomeScreen,
-      title: 'DashBoard',
-   },
-   {
-      path: 'TemplateSelector',
-      component: TemplateSelector,
-      title: 'DashBoard',
-      canActivate: [authGuard] 
-   },
-   {
-      path: 'NotificationSettings',
-      component: NotificationSettings,
-      title: 'NotificationSettings',
-      canActivate: [authGuard] 
-   },
-   {
-      path: 'ConnectWoocommerce',
-      component: ConnectWoocommerce,
-      title: 'Connect WooCommerce',
-      canActivate: [authGuard] 
-   },
+    ...(isInsideIframe ? [
+        { 
+            path: 'Boasvindas', 
+            component: Boasvindas, 
+            title: 'Boasvindas', 
+            canActivate: [authGuard] 
+        },
+    ] : []),
 
-   { path: '**', redirectTo: '/Boasvindas' }
+    { path: '', component: Authscreen, title: 'Login' }, 
+    
+    { path: 'login', component: Authscreen, title: 'Login' },
+    { path: 'register', component: Authscreen, title: 'Register' },
+    { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
+    { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
+
+
+    {
+        path: 'DashBoard',
+        component: HomeScreen,
+        title: 'DashBoard',
+        canActivate: [authGuard]
+    },
+    {
+        path: 'TemplateSelector',
+        component: TemplateSelector,
+        title: 'Templates',
+        canActivate: [authGuard]
+    },
+    {
+        path: 'NotificationSettings',
+        component: NotificationSettings,
+        title: 'NotificationSettings',
+        canActivate: [authGuard]
+    },
+    {
+        path: 'ConnectWoocommerce',
+        component: ConnectWoocommerce,
+        title: 'Connect WooCommerce',
+        canActivate: [authGuard]
+    },
+
+    // Rota Wildcard
+    { path: '**', redirectTo: wildcardRedirect }
 ];
