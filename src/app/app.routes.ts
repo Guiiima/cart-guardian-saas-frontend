@@ -30,19 +30,19 @@ export const routes: Routes = [
       path: 'TemplateSelector',
       component: TemplateSelector,
       title: 'DashBoard',
-      //canActivate: [authGuard] 
+      canActivate: [authGuard] 
    },
    {
       path: 'NotificationSettings',
       component: NotificationSettings,
       title: 'NotificationSettings',
-      //canActivate: [authGuard] 
+      canActivate: [authGuard] 
    },
    {
       path: 'ConnectWoocommerce',
       component: ConnectWoocommerce,
       title: 'Connect WooCommerce',
-      //canActivate: [authGuard] 
+      canActivate: [authGuard] 
    },
 
    { path: '**', redirectTo: '/Boasvindas' }
