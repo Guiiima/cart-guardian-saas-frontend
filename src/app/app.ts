@@ -27,13 +27,11 @@ constructor(private router: Router) {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         
-        // Pega a URL e remove qualquer coisa depois do '?'
         const path = event.url.split('?')[0]; 
 
-        const hiddenRoutes = ['/', '/login', '/register', '/forgot-password', '/reset-password'];
+        const showRoutes = ['/DashBoard', '/NotificationSettings', '/ConnectWoocommerce', '/TemplateSelector'];
         
-        // Agora a verificação vai funcionar
-        this.showNavbar = !hiddenRoutes.includes(path); 
+        this.showNavbar = showRoutes.includes(path); 
 
       });
   }
