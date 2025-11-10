@@ -16,7 +16,7 @@ import { ForgotPassword } from '@features/forgot-password/forgot-password';
 
 
 export const routes: Routes = [
-   { path: '', component: ResetPassword, title: 'Login' },
+   { path: '', component: Authscreen, title: 'Login' },
    { path: 'login', component: Authscreen, title: 'Login' },
    { path: 'register', component: Authscreen, title: 'Register' },
    { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
