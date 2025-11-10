@@ -26,19 +26,8 @@ export class App {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.router.events.subscribe((event) => {
-          if (event instanceof NavigationEnd) {
-            const url = event.url.split('?')[0]; 
-
-            this.showNavbar = !(
-              url === '/' ||
-              url === '/login' ||
-              url === '/register' ||
-              url === '/forgot-password' ||
-              url === '/reset-password'
-            );
-          }
-        });
+        const hiddenRoutes = ['/', '/login', '/register', '/forgot-password', '/reset-password'];
+        this.showNavbar = !hiddenRoutes.includes(event.url);
 
       });
   }
