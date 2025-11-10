@@ -75,7 +75,7 @@ export class Authscreen implements OnInit {
 
     try {
       await this.authService.login(this.signInForm.value);
-      this.router.navigate(['/HomeScreen']);
+      //this.router.navigate(['/HomeScreen']);
     } catch (error: any) {
       console.error('Falha no login:', error);
       this.errorMessageLogin = error?.error?.error || 'E-mail ou palavra-passe inválidos.';

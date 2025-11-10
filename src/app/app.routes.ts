@@ -22,7 +22,7 @@ export const routes: Routes = [
    { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
    { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
    {
-      path: 'HomeSreen',
+      path: 'DashBoard',
       component: HomeScreen,
       title: 'DashBoard',
    },
