@@ -22,16 +22,29 @@ export class App {
   navbarFechada: boolean = true;
   showNavbar = true;
 
- constructor(private router: Router) {
+  constructor(private router: Router) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        this.showNavbar = !(event.url === '/' ||event.url === '/login' || event.url === '/register' || event.url === '/forgot-password' || event.url === '/reset-password');
+        this.router.events.subscribe((event) => {
+          if (event instanceof NavigationEnd) {
+            const url = event.url.split('?')[0]; 
+
+            this.showNavbar = !(
+              url === '/' ||
+              url === '/login' ||
+              url === '/register' ||
+              url === '/forgot-password' ||
+              url === '/reset-password'
+            );
+          }
+        });
+
       });
   }
   toggleNavbar() {
     this.navbarFechada = !this.navbarFechada;
   }
-   ngOnInit(): void {
+  ngOnInit(): void {
   }
 }
