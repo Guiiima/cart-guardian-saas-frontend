@@ -86,7 +86,7 @@ export class ResetPassword implements OnInit {
       this.successMessage = 'Senha redefinida com sucesso! Redirecionando para o login...';
 
       setTimeout(() => {
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
       }, 2500);
     } catch (error: any) {
       this.errorMessage = error?.error?.error || 'Ocorreu um erro. O token pode ter expirado.';
