@@ -1,5 +1,5 @@
 <div class="settings-container">
-  
+
   <header>
     <h2>Configurações da Campanha</h2>
     <p>Defina o comportamento para o envio automático de e-mails.</p>
@@ -7,30 +7,65 @@
 
   <form [formGroup]="settingsForm" (ngSubmit)="onSave()" class="settings-form">
 
+    <!-- Toggle principal -->
     <div class="card toggle-card">
       <div class="toggle-content">
         <label for="enable-notifications">Ativar Campanha de Recuperação</label>
         <p>Permite o envio automático de e-mails para os carrinhos abandonados.</p>
       </div>
-      <label class="switch">
+
+      <label class="switch" aria-label="Ativar campanha de recuperação">
         <input type="checkbox" id="enable-notifications" formControlName="enableNotifications" />
         <span class="slider"></span>
       </label>
     </div>
 
-    <div class="card delay-card" [@if]="settingsForm.get('enableNotifications')?.value">
-      <label for="send-delay">Tempo para envio (em minutos)</label>
-      <p>Após quantos minutos de inatividade o e-mail deve ser enviado.</p>
-      <input type="number" id="send-delay" formControlName="sendDelay" min="1" max="1440" />
-    </div>
+    <!-- Campos dependentes da ativação -->
+    @if (settingsForm.get('enableNotifications')?.value) {
+      <div class="card delay-card">
+        <label for="send-delay">Tempo para envio (em minutos)</label>
+        <p>Após quantos minutos de inatividade o e-mail deve ser enviado.</p>
+        <input
+          type="number"
+          id="send-delay"
+          formControlName="sendDelay"
+          min="1"
+          max="1440"
+          placeholder="Ex: 30"
+        />
+      </div>
 
-    <div class="card logo-url-card" [@if]="settingsForm.get('enableNotifications')?.value">
-      <label for="logo-url">URL da Logo da Loja</label>
-      <p>Cole aqui a URL pública da imagem da sua logo. Ela aparecerá no topo dos e-mails.</p>
-      <input type="url" id="logo-url" formControlName="logoUrl" placeholder="https://cdn.sua-loja.com/logo.png" />
-    </div>
-    <button type="submit" class="btn-save" [disabled]="settingsForm.invalid || !settingsForm.dirty">
-      Salvar Alterações
-    </button>
+      <div class="card logo-url-card">
+        <label for="logo-url">URL da Logo da Loja</label>
+        <p>Cole aqui a URL pública da imagem da sua logo. Ela aparecerá no topo dos e-mails.</p>
+
+        <input
+          type="url"
+          id="logo-url"
+          formControlName="logoUrl"
+          placeholder="https://cdn.sua-loja.com/logo.png"
+        />
+
+        @if (settingsForm.get('logoUrl')?.value) {
+          <div class="logo-preview-container">
+            <p><strong>Pré-visualização:</strong></p>
+            <img
+              [src]="settingsForm.get('logoUrl')?.value"
+              alt="Pré-visualização da logo da loja"
+            />
+          </div>
+        }
+      </div>
+    }
+
+    <footer>
+      <button
+        type="submit"
+        class="btn-save"
+        [disabled]="settingsForm.invalid || !settingsForm.dirty || loading"
+      >
+        {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
+      </button>
+    </footer>
   </form>
 </div>

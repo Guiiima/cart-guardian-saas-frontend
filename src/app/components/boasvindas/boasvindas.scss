@@ -1,10 +1,12 @@
 $welcome-time: 3000ms;
 $fade-out-time: 700ms;
 
+// --- Host (Angular) ---
 :host {
   display: block;
 }
 
+// --- Container Principal ---
 .welcome-container {
   display: flex;
   flex-direction: column;
@@ -17,19 +19,39 @@ $fade-out-time: 700ms;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
   position: relative;
-  
 
   transition: opacity $fade-out-time ease-in;
-  
+
   &.navigating-out {
     opacity: 0;
   }
 }
 
-.text-content {
-  text-align: center;
+// --- Fundo SVG (Camada 1) ---
+.main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  
+  // NOVO: Animação de Fade-in
+  opacity: 0; // Começa invisível
+  animation: fade-in-svg 1.5s 0.2s ease-out forwards; // 1.5s duração, 0.2s delay
+
+  svg {
+    width: 100%;
+    height: 100vh;
+  }
 }
 
+// --- Conteúdo de Texto (Camada 2) ---
+.text-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;        
+}
 
 h1.welcome-title, p.welcome-message {
   span {
@@ -43,7 +65,7 @@ h1.welcome-title, p.welcome-message {
 }
 
 h1.welcome-title {
-  font-size: 3.5rem;
+  font-size: 5rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 10px 0;
@@ -53,11 +75,73 @@ h1.welcome-title {
 }
 
 p.welcome-message {
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   font-weight: 300;
+  margin-top: 20px;
   color: #a0a0c0;
   min-height: 1.5em; 
 }
+
+// --- Barra de Loader (Camada 2) ---
+.loader-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 2;
+}
+
+.loader-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #007aff; 
+  animation: fill-loader $welcome-time linear forwards;
+}
+
+// --- Spinner (Camada 2) ---
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  position: relative; 
+  z-index: 2;
+}
+
+// --- Animações do SVG ---
+.out-top {
+  animation: rotate 20s linear infinite;
+  transform-origin: 13px 25px;
+}
+
+.in-top {
+  animation: rotate 10s linear infinite;
+  transform-origin: 13px 25px;
+}
+
+.out-bottom {
+  animation: rotate 25s linear infinite;
+  transform-origin: 84px 93px;
+}
+
+.in-bottom {
+  animation: rotate 15s linear infinite;
+  transform-origin: 84px 93px;
+}
+
+
+// --- Keyframes ---
+
+// NOVO: Keyframe para o fade-in do SVG
+@keyframes fade-in-svg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes type-in {
   from {
     opacity: 0;
@@ -69,38 +153,21 @@ p.welcome-message {
   }
 }
 
-.loader-bar-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.loader-bar {
-  width: 0%;
-  height: 100%;
-  background-color: #007aff; 
-  
-  animation: fill-loader $welcome-time linear forwards;
-}
-
 @keyframes fill-loader {
   from { width: 0%; }
   to { width: 100%; }
 }
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
