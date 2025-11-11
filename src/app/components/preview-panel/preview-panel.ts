@@ -57,13 +57,8 @@ export class PreviewPanel implements OnInit {
     this.selectTemplate(prevIndex);
   }
 
-  // 👇 AJUSTE CRÍTICO AQUI 👇
   private updateTrackPosition(): void {
-    // Como o CSS (.carousel-viewport) agora tem padding para centralizar,
-    // o cálculo aqui fica muito mais simples.
     const itemWithGap = this.ITEM_WIDTH + this.ITEM_GAP;
-
-    // Apenas calculamos o deslocamento para a esquerda baseado no índice.
     const offset = -(this.selectedIndex * itemWithGap);
 
     this.trackTransform = `translateX(${offset}px)`;
