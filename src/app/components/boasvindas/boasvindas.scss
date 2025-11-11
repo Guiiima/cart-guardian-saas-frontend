@@ -1,102 +1,106 @@
-/* Importação das fontes do Google Fonts (Poppins e a nova Playfair Display) */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;700&display=swap');
+$welcome-time: 3000ms;
+$fade-out-time: 700ms;
 
-/* Animação do gradiente de fundo */
-@keyframes animateBackground {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
+:host {
+  display: block;
 }
 
 .welcome-container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 20px;
-    gap: 40px;
-    background: linear-gradient(45deg, #f5f5f5, #ddeeedc9, #ffffffb0, #c8e6c99c);
-    background-size: 400% 400%;
-    animation: animateBackground 40s ease infinite;
-    transition: transform 0.7s ease-in, opacity 0.7s ease-in;
-    text-align: center;
-    word-wrap: break-word;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh; 
+  background-color: #1a1a2e; 
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  position: relative;
+  
 
-#welcome-fixed,
-#page-logo {
-    width: 100%;
-    display: block;
-}
-
-.welcome-container.zoom-effect {
-    transform: scale(10);
+  transition: opacity $fade-out-time ease-in;
+  
+  &.navigating-out {
     opacity: 0;
+  }
 }
 
-#page-logo {
-    font-family: 'Playfair Display', serif;
-    text-align: center;
-    font-size: 3rem;
-    color: #4A4A4A;
-    font-weight: 700;
-    cursor: pointer;
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+.text-content {
+  text-align: center;
 }
 
-@keyframes revealLetter {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.9);
-    }
 
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+h1.welcome-title, p.welcome-message {
+  span {
+    opacity: 0; 
+    min-width: 8px;
+    margin-top: 10px;
+    transform: translateY(10px);
+    display: inline-block; 
+    animation: type-in 0.3s ease-out forwards;
+  }
 }
 
-#page-logo span {
-    display: inline-block;
-    position: relative;
-    animation: revealLetter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    animation-delay: calc(var(--i) * 100ms);
-    transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+h1.welcome-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  span {
+    min-width: 10px; 
+  }
 }
 
-#page-logo:hover span {
-    transform: translateY(-5px) scale(1.05);
-    color: #81c784;
-    text-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+p.welcome-message {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #a0a0c0;
+  min-height: 1.5em; 
+}
+@keyframes type-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#welcome-fixed {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #4A4A4A;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 20px;
+.loader-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-#welcome-fixed span {
-    display: inline-block;
-    position: relative;
-    animation: revealLetter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    animation-delay: calc(var(--i) * 80ms);
+.loader-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #007aff; 
+  
+  animation: fill-loader $welcome-time linear forwards;
 }
 
-#welcome-fixed span:hover {
-    transform: translateY(-3px) scale(1.05);
-    color: #81c784;
+@keyframes fill-loader {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

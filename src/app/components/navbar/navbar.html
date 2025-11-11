@@ -1,16 +1,12 @@
-<div class="sidebar" [class.expanded]="isExpanded"
-     (mouseenter)="isExpanded = true"
-     (mouseleave)="isExpanded = false">
+<div class="sidebar" [class.expanded]="isExpanded" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false">
   <ul>
     <!-- Novo link para o Gráfico -->
     <li>
       <a routerLink="/DashBoard" routerLinkActive="active">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" 
-             width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" 
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3v18h18"/>
-          <path d="M7 13h2v5H7zM13 6h2v12h-2zM19 9h2v9h-2z"/>
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18" />
+          <path d="M7 13h2v5H7zM13 6h2v12h-2zM19 9h2v9h-2z" />
         </svg>
         <span class="text">Gráfico</span>
       </a>
@@ -19,14 +15,12 @@
     <!-- Tempo de Espera -->
     <li>
       <a routerLink="/NotificationSettings" routerLinkActive="active">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" 
-             width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" 
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 22h14"/>
-          <path d="M5 2h14"/>
-          <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
-          <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 22h14" />
+          <path d="M5 2h14" />
+          <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+          <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
         </svg>
         <span class="text">Tempo de Espera</span>
       </a>
@@ -35,27 +29,25 @@
     <!-- Template Email -->
     <li>
       <a routerLink="/TemplateSelector" routerLinkActive="active">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" 
-             width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" 
-             stroke-linecap="round" stroke-linejoin="round">
-          <rect width="20" height="16" x="2" y="4" rx="2"/>
-          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="16" x="2" y="4" rx="2" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
         </svg>
         <span class="text">Template Email</span>
       </a>
     </li>
+    @if (!isShopifyContext) {
     <li>
       <a routerLink="/ConnectWoocommerce" routerLinkActive="active">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" 
-             width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" 
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"/>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"/>
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" />
         </svg>
         <span class="text">Conectar Loja</span>
       </a>
     </li>
+    }
   </ul>
 </div>

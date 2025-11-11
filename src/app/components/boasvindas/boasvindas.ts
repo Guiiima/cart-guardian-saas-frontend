@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-boasvindas',
-  imports: [CommonModule],
+  imports: [CommonModule], 
   standalone: true,
   templateUrl: './boasvindas.html',
   styleUrls: ['./boasvindas.scss']
@@ -12,22 +12,19 @@ import { Router } from '@angular/router';
 export class Boasvindas implements OnInit {
 
   isNavigating = false;
-
-  // Mensagem fixa
   welcomeText = 'Bem-vindo';
   welcomeTextArray: string[] = [];
-
-  // Mensagem aleatória
   randomMessage = '';
   randomMessageArray: string[] = [];
+
+  private welcomeScreenTime = 3000; 
+  private fadeOutTime = 700; 
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    // Configura mensagem fixa
     this.welcomeTextArray = Array.from(this.welcomeText);
 
-    // Lista de mensagens aleatórias
     const messages = [
       'Vamos recuperar suas vendas.',
       'Transformando cliques em clientes.',
@@ -37,18 +34,20 @@ export class Boasvindas implements OnInit {
       'Onde carrinhos viram compras.'
     ];
 
-    // Escolhe uma mensagem aleatória
     const randomIndex = Math.floor(Math.random() * messages.length);
     this.randomMessage = messages[randomIndex];
     this.randomMessageArray = Array.from(this.randomMessage);
-  }
-
-  // Ativa animação de zoom e navega
-  navigateToGraph(): void {
-    this.isNavigating = true;
 
     setTimeout(() => {
-      this.router.navigate(['/HomeSreen']);
-    }, 700);
+      this.navigateToGraph();
+    }, this.welcomeScreenTime);
+  }
+
+  navigateToGraph(): void {
+    this.isNavigating = true;
+    setTimeout(() => {
+      this.router.navigate(['/DashBoard']);
+      console.log('Navegando para /DashBoard...');
+    }, this.fadeOutTime); 
   }
 }

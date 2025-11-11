@@ -11,9 +11,13 @@ import { NotificationSettings } from '@features/notification-settings/notificati
 })
 export class Navbar {
   isExpanded: boolean = false;
+  public isShopifyContext: boolean = false;
+
   constructor(
     private dialog: MatDialog
-  ){}
+  ) {
+    this.isShopifyContext = window.self !== window.top;
+  }
   openConfig(): void {
     this.dialog.open(NotificationSettings, {
       width: '900px',

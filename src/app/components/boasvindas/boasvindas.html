@@ -1,15 +1,32 @@
-<div class="welcome-container" [class.zoom-effect]="isNavigating">
+<div class="welcome-container" [class.navigating-out]="isNavigating">
 
-    <!-- Mensagem fixa -->
-    <h2 id="welcome-fixed">
-        Bem-vindo ao Cart Guardian
-    </h2>
+  @if (isNavigating) {
+    <div class="spinner"></div>
+  }
 
-    <!-- Mensagem aleatória -->
-    <h1 id="page-logo" (click)="navigateToGraph()">
-        <span *ngFor="let char of randomMessageArray; let i = index" [style.--i]="i + 1"
-            [innerHTML]="char === ' ' ? '&nbsp;' : char">
-        </span>
-    </h1>
+  @if (!isNavigating) {
+    <div class="text-content">
+      
+      <h1 class="welcome-title">
+        @for (char of welcomeTextArray; track $index) {
+          <span [style.animation-delay]="$index * 60 + 'ms'">
+            {{ char }}
+          </span>
+        }
+      </h1>
+
+      <p class="welcome-message">
+        @for (char of randomMessageArray; track $index) {
+          <span [style.animation-delay]="(welcomeTextArray.length * 60) + ($index * 30) + 'ms'">
+            {{ char }}
+          </span>
+        }
+      </p>
+    </div>
+
+    <div class="loader-bar-container">
+      <div class="loader-bar"></div>
+    </div>
+  }
 
 </div>

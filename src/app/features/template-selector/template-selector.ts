@@ -77,7 +77,6 @@ export class TemplateSelector implements OnInit {
 
     if (!templateToSelect && this.allTemplates.length > 0) {
       templateToSelect = this.allTemplates[0];
-      console.log('Nenhum template salvo. Selecionando o primeiro template disponível:', templateToSelect);
     }
 
     if (templateToSelect) {
