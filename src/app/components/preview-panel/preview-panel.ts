@@ -59,6 +59,7 @@ export class PreviewPanel implements OnInit {
 
   private updateTrackPosition(): void {
     const itemWithGap = this.ITEM_WIDTH + this.ITEM_GAP;
+
     const offset = -(this.selectedIndex * itemWithGap);
 
     this.trackTransform = `translateX(${offset}px)`;
