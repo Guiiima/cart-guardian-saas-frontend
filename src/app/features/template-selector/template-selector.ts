@@ -30,7 +30,7 @@ export class TemplateSelector implements OnInit {
   searchTerm: string = '';
   currentView: 'grid' | 'list' = 'grid';
   thumbnailType: 'image' | 'icon' = 'image';
-  indexSelect: number = 0;
+  indexSelect: number = 2;
   isViewTransitioning: boolean = false;
   isThumbnailTransitioning: boolean = false;
 
@@ -47,7 +47,6 @@ export class TemplateSelector implements OnInit {
       ]);
 
       const savedTemplateId = settings?.templateEmail;
-      console.log('Template salvo nas configurações:', settings);
       this.initSelection(savedTemplateId);
 
     } catch (error) {
@@ -72,10 +71,9 @@ export class TemplateSelector implements OnInit {
 
     if (savedTemplateId) {
       templateToSelect = this.allTemplates.find(t => t.id === savedTemplateId);
-      console.log('Template encontrado para seleção:', templateToSelect);
     }
 
-    if (!templateToSelect && this.allTemplates.length > 0) {
+    if ((templateToSelect != undefined || null) && this.allTemplates.length > 0) {
       templateToSelect = this.allTemplates[0];
     }
 
