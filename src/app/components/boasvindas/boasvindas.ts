@@ -47,7 +47,6 @@ export class Boasvindas implements OnInit {
     this.isNavigating = true;
     setTimeout(() => {
       this.router.navigate(['/DashBoard']);
-      console.log('Navegando para /DashBoard...');
     }, this.fadeOutTime); 
   }
 }

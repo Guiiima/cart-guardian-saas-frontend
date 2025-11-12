@@ -73,7 +73,6 @@ export class NotificationSettings implements OnInit {
     this.loading = true;
 
     if (!environment.production) {
-      console.log('Simulação de salvamento:', this.settingsForm.value);
       this.snackBar.open('Configurações salvas com sucesso! (Simulação)', 'Fechar', { duration: 3000 });
       this.settingsForm.markAsPristine();
       this.loading = false;

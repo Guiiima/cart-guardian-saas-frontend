@@ -96,7 +96,6 @@ export class Authscreen implements OnInit {
 
     try {
       await this.authService.register(this.signUpForm.value);
-      console.log('Cadastro bem-sucedido!', this.signUpForm.value);
     } catch (error: any) {
       console.error('Falha no registo:', error);
       this.errorMessageRegister = error?.error?.error || 'Este e-mail já está a ser utilizado.';

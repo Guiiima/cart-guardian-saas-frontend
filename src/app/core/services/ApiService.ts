@@ -53,12 +53,10 @@ export class ApiService {
       const host = params.get('host');
 
       if (!host) {
-        console.log('Parâmetro "host" não encontrado. Modo Standalone.');
         this.isShopifyEmbedded = false;
         return;
       }
 
-      console.log('Parâmetro "host" encontrado. Modo Shopify Embedded.');
       this.isShopifyEmbedded = true;
 
       const config = await lastValueFrom(
@@ -75,7 +73,6 @@ export class ApiService {
         forceRedirect: true,
       });
 
-      console.log('✅ Shopify App Bridge inicializado com sucesso.');
     } catch (error) {
       console.error('❌ Falha ao inicializar o App Bridge:', error);
       this.isShopifyEmbedded = false;

@@ -63,7 +63,6 @@ export class ConnectWoocommerce implements OnInit {
         this.showConsumerSecret = false;
       }
     } catch {
-      console.log('Nenhuma configuração de loja encontrada. Exibindo formulário de conexão.');
     } finally {
       this.isLoading = false;
     }

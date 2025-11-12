@@ -16,7 +16,5 @@ export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
     return true;
   }
 
-  console.warn('Acesso não autorizado (standalone). A redirecionar para /login...');
-  console.log('Acesso não autorizado (standalone). A redirecionar para /login...');
   return router.createUrlTree(['/login']);
 };

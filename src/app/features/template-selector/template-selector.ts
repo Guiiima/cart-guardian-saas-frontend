@@ -30,7 +30,7 @@ export class TemplateSelector implements OnInit {
   searchTerm: string = '';
   currentView: 'grid' | 'list' = 'grid';
   thumbnailType: 'image' | 'icon' = 'image';
-  indexSelect: number = 2;
+  indexSelect: number = 0;
   isViewTransitioning: boolean = false;
   isThumbnailTransitioning: boolean = false;
 
@@ -46,7 +46,7 @@ export class TemplateSelector implements OnInit {
         this.shopifyAuthService.getSettings()
       ]);
 
-      const savedTemplateId = settings?.templateEmail;
+      const savedTemplateId = settings?.campaign?.templateEmail;
       this.initSelection(savedTemplateId);
 
     } catch (error) {
@@ -73,13 +73,12 @@ export class TemplateSelector implements OnInit {
       templateToSelect = this.allTemplates.find(t => t.id === savedTemplateId);
     }
 
-    if ((templateToSelect != undefined || null) && this.allTemplates.length > 0) {
+    if ((templateToSelect == undefined || templateToSelect == null) && this.allTemplates.length > 0) {
       templateToSelect = this.allTemplates[0];
     }
 
     if (templateToSelect) {
-      const index = this.allTemplates.indexOf(templateToSelect);
-      console.log('Índice do template selecionado:', index);
+      const index = this.allTemplates.findIndex(x => x.id === templateToSelect.id);
       this.selectTemplate(templateToSelect, index, false);
     }
   }
