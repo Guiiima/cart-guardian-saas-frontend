@@ -1,7 +1,3 @@
-/* =================================== */
-/* BASE LAYOUT & ESTRUTURA
-/* =================================== */
-
 app-preview-panel {
   width: 100%;
 }
@@ -32,16 +28,11 @@ app-preview-panel {
 }
 
 .pre-view {
-  /* Bloco de pré-visualização dentro do left-container */
   background-color: red; /* Cor de placeholder */
   width: 95%;
   height: 95%;
   border-radius: 20px;
 }
-
-/* =================================== */
-/* HEADER & TOOLBAR
-/* =================================== */
 
 .header-container {
   display: flex;
@@ -122,10 +113,6 @@ app-preview-panel {
   fill: currentColor;
 }
 
-/* =================================== */
-/* TEMPLATE GRID & LIST VIEW
-/* =================================== */
-
 .templates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -163,11 +150,7 @@ app-preview-panel {
   border-left: 1px solid #dfe3e8;
 }
 
-/* =================================== */
-/* NOVAS REGRAS PARA O MODO LISTA */
-/* =================================== */
 
-/* Restaura o tamanho maior da fonte para o modo lista */
 .templates-grid.view-list .template-info h3 {
   font-size: 1.1rem;
 }
@@ -298,11 +281,7 @@ app-preview-panel {
   box-shadow: 0 4px 12px rgba(0, 128, 96, 0.3);
 }
 
-/* =================================== */
-/* ANIMAÇÕES & KEYFRAMES
-/* =================================== */
 
-/* --- Animação de entrada escalonada --- */
 .templates-grid:not(.view-list) .template-card {
   opacity: 0;
   transform: scale(0.9) translateY(30px) rotate(-2deg);
@@ -315,13 +294,11 @@ app-preview-panel {
   animation: fadeInListPremium 0.5s forwards;
 }
 
-/* Delays escalonados (unifiquei as regras pois eram idênticas) */
 .templates-grid .template-card:nth-child(1) { animation-delay: 0s; }
 .templates-grid .template-card:nth-child(2) { animation-delay: 0.05s; }
 .templates-grid .template-card:nth-child(3) { animation-delay: 0.1s; }
 .templates-grid .template-card:nth-child(4) { animation-delay: 0.15s; }
 .templates-grid .template-card:nth-child(5) { animation-delay: 0.2s; }
-/* Adicione mais se necessário */
 
 @keyframes fadeInGridPremium {
   to {
@@ -337,7 +314,6 @@ app-preview-panel {
   }
 }
 
-/* --- Animação de troca de Thumbnail --- */
 .thumbnail img.fade-out {
   animation: thumbFadeOut 0.25s forwards;
 }
@@ -356,12 +332,7 @@ app-preview-panel {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* =================================== */
-/* RESPONSIVE MEDIA QUERIES
-/* (Abordagem Desktop-first, max-width)
-/* =================================== */
 
-/* Tablet (empilhamento principal) */
 @media (max-width: 1024px) {
   .template-selector-container {
     flex-direction: column;
@@ -385,7 +356,6 @@ app-preview-panel {
   }
 }
 
-/* Tablet pequeno (ajuste modo Lista) */
 @media (max-width: 768px) {
   .templates-grid.view-list .template-card {
     flex-direction: column;
@@ -405,8 +375,22 @@ app-preview-panel {
     border-top: 1px solid #dfe3e8;
   }
 }
+.templates-grid.view-list .template-actions {
+  flex-shrink: 0;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
 
-/* Mobile (Grid de 1 coluna e padding do header) */
+.templates-grid.view-list .template-info {
+  min-width: 0;
+}
+
+.templates-grid.view-list .template-info h3,
+.templates-grid.view-list .template-info p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 @media (max-width: 600px) {
   .header-container {
     padding: 24px 16px; /* Padding horizontal reduzido */
@@ -423,7 +407,6 @@ app-preview-panel {
   }
 }
 
-/* Mobile pequeno (empilhamento do Toolbar) */
 @media (max-width: 480px) {
   .toolbar {
     flex-direction: column;
