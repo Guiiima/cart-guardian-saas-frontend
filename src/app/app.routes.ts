@@ -23,31 +23,31 @@ export const routes: Routes = [
       path: '',
       component: Boasvindas,
       title: 'Boasvindas',
-      canActivate: [authGuard]
+      // canActivate: [authGuard]
    },
    {
       path: 'DashBoard',
       component: HomeScreen,
       title: 'DashBoard',
-      canActivate: [authGuard]
+      //canActivate: [authGuard]
    },
    {
       path: 'TemplateSelector',
       component: TemplateSelector,
       title: 'Templates',
-      canActivate: [authGuard]
+      //canActivate: [authGuard]
    },
    {
       path: 'NotificationSettings',
       component: NotificationSettings,
       title: 'NotificationSettings',
-      canActivate: [authGuard]
+     // canActivate: [authGuard]
    },
    {
       path: 'ConnectWoocommerce',
       component: ConnectWoocommerce,
       title: 'Connect WooCommerce',
-      canActivate: [authGuard]
+      //canActivate: [authGuard]
    },
 
    // Rota Wildcard

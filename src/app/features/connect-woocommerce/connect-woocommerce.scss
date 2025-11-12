@@ -1,29 +1,124 @@
-/* --- Variáveis de Cor e Estilo (opcional, mas recomendado) --- */
+/* --- Variáveis --- */
 :host {
-  --primary-color: #007bff;
-  --primary-hover-color: #0056b3;
+  --primary-color: #22C55E; // Verde (Tailwind Green-500)
+  --primary-hover-color: #16A34A; // Verde mais escuro (Tailwind Green-600)
   --error-color: #d93025;
-  --background-color: #f7f8fa;
-  --container-bg-color: #ffffff;
-  --text-color: #333;
-  --text-light-color: #666;
-  --border-color: #ccc;
+  --container-bg-color: #FFFFFF; // Fundo do formulário OPACO
+  --text-color: #333333; // Texto principal escuro
+  --text-light-color: #666666; // Texto secundário escuro
+  --border-color: #CCCCCC; // Borda clara padrão
   --border-radius: 8px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // Sombra de volta
 }
 
-/* --- Container Principal --- */
+/* --- Wrapper de Página Inteira --- */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFFFF; // Cor de fundo clara (Branco)
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  position: relative;
+  padding: 40px 15px; // Garante espaço em telas pequenas
+  box-sizing: border-box;
+}
+
+/* --- Fundo SVG (Importado da tela de boas-vindas) --- */
+.main-svg-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0; // Começa invisível
+  animation: fade-in-svg 1.5s 0.2s ease-out forwards;
+
+  svg {
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+.out-top {
+  animation: rotate 20s linear infinite;
+  transform-origin: 13px 25px;
+}
+.in-top {
+  animation: rotate 10s linear infinite;
+  transform-origin: 13px 25px;
+}
+.out-bottom {
+  animation: rotate 25s linear infinite;
+  transform-origin: 84px 93px;
+}
+.in-bottom {
+  animation: rotate 15s linear infinite;
+  transform-origin: 84px 93px;
+}
+
+/* --- Overlay de Carregamento (Novo) --- */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  color: var(--text-color); // Cor do texto escura
+  
+  p {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: var(--text-light-color); // Cor do texto clara-escura
+    animation: fade-in-svg 1s ease-out; // Reusa o fade-in
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1); // Fundo do spinner claro
+  border-top-color: var(--primary-color); // Cor principal verde
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  position: relative;
+  z-index: 2;
+}
+
+
+/* --- Container Principal do Formulário --- */
 .connect-container {
   display: flex;
   flex-direction: column;
   max-width: 500px;
-  margin: 50px auto;
+  width: 100%; // Garante responsividade
+  margin: 0 auto; // Centralizado
   padding: 30px 35px;
   background-color: var(--container-bg-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: var(--text-color);
+  position: relative;
+  z-index: 2;
+
+  /* --- Efeito Glassmorphism REMOVIDO --- */
+  /* backdrop-filter: blur(10px); */
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+
+  /* --- Animação de Entrada do Container --- */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  /* Quando a classe é adicionada, ele entra */
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --- Cabeçalho --- */
@@ -47,7 +142,7 @@ header {
 .connect-form {
   display: flex;
   flex-direction: column;
-  gap: 22px; // Espaçamento entre os campos
+  gap: 22px;
 }
 
 .form-field {
@@ -67,24 +162,59 @@ header {
     font-size: 16px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
+    /* --- Estilos de Tema Escuro REMOVIDOS --- */
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    /* color: var(--text-color); */
+
     &:focus {
       outline: none;
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3); // Sombra de foco verde
     }
-
     &::placeholder {
-      color: #a9a9a9;
+      color: var(--text-light-color); // Placeholder claro-escuro
     }
   }
 }
+
+/* --- Animação de Stagger dos Filhos (Novo) --- */
+.animated-child {
+  opacity: 0; // Começa invisível
+  animation: slide-fade-in 0.5s ease-out forwards;
+}
+
+/* Aplica o delay em cascata quando o container.is-visible
+  O delay de 0.2s do container é para dar tempo dele aparecer primeiro.
+*/
+.connect-container.is-visible {
+  header.animated-child {
+    animation-delay: 0.2s;
+  }
+  .form-field.animated-child:nth-of-type(1) {
+    animation-delay: 0.3s;
+  }
+  .form-field.animated-child:nth-of-type(2) {
+    animation-delay: 0.4s;
+  }
+  .form-field.animated-child:nth-of-type(3) { // Para o consumer secret
+    animation-delay: 0.5s;
+  }
+  .btn-connect.animated-child {
+    animation-delay: 0.6s;
+  }
+  .general-error.animated-child {
+    animation-delay: 0.5s; // Aparece junto com os campos
+  }
+}
+
 
 /* --- Mensagens de Erro --- */
 .error-message {
   font-size: 13px;
   color: var(--error-color);
   margin-top: 6px;
-  animation: fadeIn 0.3s ease-in-out;
+  /* Reusa a animação, mas sem delay */
+  animation: slide-fade-in 0.3s ease-in-out; 
 }
 
 .general-error {
@@ -96,17 +226,7 @@ header {
   color: var(--error-color);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* --- Botão --- */
 .btn-connect {
   padding: 14px 20px;
   font-size: 16px;
@@ -122,23 +242,51 @@ header {
   &:hover:not(:disabled) {
     background-color: var(--primary-hover-color);
   }
-
   &:active:not(:disabled) {
     transform: scale(0.98);
   }
 
   &:disabled {
-    background-color: #a0c7ff;
+    background-color: rgba(34, 197, 94, 0.5); // Cor desabilitada verde
     cursor: not-allowed;
   }
 
   span {
     display: inline-block;
   }
-
+  
+  // Animação de "Validando..."
   span:has(+ span) { 
     animation: pulse 1.5s infinite ease-in-out;
   }
+}
+
+/* --- Keyframes --- */
+
+@keyframes fade-in-svg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {

@@ -16,7 +16,17 @@ export class ConnectWoocommerce implements OnInit {
   private router = inject(Router);
   private apiService = inject(ApiService);
 
-  isLoading = true; 
+  /**
+   * Controla o loader INICIAL da página (o spinner).
+   * Começa true e vira false quando os dados da loja são carregados.
+   */
+  isLoading = true;
+
+  /**
+   * Controla o estado "Validando..." do botão de submit.
+   */
+  isConnecting = false;
+
   isAlreadyConnected = false;
   errorMessage: string | null = null;
   connectForm!: FormGroup;
@@ -43,6 +53,10 @@ export class ConnectWoocommerce implements OnInit {
 
   async loadStoreStatus(): Promise<void> {
     try {
+      // Simula um pequeno delay para a animação de carregamento ser visível
+      // Remova isso em produção se a chamada de API for sempre rápida.
+      // await new Promise(resolve => setTimeout(resolve, 1500)); 
+
       const settings = await this.apiService.getSettings();
 
       if (settings?.shop?.platform === 'WOOCOMMERCE') {
@@ -55,15 +69,15 @@ export class ConnectWoocommerce implements OnInit {
           consumerSecret: ''
         });
 
-        // Deixa apenas storeUrl desativado
         this.connectForm.get('storeUrl')?.disable();
         this.connectForm.get('consumerSecret')?.disable();
-
-        // Oculta o campo consumerSecret inicialmente
         this.showConsumerSecret = false;
       }
     } catch {
+      // Erro ao carregar, mas o formulário deve aparecer mesmo assim
     } finally {
+      // Este é o gatilho!
+      // Mudar para false fará o @if no HTML trocar o spinner pelo formulário.
       this.isLoading = false;
     }
   }
@@ -74,19 +88,32 @@ export class ConnectWoocommerce implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    // Usa a nova variável 'isConnecting' para o botão
+    this.isConnecting = true; 
     this.errorMessage = null;
 
     try {
       await this.apiService.connectWooCommerceStore(this.connectForm.getRawValue());
-      alert('Loja conectada com sucesso!');
+      
+      // NOTA: Eu removi o alert()! 
+      // Alertas pausam a execução e são ruins para UX.
+      // Substitua por um "toast" ou mensagem de sucesso na UI.
+      // Para este exemplo, vou apenas navegar.
+      console.log('Loja conectada com sucesso!');
+      
       this.isAlreadyConnected = true;
       this.connectForm.disable();
+
+      // Adiciona um pequeno delay antes de navegar para o usuário ver o sucesso
+      setTimeout(() => {
+        this.router.navigate(['/DashBoard']); // Exemplo de navegação
+      }, 1000);
+
     } catch (error: any) {
       console.error('Erro ao conectar a loja WooCommerce', error);
       this.errorMessage = error?.error?.message ?? error?.message ?? 'Ocorreu um erro desconhecido.';
     } finally {
-      this.isLoading = false;
+      this.isConnecting = false;
     }
   }
 }
