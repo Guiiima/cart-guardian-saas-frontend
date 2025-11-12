@@ -28,7 +28,8 @@ app-preview-panel {
 }
 
 .pre-view {
-  background-color: red; /* Cor de placeholder */
+  background-color: red;
+  /* Cor de placeholder */
   width: 95%;
   height: 95%;
   border-radius: 20px;
@@ -40,7 +41,8 @@ app-preview-panel {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 24px 32px; /* Padding padrão (desktop) */
+  padding: 24px 32px;
+  /* Padding padrão (desktop) */
   border-bottom: 1px solid #e2e8f0;
   margin-bottom: 1rem;
 }
@@ -64,7 +66,8 @@ app-preview-panel {
 
 .toolbar {
   display: flex;
-  flex-wrap: wrap; /* Garante que o toolbar quebre em telas menores se necessário */
+  flex-wrap: wrap;
+  /* Garante que o toolbar quebre em telas menores se necessário */
   align-items: center;
   padding: 10px 0;
   gap: 0.8rem;
@@ -229,14 +232,16 @@ app-preview-panel {
 .template-card .template-info h3 {
   margin: 0;
   font-family: 'Raleway', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.0rem; /* Reduzido de 1.1rem (afeta o modo grid) */
+  font-size: 1.0rem;
+  /* Reduzido de 1.1rem (afeta o modo grid) */
   font-weight: 600;
   color: #008060;
 }
 
 .template-card .template-info p {
   margin-top: 0.5rem;
-  font-size: 0.85rem; /* Reduzido de 0.9rem (afeta o modo grid) */
+  font-size: 0.85rem;
+  /* Reduzido de 0.9rem (afeta o modo grid) */
   color: #4a4a4a;
 }
 
@@ -254,7 +259,8 @@ app-preview-panel {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.8rem; /* Reduzido de 0.85rem (afeta o modo grid) */
+  font-size: 0.8rem;
+  /* Reduzido de 0.85rem (afeta o modo grid) */
   transition: all 0.25s ease;
   cursor: pointer;
 }
@@ -294,11 +300,42 @@ app-preview-panel {
   animation: fadeInListPremium 0.5s forwards;
 }
 
-.templates-grid .template-card:nth-child(1) { animation-delay: 0s; }
-.templates-grid .template-card:nth-child(2) { animation-delay: 0.05s; }
-.templates-grid .template-card:nth-child(3) { animation-delay: 0.1s; }
-.templates-grid .template-card:nth-child(4) { animation-delay: 0.15s; }
-.templates-grid .template-card:nth-child(5) { animation-delay: 0.2s; }
+.templates-grid .template-card:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.templates-grid .template-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.templates-grid .template-card:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.templates-grid .template-card:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.templates-grid .template-card:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+// .templates-grid.view-list .template-actions {
+//   flex-shrink: 0;
+//   padding-left: 1.5rem;
+//   padding-right: 1.5rem;
+// }
+
+// .templates-grid.view-list .template-info {
+//   min-width: 0;
+// }
+
+// .templates-grid.view-list .template-info h3,
+// .templates-grid.view-list .template-info p {
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
 
 @keyframes fadeInGridPremium {
   to {
@@ -323,13 +360,27 @@ app-preview-panel {
 }
 
 @keyframes thumbFadeOut {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
 @keyframes thumbFadeIn {
-  from { opacity: 0; transform: scale(1.05); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 
@@ -375,35 +426,40 @@ app-preview-panel {
     border-top: 1px solid #dfe3e8;
   }
 }
-.templates-grid.view-list .template-actions {
-  flex-shrink: 0;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
 
-.templates-grid.view-list .template-info {
-  min-width: 0;
-}
-
-.templates-grid.view-list .template-info h3,
-.templates-grid.view-list .template-info p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 @media (max-width: 600px) {
   .header-container {
-    padding: 24px 16px; /* Padding horizontal reduzido */
+    padding: 24px 16px;
+    /* Padding horizontal reduzido */
   }
 
   .templates-grid {
-    grid-template-columns: 1fr; /* Coluna única */
+    grid-template-columns: 1fr;
+    /* Coluna única */
     gap: 1rem;
     padding: 0.5rem;
   }
 
   .template-card .thumbnail {
-    height: 180px; /* Reduz altura da imagem no mobile */
+    height: 180px;
+    /* Reduz altura da imagem no mobile */
+  }
+
+  .templates-grid.view-list .template-actions {
+    flex-shrink: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .templates-grid.view-list .template-info {
+    min-width: 0;
+  }
+
+  .templates-grid.view-list .template-info h3,
+  .templates-grid.view-list .template-info p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -429,4 +485,5 @@ app-preview-panel {
     width: 28px;
     height: 28px;
   }
+
 }
