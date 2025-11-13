@@ -8,6 +8,7 @@ import { authGuard } from '@core/guards/auth-guard';
 import { Authscreen } from '@features/authscreen/authscreen';
 import { ResetPassword } from '@features/reset-password/reset-password';
 import { ForgotPassword } from '@features/forgot-password/forgot-password';
+import { HelpscremComponent } from '@features/helpscrem/helpscrem';
 
 const isInsideIframe = window.self !== window.top;
 
@@ -41,7 +42,7 @@ export const routes: Routes = [
       path: 'NotificationSettings',
       component: NotificationSettings,
       title: 'NotificationSettings',
-     // canActivate: [authGuard]
+      // canActivate: [authGuard]
    },
    {
       path: 'ConnectWoocommerce',
@@ -49,7 +50,12 @@ export const routes: Routes = [
       title: 'Connect WooCommerce',
       //canActivate: [authGuard]
    },
-
+   {
+      path: 'HelpScreen',
+      component: HelpscremComponent,
+      title: 'Help Screen',
+      //canActivate: [authGuard]
+   },
    // Rota Wildcard
    { path: '**', redirectTo: wildcardRedirect }
 ];

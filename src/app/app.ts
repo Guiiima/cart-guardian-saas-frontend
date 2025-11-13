@@ -29,7 +29,7 @@ constructor(private router: Router) {
         
         const path = event.url.split('?')[0]; 
 
-        const showRoutes = ['/DashBoard', '/NotificationSettings', '/ConnectWoocommerce', '/TemplateSelector'];
+        const showRoutes = ['/HelpScreen', '/DashBoard', '/NotificationSettings', '/ConnectWoocommerce', '/TemplateSelector'];
         
         this.showNavbar = showRoutes.includes(path); 
 

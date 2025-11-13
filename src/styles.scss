@@ -44,3 +44,113 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: #ffffff;
 }
+.article-content {
+  padding: 1rem 1.5rem; /* Um pouco mais de espaço lateral */
+}
+
+.article-content h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1b5e20; /* Cor escura principal */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e8f5e9; /* Linha sutil de separação */
+  padding-bottom: 0.5rem;
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2e7d32; /* Cor média */
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-content p {
+  color: #424242;
+  line-height: 1.7; /* Mais altura de linha */
+  margin-bottom: 1.25rem; /* Mais espaço */
+  font-size: 1rem;
+}
+
+.article-content strong {
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+.article-content ol,
+.article-content ul {
+  margin: 1.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.article-content li {
+  margin-bottom: 0.75rem; 
+  color: #424242; 
+  line-height: 1.6;
+}
+
+.article-content ul > li::marker {
+  color: #388e3c;
+  font-weight: bold;
+}
+
+.article-content a {
+  color: #388e3c;
+  text-decoration: none; 
+  font-weight: 500;
+  border-bottom: 1px dotted #388e3c; 
+  transition: 0.2s;
+}
+
+.article-content a:hover {
+  color: #1b5e20;
+  border-bottom-style: solid; 
+}
+
+.article-content code {
+  background: #e8f5e9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  color: #388e3c;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.article-content pre {
+  background: #f1f8e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content pre code {
+  background: none;
+  padding: 0;
+  color: #2e7d32;
+  font-size: 0.95rem;
+}
+
+.article-content blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem;
+  border-left: 5px solid #4caf50;
+  background: #f1f8e9;
+  color: #2e7d32;
+  font-style: italic;
+}
+
+.article-content blockquote p {
+  color: #2e7d32;
+  margin-bottom: 0;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}

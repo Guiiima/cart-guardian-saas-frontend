@@ -1,0 +1,71 @@
+<div class="help-container">
+  <div class="help-panel">
+    <header class="help-header">
+      @if (selectedArticle()) {
+        <button (click)="goBack()" class="back-btn" aria-label="Voltar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      }
+
+      <h1 class="help-title">
+        @if (selectedArticle()) {
+          {{ selectedArticle()!.title }}
+        } @else {
+          Central de Ajuda
+        }
+      </h1>
+    </header>
+
+    <main class="help-body">
+      @if (selectedArticle(); as article) {
+        <div class="article-content" [innerHTML]="article.content">
+          </div>
+      } @else {
+        <div class="search-section">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              placeholder="Buscar artigos..."
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="updateSearchTerm($event)"
+              class="search-input"
+            />
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          <ul class="article-list">
+            @for (article of filteredArticles(); track article.id) {
+              <li (click)="selectArticle(article)" class="article-item">
+                <span>{{ article.title }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+            }
+
+            @if (filteredArticles().length === 0) {
+              <li class="no-results">
+                Nenhum artigo encontrado para "{{ searchTerm() }}".
+              </li>
+            }
+          </ul>
+          
+          <div class="support-cta">
+            <h4>Ainda precisa de ajuda?</h4>
+            <p>Se você não encontrou uma resposta, envie um e-mail para nossa equipe de suporte.</p>
+            <a href="mailto:metric@metricflowtech.com.br" class="support-button">
+              <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Enviar E-mail
+            </a>
+          </div>
+          </div>
+      }
+    </main>
+  </div>
+</div>
