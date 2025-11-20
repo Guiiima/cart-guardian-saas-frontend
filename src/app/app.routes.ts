@@ -12,7 +12,7 @@ import { HelpscremComponent } from '@features/helpscrem/helpscrem';
 
 const isInsideIframe = window.self !== window.top;
 
-const wildcardRedirect = isInsideIframe ? '/Boasvindas' : '/DashBoard';
+const wildcardRedirect = isInsideIframe ? '/Login' : '/DashBoard';
 
 
 export const routes: Routes = [
@@ -21,40 +21,39 @@ export const routes: Routes = [
    { path: 'forgot-password', component: ForgotPassword, title: 'Esqueci a Senha' },
    { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
    {
-      path: '',
-      component: Boasvindas,
+      path: 'Boasvindas',
+      component: Authscreen,
       title: 'Boasvindas',
-      // canActivate: [authGuard]
    },
    {
       path: 'DashBoard',
       component: HomeScreen,
       title: 'DashBoard',
-      //canActivate: [authGuard]
+      canActivate: [authGuard]
    },
    {
       path: 'TemplateSelector',
       component: TemplateSelector,
       title: 'Templates',
-      //canActivate: [authGuard]
+      canActivate: [authGuard]
    },
    {
       path: 'NotificationSettings',
       component: NotificationSettings,
       title: 'NotificationSettings',
-      // canActivate: [authGuard]
+      canActivate: [authGuard]
    },
    {
       path: 'ConnectWoocommerce',
       component: ConnectWoocommerce,
       title: 'Connect WooCommerce',
-      //canActivate: [authGuard]
+      canActivate: [authGuard]
    },
    {
       path: 'HelpScreen',
       component: HelpscremComponent,
       title: 'Help Screen',
-      //canActivate: [authGuard]
+      canActivate: [authGuard]
    },
    // Rota Wildcard
    { path: '**', redirectTo: wildcardRedirect }

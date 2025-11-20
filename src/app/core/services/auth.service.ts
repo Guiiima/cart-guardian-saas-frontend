@@ -85,7 +85,7 @@ export class AuthService {
     if (response && response.token) {
       this.saveToken(response.token);
       this.currentUserSubject.next({ email: response.email, isLoggedIn: true });
-      this.router.navigate(['/connect-woocommerce']); 
+      this.router.navigate(['/Boasvindas']); 
     }
     return response;
   }
