@@ -23,8 +23,9 @@ export class Authscreen implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-
+  isInsideIframe = window.self !== window.top;
   ngOnInit(): void {
+    console.log('isInsideIframe:', this.isInsideIframe);
     this.initializeForms();
   }
 
