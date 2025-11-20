@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeScreen } from './features/home-screen/home-screen';
 import { TemplateSelector } from '@features/template-selector/template-selector';
 import { NotificationSettings } from '@features/notification-settings/notification-settings';
-import { Boasvindas } from './components/boasvindas/boasvindas';
+import { Boasvindas } from './components/boasvindas/boasvindas'; // Certifique-se que a importação está correta
 import { ConnectWoocommerce } from '@features/connect-woocommerce/connect-woocommerce';
 import { authGuard } from '@core/guards/auth-guard';
 import { Authscreen } from '@features/authscreen/authscreen';
@@ -14,7 +14,6 @@ const isInsideIframe = window.self !== window.top;
 
 const wildcardRedirect = isInsideIframe ? '/Boasvindas' : '/login';
 
-
 export const routes: Routes = [
    { path: 'login', component: Authscreen, title: 'Login' },
    { path: 'register', component: Authscreen, title: 'Register' },
@@ -22,7 +21,7 @@ export const routes: Routes = [
    { path: 'reset-password', component: ResetPassword, title: 'Redefinir Senha' },
    {
       path: 'Boasvindas',
-      component: Authscreen,
+      component: Boasvindas, 
       title: 'Boasvindas',
    },
    {
@@ -55,7 +54,7 @@ export const routes: Routes = [
       title: 'Help Screen',
       canActivate: [authGuard]
    },
-{ path: '', redirectTo: wildcardRedirect, pathMatch: 'full' },
-{ path: '**', redirectTo: wildcardRedirect }
-
+   // Redirecionamento inicial e curinga
+   { path: '', redirectTo: wildcardRedirect, pathMatch: 'full' },
+   { path: '**', redirectTo: wildcardRedirect }
 ];
