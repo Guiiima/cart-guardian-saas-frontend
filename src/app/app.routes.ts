@@ -12,7 +12,7 @@ import { HelpscremComponent } from '@features/helpscrem/helpscrem';
 
 const isInsideIframe = window.self !== window.top;
 
-const wildcardRedirect = isInsideIframe ? '/Login' : '/DashBoard';
+const wildcardRedirect = isInsideIframe ? '/DashBoard' : '/login';
 
 
 export const routes: Routes = [
