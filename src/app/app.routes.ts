@@ -55,6 +55,7 @@ export const routes: Routes = [
       title: 'Help Screen',
       canActivate: [authGuard]
    },
-   // Rota Wildcard
-   { path: '**', redirectTo: wildcardRedirect }
+{ path: '', redirectTo: wildcardRedirect, pathMatch: 'full' },
+{ path: '**', redirectTo: wildcardRedirect }
+
 ];
