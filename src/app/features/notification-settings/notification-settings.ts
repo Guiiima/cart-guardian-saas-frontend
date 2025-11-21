@@ -54,7 +54,7 @@ export class NotificationSettings implements OnInit {
       if (settings) {
         this.campaignId = settings.id;
         this.lojaId = settings.lojaId;
-
+        console.log('Configurações carregadas:', settings);
         this.settingsForm.patchValue({
           enableNotifications: settings.ativa,
           sendDelay: settings.tempoEsperaMin,
