@@ -27,7 +27,7 @@ export class NotificationSettings implements OnInit {
 
   ngOnInit(): void {
     this.settingsForm = this.fb.group({
-      enableNotifications: [true],
+      enableNotifications: [true],  
       sendDelay: [, [Validators.required, Validators.min(1), Validators.max(1440)]],
       logoUrl: ['']
     });

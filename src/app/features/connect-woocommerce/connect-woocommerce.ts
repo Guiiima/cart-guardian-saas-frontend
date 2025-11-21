@@ -44,7 +44,7 @@ export class ConnectWoocommerce implements OnInit {
 
     // Monitora mudanças no campo consumerKey
     this.connectForm.get('consumerKey')?.valueChanges.subscribe(value => {
-      if (this.originalConsumerKey && value !== this.originalConsumerKey) {
+      if (this.originalConsumerKey && value !== this.originalConsumerKey || this.originalConsumerKey === null) {
         this.showConsumerSecret = true;
         this.connectForm.get('consumerSecret')?.enable();
       }
