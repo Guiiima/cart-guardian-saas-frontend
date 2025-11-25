@@ -11,16 +11,18 @@
 
 .sidebar {
   display: flex;
+  flex-direction: column; /* Garante direção vertical */
   width: 60px;
   height: 100vh;
   background: var(--primary-color);
   overflow: hidden;
   color: var(--text-color);
   padding-top: 1rem;
+  padding-bottom: 1rem; /* Adicionado padding bottom para o botão não colar na borda */
   box-shadow: var(--card-shadow);
   border-right: 1px solid var(--border-color);
 
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -28,17 +30,29 @@
   width: 220px;
 }
 
-.sidebar ul,
-.sidebar li {
+/* --- MUDANÇA PRINCIPAL AQUI --- */
+.sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
+  
+  /* Faz a lista ocupar toda a altura disponível e ser flexível */
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
 }
 
 .sidebar li {
   margin: 0.6rem 0;
+  width: 100%;
 }
+
+/* Empurra o último item (Logout) para o final */
+.sidebar li:last-child {
+  margin-top: auto;
+}
+/* ----------------------------- */
 
 .sidebar a {
   display: flex;
@@ -49,7 +63,8 @@
   color: var(--text-light-color);
   border-radius: 8px;
   padding: 0.6rem 16px;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
+  cursor: pointer; /* Garante cursor pointer para o botão de logout */
 }
 
 .sidebar.expanded a {
@@ -86,7 +101,7 @@
 
 .sidebar a:hover svg {
   stroke: var(--text-color);
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .sidebar a.active {
@@ -98,11 +113,13 @@
 .sidebar a.active svg {
   stroke: var(--background-color);
 }
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
     height: 60px;
-    flex-direction: row;
+    flex-direction: row; /* Muda para linha no mobile */
     align-items: center;
     justify-content: space-around;
     border-right: none;
@@ -110,8 +127,26 @@
     position: fixed;
     bottom: 0;
     top: auto;
-    z-index: 10;
+    z-index: 100; /* Z-index alto para ficar sobre o conteúdo */
     padding: 0;
+  }
+
+  /* Reset no container da lista para mobile */
+  .sidebar ul {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* Reset no margin-top do último item para não quebrar o layout horizontal */
+  .sidebar li:last-child {
+    margin-top: 0;
+  }
+
+  .sidebar li {
+    margin: 0;
+    width: auto; /* Largura automática para caber lado a lado */
   }
 
   .sidebar.expanded {
@@ -120,32 +155,44 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
-  }
-
-  .sidebar ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
+    bottom: 0; /* Garante que cresce a partir do fundo */
+    border-radius: 16px 16px 0 0; /* Arredonda bordas superiores */
   }
 
   .sidebar.expanded ul {
     flex-direction: column;
     align-items: flex-start;
+    height: auto;
+  }
+  
+  /* No modo expandido mobile, podemos querer espaçamento */
+  .sidebar.expanded li:last-child {
+    margin-top: 1rem; 
   }
 
   .sidebar a {
     justify-content: center;
     padding: 0.5rem;
     border-radius: 6px;
+    flex-direction: column; /* Ícone em cima do texto (opcional) ou manter row */
+  }
+
+  /* Ajuste visual para ícones centralizados */
+  .sidebar a {
+      flex-direction: row;
   }
 
   .sidebar.expanded a {
     justify-content: flex-start;
+    width: 100%;
   }
 
   .sidebar a svg {
     margin: 0;
+  }
+
+  .sidebar.expanded a svg {
+    margin-right: 10px;
   }
 
   .text {
@@ -163,20 +210,16 @@
 /* Celulares muito pequenos (até 480px) */
 @media (max-width: 480px) {
   .sidebar {
-     z-index: 10;
     height: 55px;
   }
 
   .sidebar a svg {
     flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
   }
 
   .sidebar a {
     padding: 0.4rem;
-  }
-
-  .sidebar.expanded {
-    height: auto;
-    padding: 0.8rem;
   }
 }

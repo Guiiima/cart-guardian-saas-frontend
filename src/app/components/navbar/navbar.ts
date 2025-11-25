@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '@core/services/auth.service';
 import { NotificationSettings } from '@features/notification-settings/notification-settings';
 
 @Component({
@@ -14,13 +15,19 @@ export class Navbar {
   public isShopifyContext: boolean = false;
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService 
   ) {
     this.isShopifyContext = window.self !== window.top;
   }
+
   openConfig(): void {
     this.dialog.open(NotificationSettings, {
       width: '900px',
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
